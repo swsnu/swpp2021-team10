@@ -7,7 +7,7 @@ jobs:
     - language: python
       python: "3.7.9"
       install:
-        - cd backend
+        - cd backend/connectoon
         - pip install -r requirements.txt
       script:
         - pylint **/*.py --load-plugins pylint_django
@@ -17,7 +17,7 @@ jobs:
     - language: node_js
       node_js: 14
       install:
-        - cd frontend
+        - cd frontend/connectoon
         - yarn install
       script:
         - ./node_modules/.bin/eslint src
