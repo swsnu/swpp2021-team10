@@ -3,10 +3,16 @@ import WorkThumbnail from '../WorkThumbnail/WorkThumbnail';
 
 const WorkObject = (props) => {
   return (
-    <div className="work-object">
-      <img className="original-work-thumbnail" src={props.thumbnail_address} />
-      <img className="work-platform" src={props.work_platform} />
-      <img className="work-completion" src={props.work_completion} />
+    <div className={props.className}>
+      <WorkThumbnail 
+        className="work-thumbnail" 
+        src={props.src}
+        platform={props.platform}
+        completion={props.completion} />
+      <h4 className="work-title">{props.title}</h4>
+      <h5 className="work-artist">{props.artist}</h5>
+      <h5 className="work-created-year">{props.created_year}</h5>
+      <h5 className="work-score">{props.score}</h5>
     </div>
   )
 };
