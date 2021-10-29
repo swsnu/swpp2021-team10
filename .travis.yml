@@ -12,11 +12,11 @@ jobs:
         - coverage run --source='.' manage.py test
         - coverage xml
     
-        - language: node_js
-          node_js: 14
-          install:
-            - cd frontend/connectoon
-            - yarn install
-          script:
-            - ./node_modules/.bin/eslint src
-            - yarn test -coverage --watchAll=false
+    - language: node_js
+      node_js: 14
+      install:
+        - cd frontend/connectoon
+        - yarn install
+      script:
+        - ./node_modules/.bin/eslint src
+        - yarn test -coverage --watchAll=false
