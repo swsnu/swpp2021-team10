@@ -4,6 +4,11 @@ jobs:
   include:
     - language: python
       python: "3.7.9"
+      addons: 
+        sonarcloud:
+          organization: swsnu
+          token:
+            secure: "HBTECYRJUvZ5ZwwjjLU6TdumQHtM4R5iUqCtJXZtuGFc44bPCsEGv0ULWqlz/EmlUI6lI8mAiOcO8AniiZCDucR3tDOV84uJxpmLhUbqTU35JqhYAd13oHw/Qp/8IShOj0+KIVN4J3KIuXIezwOpAyWM28G8PeA8+fhQm2GZzDBix0ZaoapEYb9iGirWqjUux4K5+NHaVfg+bCF+wbFpbYh2DeSXHMRVPYKScm8z9uMKMZ/kb2hnm392IbKfuy4CaSeyCVVu7rzIbcBZD0wqxAiIraE/H1bRelZV4A5pcSMoz0T4Zyv9Y5mSnC44uq82FL97ymd2fr6CwyRPURhvrnAutekhPOG1CRLgTkpagwR9xmRbO78NlbjmL7+SAceBQOnygV4n7pjYhpakavt9Tja1lYRY2n5J5AFbzfKqfg9LLuUmOm6ABfMuHE+SrEOoqo/drsapmRVNDMNVMjJf58/llTnBqKhLgGWW7aMS6FrfO4dNnSsiKaqCYliygvAcMb4bLqwZq4jvakGVV5fiWmtT3meUzatdubfrRC+Iu0FmQZJU7OcgBkthiLMOyiPzZtyAl/4mlaQKS5TT73HZzwaP8d9p46JlboVy6yy08fKBAuahNCI+f/OR6Ezg9zdbBC42CG7zFUiJPqf6mVuYZPrzPL3BLOfvV78eapiCQZk="
       install:
         - cd backend/connectoon
         - pip install -r requirements.txt
@@ -11,6 +16,7 @@ jobs:
         - pylint **/*.py --load-plugins pylint_django
         - coverage run --source='.' manage.py test
         - coverage xml
+        - cd ../.. && sonar-scanner
     
     - language: node_js
       node_js: 14
