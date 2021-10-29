@@ -6,14 +6,12 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import * as serviceWorker from './serviceWorker';
 
-import store, { history } from './store/store';
+import { history } from './store/store';
 
 ReactDOM.render(
-  <Provider store={store}>
-    <React.StrictMode>
-      <App history={history} />
-    </React.StrictMode>
-  </Provider>,
+  <React.StrictMode>
+    <App history={history} />
+  </React.StrictMode>,
   document.getElementById('root'),
 );
 
