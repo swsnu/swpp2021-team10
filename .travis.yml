@@ -20,11 +20,10 @@ jobs:
         - cd ../.. && sonar-scanner
 
     - language: node_js
-      node_js: 
-      - '10'
+      node_js: 14
       install:
         - cd frontend/connectoon
         - yarn install
       script:
+        - ./node_modules/.bin/eslint src
         - yarn test --coverage --watchAll=false
-#        - ./node_modules/.bin/eslint src
