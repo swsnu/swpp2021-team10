@@ -3,22 +3,23 @@ module.exports = {
     browser: true,
     es2021: true,
     node: true,
-    jest: true
+    jest: true,
   },
   extends: [
     'plugin:react/recommended',
-    'standard'
+    'airbnb',
   ],
   parserOptions: {
     ecmaFeatures: {
-      jsx: true
+      jsx: true,
     },
     ecmaVersion: 12,
-    sourceType: 'module'
+    sourceType: 'module',
   },
   plugins: [
-    'react'
+    'react',
   ],
   rules: {
-  }
-}
+    'react/jsx-filename-extension': [1, { extensions: ['.js', '.jsx'] }],
+  },
+};
