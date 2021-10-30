@@ -14,7 +14,7 @@ const WorkList = (props) => {
       completion={work.completion}
       title={work.title}
       artist={work.artist}
-      created_year={work.created_year}
+      createdYear={work.createdYear}
       score={work.score}
     />
   ));
