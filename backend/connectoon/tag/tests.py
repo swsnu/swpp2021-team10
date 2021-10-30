@@ -1,4 +1,4 @@
-from django.test import TestCase
+from django.test import TestCase, Client
 from .models import Tag
 
 class TagTestCase(TestCase):
@@ -8,4 +8,6 @@ class TagTestCase(TestCase):
   def test_tag_count(self):
     self.assertEqual(Tag.objects.all().count(), 1)
 
-# Create your tests here.
+  def test_tag_search(self):
+    client = Client()
+    response = client.get('/tags/search/')

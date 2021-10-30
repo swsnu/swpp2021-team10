@@ -1,5 +1,4 @@
-from django.test import TestCase
-
+from django.test import TestCase, Client
 from work.models import Work
 from .models import Review
 
@@ -14,4 +13,14 @@ class ReviewTestCase(TestCase):
   def test_review_count(self):
     self.assertEqual(Review.objects.all().count(), 1)
 
-# Create your tests here.
+  def test_review_id(self):
+    client = Client()
+    response = client.get('reviews/1/')
+
+    self.assertEqual(response.status_code, 501)
+
+  def test_review_board(self):
+    client = Client()
+    response = client.get('reviews/board/')
+
+    self.assertEqual(response.status_code, 501)
