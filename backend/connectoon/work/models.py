@@ -16,7 +16,11 @@ class Work(models.Model):
   score_sum = models.FloatField(default=0)
   review_num = models.IntegerField(default=0)
   
-  PLATFORM_CHOICES = models.TextChoices('Naver', 'Kakao', 'Lezhin') 
-  platform_id = models.IntegerField(max_length=1, choices= PLATFORM_CHOICES)
+  PLATFORM_CHOICES =[
+    (1, 'Naver'),
+    (2, 'Kakao'),
+    (3, 'Lezhin')
+  ]
+  platform_id = models.IntegerField(choices= PLATFORM_CHOICES)
   tags = models.ManyToManyField(Tag, related_name="works") # 중간 table이 따로 필요없을 것 같은데 맞나요?
   artists = models.ManyToManyField(Artist, related_name="works")
