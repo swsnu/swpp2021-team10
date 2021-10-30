@@ -12,7 +12,8 @@ class WorkDetail extends Component {
     const { title } = this.props;
     return (
       <div className="work-detail">
-        {dummyState && String.format('This is work detail for {}', title)}
+        This is work detail for
+        {dummyState && title}
       </div>
     );
   }

@@ -9,6 +9,8 @@ import store from './store/store';
 import Main from './Containers/Main/Main';
 import NavBar from './Components/NavBar/NavBar';
 import Recommendation from './Containers/Recommendation/Recommendation';
+import Board from './Containers/Board/Board';
+import Search from './Containers/Search/Search';
 
 function App() {
   return (
@@ -20,6 +22,8 @@ function App() {
           <Switch>
             <Route path="/main" exact component={Main} />
             <Route path="/recommendation" exact component={Recommendation} />
+            <Route path="/board" exact component={Board} />
+            <Route path="/search" exact component={Search} />
             <Redirect from="/" to="/main" />
           </Switch>
         </div>

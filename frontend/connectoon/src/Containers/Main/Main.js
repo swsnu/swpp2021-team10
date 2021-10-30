@@ -3,6 +3,7 @@ import WorkList from '../../Components/WorkList/WorkList';
 
 const dummyWorks = [
   {
+    id: 1,
     src: 'https://shared-comic.pstatic.net/thumb/webtoon/721948/thumbnail/thumbnail_IMAG06_eef5b6c4-39dc-46d9-89d1-1a1ee357b696.jpg',
     platform: '/images/naver_logo.png',
     completion: false,
@@ -12,6 +13,7 @@ const dummyWorks = [
     score: '4.9',
   },
   {
+    id: 2,
     src: 'https://shared-comic.pstatic.net/thumb/webtoon/20853/thumbnail/thumbnail_IMAG06_89061d8c-e491-42f1-8c15-40932e5eb939.jpg',
     platform: '/images/naver_logo.png',
     completion: true,
