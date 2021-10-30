@@ -1,0 +1,114 @@
+.nav-bar {
+  width: 100%;
+  height: 70px;
+  position: fixed;
+  left: 0px;
+  top: 0px;
+  background-color: #fdfdfd;
+  border: 1px solid black;
+}
+
+a {
+  text-decoration: none;
+  color: black;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+#connectoon-logo-link {
+  display: inline-block;
+  margin: 15px 3% 15px 13%;
+  width: 14%;
+  height: 40px;
+}
+
+#connectoon-logo {
+  position: fixed;
+  left: 13%;
+  top: 15px;
+  font-size: 32px;
+}
+
+#non-logo-links {
+  display: inline-block;
+  margin: 20px 0% 20px 0%;
+  width: 40%;
+  height: 30px;
+}
+
+#recommendation-tab {
+  position: fixed;
+  left: 30%;
+  top: 30px;
+  font-size: 18px;
+}
+
+#board-tab {
+  position: fixed;
+  left: 43%;
+  top: 30px;
+  font-size: 18px;
+}
+
+#search-tab {
+  position: fixed;
+  left: 50%;
+  top: 30px;
+  font-size: 18px;
+}
+
+#search-input {
+  position: fixed;
+  left: 57%;
+  top: 25px;
+  width: 13%;
+  height: 20px;
+}
+
+#search-glass-icon {
+  position: fixed;
+  left: calc(70% - 15px);
+  top: 30px;
+  width: 15px;
+  height: 15px;
+}
+
+#user-account-button {
+  display: inline-block;
+  margin: 15px 15% 15px 5%;
+  width: 10%;
+  height: 40px;
+}
+
+.nav-bar-buttons {
+  width: 10%;
+  height: 40px;
+  background-color: #fefefe;
+  border: 1px solid black;
+}
+
+#login-button, #username-button {
+  position: fixed;
+  left: 75%;
+  top: 15px;
+}
+
+#mypage-button {
+  position: fixed;
+  left: 75%;
+  top: 54px;
+}
+
+#myreviews-button {
+  position: fixed;
+  left: 75%;
+  top: 93px;
+}
+
+#logout-button {
+  position: fixed;
+  left: 75%;
+  top: 132px;
+}
