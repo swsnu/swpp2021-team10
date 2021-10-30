@@ -8,7 +8,7 @@ class Review(models.Model):
   #author_id = models.ForeignKey(, on_delete=models.CASCADE)
   score = models.FloatField()           #decimal?
   likes = models.IntegerField(default=0)
-  title = models.CharField(max_length=200)  #length설정
-  content = models.CharField(max_length=1000) #length
+  title = models.CharField(max_length=200)
+  content = models.TextField()
   updated_at = models.DateTimeField()
 # Create your models here.
