@@ -1,3 +1,9 @@
-from django.shortcuts import render
+from django.http import HttpResponse
 
-# Create your views here.
+
+def review_id(request, id):  # TODO
+    return HttpResponse(status=501)
+
+
+def review_board(request):  # TODO
+    return HttpResponse(status=501)
