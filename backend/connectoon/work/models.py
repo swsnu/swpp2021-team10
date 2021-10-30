@@ -1,9 +1,9 @@
 from django.core import validators
 from django.db import models
 from django.core.validators import MinValueValidator, MaxValueValidator
-from backend.connectoon.artist.models import Artist
+from artist.models import Artist
 
-from backend.connectoon.tag.models import Tag
+from tag.models import Tag
 
 
 class Work(models.Model):
