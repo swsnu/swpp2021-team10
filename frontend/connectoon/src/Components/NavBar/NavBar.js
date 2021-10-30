@@ -39,7 +39,7 @@ class NavBar extends Component {
           <img id="search-glass-icon" src="/images/search_glass_icon.png" alt="search" />
         </div>
         <div id="user-account-button">
-          {!loggedIn && <button id="login-button" className="nav-bar-buttons" type="button" onClick={() => this.onClickLogin()} onMouseEnter>LogIn</button>}
+          {!loggedIn && <button id="login-button" className="nav-bar-buttons" type="button" onClick={() => this.onClickLogin()}>LogIn</button>}
           {loggedIn && <button id="username-button" className="nav-bar-buttons" type="button" onClick={() => this.onClickUsername()}>dooly9931</button>}
           {loggedIn && clickUsername && <button id="mypage-button" className="nav-bar-buttons" type="button">MyPage</button>}
           {loggedIn && clickUsername && <button id="myreviews-button" className="nav-bar-buttons" type="button">MyReviews</button>}

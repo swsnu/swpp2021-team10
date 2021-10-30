@@ -8,6 +8,7 @@ const WorkList = (props) => {
   } = props;
   const workObjects = workList.map((work) => (
     <WorkObject
+      key={work.id}
       className="work-object"
       src={work.src}
       platform={work.platform}

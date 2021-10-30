@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
-class WorkDetail extends Component {
+class Board extends Component {
   constructor(props) {
     super(props);
     this.state = { dummyState: true };
@@ -9,17 +9,12 @@ class WorkDetail extends Component {
 
   render() {
     const { dummyState } = this.state;
-    const { title } = this.props;
     return (
-      <div className="work-detail">
-        {dummyState && title}
+      <div className="board">
+        {dummyState && 'This is board'}
       </div>
     );
   }
 }
 
-WorkDetail.propTypes = {
-  title: PropTypes.string.isRequired,
-};
-
-export default WorkDetail;
+export default Board;
