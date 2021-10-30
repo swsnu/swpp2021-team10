@@ -6,13 +6,18 @@ import {
 
 import { Provider } from 'react-redux';
 import store from './store/store';
+import Main from './Containers/Main/Main';
 
 function App() {
   return (
     <Provider store={store}>
-      <div className="App">
-        dummy
-      </div>
+      <BrowserRouter>
+        <div className="App">
+          <Switch>
+            <Route path="/main" exact component={Main} />
+          </Switch>
+        </div>
+      </BrowserRouter>
     </Provider>
   );
 }
