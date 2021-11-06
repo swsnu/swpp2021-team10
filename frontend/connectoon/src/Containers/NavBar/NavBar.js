@@ -3,6 +3,8 @@ import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import './NavBar.css';
 
+import { withRouter } from 'react-router';
+
 class NavBar extends Component {
   constructor(props) {
     super(props);
@@ -18,8 +20,23 @@ class NavBar extends Component {
     this.setState({ clickUsername: !clickUsername });
   }
 
+  onClickMyPage() {
+    const { clickUsername } = this.state;
+    this.setState({ clickUsername: !clickUsername });
+    const { history } = this.props;
+    history.push('/mypage');
+  }
+
+  onClickMyReviews() {
+    const { clickUsername } = this.state;
+    this.setState({ clickUsername: !clickUsername });
+    const { history } = this.props;
+    history.push('/myreviews');
+  }
+
   onClickLogout() {
     this.setState({ loggedIn: false });
+    this.setState({ clickUsername: false });
   }
 
   render() {
@@ -41,8 +58,8 @@ class NavBar extends Component {
         <div id="user-account-button">
           {!loggedIn && <button id="login-button" className="nav-bar-buttons" type="button" onClick={() => this.onClickLogin()}>LogIn</button>}
           {loggedIn && <button id="username-button" className="nav-bar-buttons" type="button" onClick={() => this.onClickUsername()}>dooly9931</button>}
-          {loggedIn && clickUsername && <button id="mypage-button" className="nav-bar-buttons" type="button">MyPage</button>}
-          {loggedIn && clickUsername && <button id="myreviews-button" className="nav-bar-buttons" type="button">MyReviews</button>}
+          {loggedIn && clickUsername && <button id="mypage-button" className="nav-bar-buttons" type="button" onClick={() => this.onClickMyPage()}>MyPage</button>}
+          {loggedIn && clickUsername && <button id="myreviews-button" className="nav-bar-buttons" type="button" onClick={() => this.onClickMyReviews()}>MyReviews</button>}
           {loggedIn && clickUsername && <button id="logout-button" className="nav-bar-buttons" type="button" onClick={() => this.onClickLogout()}>LogOut</button>}
         </div>
       </div>
@@ -52,6 +69,7 @@ class NavBar extends Component {
 
 NavBar.propTypes = {
   className: PropTypes.string.isRequired,
+  history: PropTypes.shape().isRequired,
 };
 
-export default NavBar;
+export default withRouter(NavBar);
