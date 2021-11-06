@@ -1,5 +1,5 @@
 from django.views.decorators.csrf import ensure_csrf_cookie
-from django.contrib.auth import get_user_model
+from django.contrib.auth import get_user_model, authenticate, login as auth_login
 from django.http import HttpResponse, HttpResponseBadRequest, HttpResponseNotAllowed, JsonResponse
 
 import json
@@ -49,8 +49,28 @@ def user_register(request):
         return HttpResponseNotAllowed(['POST'])
 
 
-def user_login(request):  # TODO
-    return HttpResponse(status=501)
+def user_login(request):
+    if request.method == 'POST':
+
+        # Decode Json
+        try:
+            req_data = json.loads(request.body.decode())
+            email = req_data['email']
+            password = req_data['password']
+        except (KeyError, JSONDecodeError) as e:
+            return HttpResponseBadRequest()
+
+        # Load User
+        user = authenticate(request, email=email, password=password)
+
+        # Check Available
+        if user is not None:
+            auth_login(request, user)
+            return HttpResponse(status=204)
+        else:
+            return HttpResponse(status=401)
+    else:
+        return HttpResponseNotAllowed(['POST'])
 
 
 def user_id(request, id):  # TODO
