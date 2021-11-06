@@ -1,6 +1,6 @@
 from django.views.decorators.csrf import ensure_csrf_cookie
-from django.contrib.auth import get_user_model
-from django.http import HttpResponse, HttpResponseBadRequest, HttpResponseNotAllowed, JsonResponse
+from django.contrib.auth import get_user_model, authenticate, login as auth_login
+from django.http import HttpResponse, HttpResponseBadRequest, HttpResponseNotAllowed, HttpResponseForbidden, JsonResponse
 
 import json
 from json.decoder import JSONDecodeError
@@ -49,16 +49,52 @@ def user_register(request):
         return HttpResponseNotAllowed(['POST'])
 
 
-def user_login(request):  # TODO
-    return HttpResponse(status=501)
+def user_login(request):
+    if request.method == 'POST':
+
+        # Decode Json
+        try:
+            req_data = json.loads(request.body.decode())
+            email = req_data['email']
+            password = req_data['password']
+        except (KeyError, JSONDecodeError) as e:
+            return HttpResponseBadRequest()
+
+        # Load User
+        user = authenticate(request, email=email, password=password)
+
+        # Check Available
+        if user is not None:
+            auth_login(request, user)
+            return HttpResponse(status=204)
+        else:
+            return HttpResponse(status=401)
+    else:
+        return HttpResponseNotAllowed(['POST'])
 
 
 def user_id(request, id):  # TODO
     return HttpResponse(status=501)
 
 
-def user_me(request):  # TODO
-    return HttpResponse(status=501)
+def user_me(request):
+    request_user = request.user
+    User = get_user_model()
+    if request.method == 'GET':
+        if request_user.is_authenticated:
+
+            user_tag = request_user.user_tag.all()
+            tag_list = [{'id': user_tag.tag.id, 'name': user_tag.tag.name } for user_tag in user_tag]
+
+            # TODO : Add profile_picture
+            response_dict = {'id': request_user.id, 'username': request_user.username, 'email': request_user.email, 'tags': tag_list}
+            return JsonResponse(response_dict, status=200)
+        else:
+            return HttpResponse(status=401)
+    else:
+        return HttpResponseNotAllowed(['GET'])
+
+
 
 
 def user_me_review(request):  # TODO
