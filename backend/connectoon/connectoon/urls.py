@@ -16,10 +16,13 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import include, path
 
+from user import views
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('works/', include('work.urls')),
     path('reviews/', include('review.urls')),
     path('tags/', include('tag.urls')),
     path('users/', include('user.urls')),
+    path('token/', views.token, name='token'),
 ]
