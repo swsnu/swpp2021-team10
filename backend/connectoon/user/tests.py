@@ -1,6 +1,28 @@
 from django.contrib.auth import get_user_model
 from django.test import TestCase, Client
 
+
+class TokenTestCase(TestCase):
+  def test_csrf(self):
+    client = Client(enforce_csrf_checks=True)
+    response = client.delete('/users/')
+    self.assertEqual(response.status_code, 403)  # Request without csrf token returns 403 response
+
+    response = client.get('/token/')
+    csrftoken = response.cookies['csrftoken'].value  # Get csrf token from cookie
+
+    response = client.delete('/users/', HTTP_X_CSRFTOKEN=csrftoken)
+    self.assertEqual(response.status_code, 501)  # TODO : change into 405 when /user/register/ is implemented
+
+  def test_csrf_not_allowed(self):
+    client = Client(enforce_csrf_checks=True)
+    response = client.get('/token/')
+    csrftoken = response.cookies['csrftoken'].value  # Get csrf token from cookie
+
+    response = client.post('/token/', HTTP_X_CSRFTOKEN=csrftoken)
+    self.assertEqual(response.status_code, 405)
+
+
 class UserTestCase(TestCase):
   def test_user_register(self):
     client = Client()
@@ -31,6 +53,7 @@ class UserTestCase(TestCase):
     response = client.get('/users/me/reviews/')
 
     self.assertEqual(response.status_code, 501)
+
 
 class UsersManagersTests(TestCase):
 
