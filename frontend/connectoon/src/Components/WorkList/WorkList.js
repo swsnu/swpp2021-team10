@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import WorkObject from '../WorkObject/WorkObject';
+import './WorkList.css';
 
 const WorkList = (props) => {
   const {
@@ -19,13 +20,18 @@ const WorkList = (props) => {
       score={work.score}
     />
   ));
-  const displayingObjects = workObjects.slice(0, workDisplayNum - 1);
+  const displayingObjects = workObjects.slice(0, workDisplayNum);
+
+  const onClickMore = () => {
+  };
 
   return (
     <div className={className}>
-      <h3 className="list-subject">{subject}</h3>
-      {displayingObjects}
-      <button type="button" className="more-works-button">more</button>
+      <div className="list-wrapper">
+        <h1 className="list-subject">{subject}</h1>
+        {displayingObjects}
+        {(workObjects.length > workDisplayNum) && <button type="button" className="more-works-button">more...</button>}
+      </div>
     </div>
   );
 };
