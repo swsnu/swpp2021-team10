@@ -42,6 +42,7 @@ class UsersManagersTests(TestCase):
     self.assertTrue(user.is_active)
     self.assertFalse(user.is_staff)
     self.assertFalse(user.is_superuser)
+    self.assertEqual(user.__str__(), 'veldic@user.com')
 
     superuser = User.objects.create_superuser(email='veldic2@user.com', password='qwe123', username='veldic2')
     self.assertEqual(superuser.email, 'veldic2@user.com')
@@ -60,3 +61,10 @@ class UsersManagersTests(TestCase):
       User.objects.create_user(email='veldicc@user.com', password="qwe123")
     with self.assertRaises(ValueError):
       User.objects.create_user(email='', password="foo", username='veldic')
+
+    with self.assertRaises(ValueError):
+      User.objects.create_superuser(email='veldic33@user.com', password='qwe123', username='veldic3',is_superuser=False)
+    with self.assertRaises(ValueError):
+      User.objects.create_superuser(email='veldic33@user.com', password='qwe123', username='veldic3', is_staff=False)
+
+
