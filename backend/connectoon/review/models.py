@@ -6,8 +6,8 @@ from work.models import Work
 from django.contrib.auth import get_user_model
 
 class Review(models.Model):
-  work = models.ForeignKey(Work, on_delete=models.CASCADE, related_name="work")
-  author = models.ForeignKey(get_user_model(), on_delete=models.CASCADE, related_name="author")
+  work = models.ForeignKey(Work, on_delete=models.CASCADE, related_name="comment")
+  author = models.ForeignKey(get_user_model(), on_delete=models.CASCADE, related_name="comment")
   score = models.FloatField()        #decimal?
   likes = models.IntegerField(default=0)
   title = models.CharField(max_length=200)
