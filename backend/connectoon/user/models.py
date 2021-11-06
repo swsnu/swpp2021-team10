@@ -4,6 +4,7 @@ from django.db import models
 from django.utils import timezone
 from django.utils.translation import ugettext_lazy as _
 
+from tag.models import Tag
 from .managers import CustomUserManager
 
 
@@ -26,3 +27,8 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
 
     def __str__(self):
         return self.email
+
+
+class UserTagFav(models.Model):
+    user = models.ForeignKey(CustomUser, related_name='user_tag', on_delete=models.CASCADE)
+    tag = models.ForeignKey(Tag, related_name='user_tag', on_delete=models.CASCADE)
