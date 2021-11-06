@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import WorkList from '../../Components/WorkList/WorkList';
+import './Main.css';
 
 const dummyWorks = [
   {
@@ -106,15 +107,15 @@ const dummyWorks = [
 class Main extends Component {
   constructor(props) {
     super(props);
-    this.state = { displayNum: 4 };
+    this.state = { workNumInRow: 4 };
   }
 
   render() {
-    const { displayNum } = this.state;
+    const { workNumInRow } = this.state;
     return (
       <div className="main-page">
-        <WorkList className="most-reviewed-work-list" subject="Most revied works" workList={dummyWorks} workNumInRow={displayNum} />
-        <WorkList className="most-liked-work-list" subject="Most liked works" workList={[...dummyWorks].reverse()} workNumInRow={displayNum} />
+        <WorkList className="most-reviewed-work-list" subject="Most revied works" workList={dummyWorks} workNumInRow={workNumInRow} />
+        <WorkList className="most-liked-work-list" subject="Most liked works" workList={[...dummyWorks].reverse()} workNumInRow={workNumInRow} />
       </div>
     );
   }
