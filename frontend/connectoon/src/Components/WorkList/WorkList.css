@@ -1,6 +1,7 @@
 .list-wrapper {
  width: 1000px;
  margin: 0 max(calc(50% - 500px), 0px) 40px max(calc(50% - 500px), 0px);
+ display: inline-block;
 }
 
 .list-subject {
@@ -9,9 +10,12 @@
 }
 
 .more-works-button {
+  width: 48px;
   text-decoration: underline;
   background-color: #fdfdfd;
   border: none;
+  display: inline-block;
+  font-size: 13px;
 }
 
 .more-works-button:hover {
