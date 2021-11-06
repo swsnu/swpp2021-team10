@@ -1,6 +1,6 @@
 from django.views.decorators.csrf import ensure_csrf_cookie
 from django.contrib.auth import get_user_model, authenticate, login as auth_login
-from django.http import HttpResponse, HttpResponseBadRequest, HttpResponseNotAllowed, JsonResponse
+from django.http import HttpResponse, HttpResponseBadRequest, HttpResponseNotAllowed, HttpResponseForbidden, JsonResponse
 
 import json
 from json.decoder import JSONDecodeError
@@ -77,8 +77,24 @@ def user_id(request, id):  # TODO
     return HttpResponse(status=501)
 
 
-def user_me(request):  # TODO
-    return HttpResponse(status=501)
+def user_me(request):
+    request_user = request.user
+    User = get_user_model()
+    if request.method == 'GET':
+        if request_user.is_authenticated:
+
+            user_tag = request_user.user_tag.all()
+            tag_list = [{'id': user_tag.tag.id, 'name': user_tag.tag.name } for user_tag in user_tag]
+
+            # TODO : Add profile_picture
+            response_dict = {'id': request_user.id, 'username': request_user.username, 'email': request_user.email, 'tags': tag_list}
+            return JsonResponse(response_dict, status=200)
+        else:
+            return HttpResponseForbidden()
+    else:
+        return HttpResponseNotAllowed(['GET'])
+
+
 
 
 def user_me_review(request):  # TODO

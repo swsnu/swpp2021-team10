@@ -74,10 +74,40 @@ class UserTestCase(TestCase):
         self.assertEqual(response.status_code, 400)
 
     def test_user_login(self):
-        client = Client()
-        response = client.get('/users/login/')
+        client = Client(enforce_csrf_checks=True)
 
-        self.assertEqual(response.status_code, 501)
+        # Check KeyError
+        csrftoken = client.get('/token/').cookies['csrftoken'].value  # Get csrf token from cookie
+        response = client.post('/users/login/',
+                               json.dumps({'emal': 'test1@snu.ac.kr', 'password': 'qwe123'}),
+                               content_type='application/json', HTTP_X_CSRFTOKEN=csrftoken)
+        self.assertEqual(response.status_code, 400)
+
+        # Check email wrong
+        csrftoken = client.get('/token/').cookies['csrftoken'].value  # Get csrf token from cookie
+        response = client.post('/users/login/',
+                               json.dumps({'email': 'tes1@snu.ac.kr', 'password': 'qwe123'}),
+                               content_type='application/json', HTTP_X_CSRFTOKEN=csrftoken)
+        self.assertEqual(response.status_code, 401)
+
+        # Check password wrong
+        csrftoken = client.get('/token/').cookies['csrftoken'].value  # Get csrf token from cookie
+        response = client.post('/users/login/',
+                               json.dumps({'email': 'test1@snu.ac.kr', 'password': 'qe123'}),
+                               content_type='application/json', HTTP_X_CSRFTOKEN=csrftoken)
+        self.assertEqual(response.status_code, 401)
+
+        # Check Successful Login
+        csrftoken = client.get('/token/').cookies['csrftoken'].value  # Get csrf token from cookie
+        response = client.post('/users/login/',
+                               json.dumps({'email': 'test1@snu.ac.kr', 'password': 'qwe123'}),
+                               content_type='application/json', HTTP_X_CSRFTOKEN=csrftoken)
+        self.assertEqual(response.status_code, 204)
+
+        # Check Not Allowed
+        csrftoken = client.get('/token/').cookies['csrftoken'].value  # Get csrf token from cookie
+        response = client.get('/users/login/', HTTP_X_CSRFTOKEN=csrftoken)
+        self.assertEqual(response.status_code, 405)
 
     def test_user_id(self):
         client = Client()
@@ -86,10 +116,29 @@ class UserTestCase(TestCase):
         self.assertEqual(response.status_code, 501)
 
     def test_user_me(self):
-        client = Client()
-        response = client.get('/users/me/')
+        client = Client(enforce_csrf_checks=True)
 
-        self.assertEqual(response.status_code, 501)
+        # Check Not Logged in
+        csrftoken = client.get('/token/').cookies['csrftoken'].value  # Get csrf token from cookie
+        response = client.get('/users/me/', HTTP_X_CSRFTOKEN=csrftoken)
+        self.assertEqual(response.status_code, 403)
+
+        # Login
+        csrftoken = client.get('/token/').cookies['csrftoken'].value  # Get csrf token from cookie
+        response = client.post('/users/login/',
+                               json.dumps({'email': 'test1@snu.ac.kr', 'password': 'qwe123'}),
+                               content_type='application/json', HTTP_X_CSRFTOKEN=csrftoken)
+        self.assertEqual(response.status_code, 204)
+
+        # Check Successful User me
+        csrftoken = client.get('/token/').cookies['csrftoken'].value  # Get csrf token from cookie
+        response = client.get('/users/me/', HTTP_X_CSRFTOKEN=csrftoken)
+        self.assertEqual(response.status_code, 200)
+
+        # Check Not Allowed
+        csrftoken = client.get('/token/').cookies['csrftoken'].value  # Get csrf token from cookie
+        response = client.post('/users/me/', HTTP_X_CSRFTOKEN=csrftoken)
+        self.assertEqual(response.status_code, 405)
 
     def test_user_me_review(self):
         client = Client()
