@@ -3,30 +3,41 @@
   width: 220px;
 }
 
-.work-title {
+.object-description {
+  width: 200px;
+  margin: 0 10px 0 10px;
+}
+
+.object-description > .description {
+  color: #777;
   display: inline-block;
-  width: 240px;
   margin: 5px 0 0 0;
   text-align: left;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.work-title {
+  width: 200px;
 }
 
 .work-artist {
-  display: inline-block;
-  width: 240px;
-  margin: 5px 0 0 0;
-  text-align: left;
+  width: 200px;
 }
 
-.work-created-year {
+.work-rating-star-icon {
+  width: 15px;
+  height: 15px;
   display: inline-block;
-  width: 240px;
-  margin: 5px 0 0 0;
-  text-align: left;
+  margin: 5px 5px 0 0;
 }
 
 .work-score {
-  display: inline-block;
-  width: 240px;
-  margin: 5px 0 0 0;
-  text-align: left;
+  width: 140px;
+  
+}
+
+.work-created-year {
+  width: 40px;
 }

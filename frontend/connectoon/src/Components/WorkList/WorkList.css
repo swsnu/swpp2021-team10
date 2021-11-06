@@ -1,0 +1,19 @@
+.list-wrapper {
+ width: 1000px;
+ margin: 0 max(calc(50% - 500px), 0px) 40px max(calc(50% - 500px), 0px);
+}
+
+.list-subject {
+  text-align: left;
+  text-indent: 50px;
+}
+
+.more-works-button {
+  text-decoration: underline;
+  background-color: #fdfdfd;
+  border: none;
+}
+
+.more-works-button:hover {
+  cursor: grab;
+}
