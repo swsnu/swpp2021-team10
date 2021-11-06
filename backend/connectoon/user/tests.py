@@ -121,7 +121,7 @@ class UserTestCase(TestCase):
         # Check Not Logged in
         csrftoken = client.get('/token/').cookies['csrftoken'].value  # Get csrf token from cookie
         response = client.get('/users/me/', HTTP_X_CSRFTOKEN=csrftoken)
-        self.assertEqual(response.status_code, 403)
+        self.assertEqual(response.status_code, 401)
 
         # Login
         csrftoken = client.get('/token/').cookies['csrftoken'].value  # Get csrf token from cookie

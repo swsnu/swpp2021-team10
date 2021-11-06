@@ -90,7 +90,7 @@ def user_me(request):
             response_dict = {'id': request_user.id, 'username': request_user.username, 'email': request_user.email, 'tags': tag_list}
             return JsonResponse(response_dict, status=200)
         else:
-            return HttpResponseForbidden()
+            return HttpResponse(status=401)
     else:
         return HttpResponseNotAllowed(['GET'])
 
