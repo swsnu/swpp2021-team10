@@ -53,10 +53,10 @@ export const getMockStore = (initialReviewState, initialTagState, initialUserSta
   const mockUserReducer = getMockUserReducer(initialUserState);
   const mockWorkReducer = getMockWorkReducer(initialWorkState);
   const rootReducer = combineReducers({
-    re: mockReviewReducer,
-    ta: mockTagReducer,
-    us: mockUserReducer,
-    wo: mockWorkReducer,
+    review: mockReviewReducer,
+    tag: mockTagReducer,
+    user: mockUserReducer,
+    work: mockWorkReducer,
     router: connectRouter(history),
   });
   const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;

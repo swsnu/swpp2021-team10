@@ -30,5 +30,12 @@ module.exports = {
     'prefer-template': 0,
     'no-case-declarations': 0,
     'no-console': 0,
+    'arrow-body-style': 0,
+    'jsx-a11y/label-has-associated-control': 0,
+    'react/jsx-wrap-multilines': 0,
+    'react/jsx-closing-tag-location': 0,
+    'jsx-a11y/control-has-associated-label': 0,
+    'react/jsx-boolean-value': 0,
+    'jsx-a11y/alt-text': 0,
   },
 };
