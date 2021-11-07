@@ -41,7 +41,6 @@ def work_id_review(request, id):
             return HttpResponse(status = 401)
 
         try:
-            print(request.body.decode())
             body = json.loads(request.body.decode())
             title = body['title']
             content = body['content']
