@@ -2,6 +2,7 @@ from django.http import HttpResponse, HttpResponseNotAllowed
 import json
 from django.http.response import HttpResponseBadRequest, JsonResponse
 from json.decoder import JSONDecodeError
+from django.forms.models import model_to_dict
 
 from work.models import Work
 from review.models import Review
@@ -20,8 +21,10 @@ def work_id(request, id):  # TODO
 
 
 def work_id_review(request, id):
-    work = Work.objects.filter(id=id).values().first()
-    if not work:
+
+    try:
+        work = Work.objects.get(id = id)
+    except Work.DoesNotExist:
         return HttpResponse(status=404)
 
     if request.method == 'GET':
@@ -36,9 +39,14 @@ def work_id_review(request, id):
 
     elif request.method == 'POST':
         User = get_user_model()
-        user = User.objects.filter(id = request.user.id)
-        if not user:
+        
+        request_user = request.user
+        if not request_user.is_authenticated:
             return HttpResponse(status = 401)
+
+        user = User.objects.filter(id = request_user.id)
+        if not user:
+            return HttpResponse(status = 403)
 
         try:
             body = json.loads(request.body.decode())
@@ -48,9 +56,10 @@ def work_id_review(request, id):
         except (KeyError, JSONDecodeError) as e:
             return HttpResponseBadRequest()
         
-        review = Review(user = user, work = work, title = title, content = content, score = score)
+        review = Review(author = request_user, work = work, title = title, content = content, score = score)
         review.save()
-        return JsonResponse(review.value(), status = 201)
+        review_json = model_to_dict(review)
+        return JsonResponse(review_json, status=201) 
     
     else:
         return HttpResponseNotAllowed(['GET', 'POST'])

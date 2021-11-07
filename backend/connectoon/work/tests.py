@@ -82,29 +82,30 @@ class WorkTestCase(TestCase):
 
         self.assertEqual(response.status_code, 200)
 
-    def test_post_work_id_review(self):     #TODO: change to login
+    def test_post_work_id_review(self):
         client = Client()
-        #client.login(username = 'swpp', password = 'iluvswpp')
-        User = get_user_model()
+        #client.login(email='dummy@user.com', password='1234', username='dummy')
 
-        """
-        author = User.objects.create_user(
-            email='dummy3@user.com', password='1234', username='dummy3'
-        )
-        """
+        csrftoken = client.get('/token/').cookies['csrftoken'].value  # Get csrf token from cookie
+        response = client.post('/users/login/',
+                               json.dumps({'email': 'dummy@user.com', 'password': '1234'}),
+                               content_type='application/json', HTTP_X_CSRFTOKEN=csrftoken)
+
 
         review = Review(score=3.0, title="DUM", content="DUM_CONTENT")
         review_json = model_to_dict(review)
         response = client.post('/works/1/reviews/', review_json, content_type='application/json')
 
         self.assertEqual(response.status_code, 201)
+        self.assertIn("DUM", response.content.decode())
+        self.assertIn("DUM_CONTENT", response.content.decode())
     
     def test_post_work_id_review_not_logged_in(self):
         client = Client()
         
         review = Review(score=3.0, title="DUM", content="DUM_CONTENT")
-        review_json = serializers.serialize('json', [review, ])
-        response = client.post('/works/1/reviews/', review_json[0], content_type='application/json')
+        review_json = model_to_dict(review)
+        response = client.post('/works/1/reviews/', review_json, content_type='application/json')
 
         self.assertEqual(response.status_code, 401)
     
