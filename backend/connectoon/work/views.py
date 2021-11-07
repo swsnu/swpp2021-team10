@@ -38,15 +38,9 @@ def work_id_review(request, id):
 
 
     elif request.method == 'POST':
-        User = get_user_model()
-        
         request_user = request.user
         if not request_user.is_authenticated:
             return HttpResponse(status = 401)
-
-        user = User.objects.filter(id = request_user.id)
-        if not user:
-            return HttpResponse(status = 403)
 
         try:
             body = json.loads(request.body.decode())
