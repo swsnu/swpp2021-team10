@@ -3,6 +3,8 @@ import PropTypes from 'prop-types';
 
 import WorkInfo from '../../Components/WorkInfo/WorkInfo';
 import './WorkDetail.css';
+import WriteReview from '../../Components/WriteReview/WriteReview';
+import DetailReview from '../../Components/DetailReview/DetailReview';
 
 const dummyWork = {
   id: 1,
@@ -17,16 +19,17 @@ const dummyWork = {
   tagNames: [
     'Story', 'Action',
   ],
+  score: 4.7,
 };
 
 class WorkDetail extends Component {
   constructor(props) {
     super(props);
-    this.state = { dummyState: true };
+    this.state = { reviewNum: 10 };
   }
 
   render() {
-    const { dummyState } = this.state;
+    const { reviewNum } = this.state;
     const { title } = this.props;
     return (
       <div className="work-detail">
@@ -42,6 +45,17 @@ class WorkDetail extends Component {
           link={dummyWork.link}
           tagNames={dummyWork.tagNames}
         />
+        <WriteReview className="work-write-review" />
+        <div className="work-review-region">
+          <h3 id="work-reviews-header">
+            Reviews(
+            {reviewNum}
+            )
+          </h3>
+          <img className="work-score-star-icon" src="/images/ratingStar.png" alt="rating" />
+          <h4 id="work-average-score">{dummyWork.score}</h4>
+          <DetailReview className="detail-review" />
+        </div>
       </div>
     );
   }
