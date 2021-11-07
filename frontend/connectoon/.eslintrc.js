@@ -30,5 +30,6 @@ module.exports = {
     'prefer-template': 0,
     'no-case-declarations': 0,
     'no-console': 0,
+    'jsx-a11y/label-has-associated-control': 0,
   },
 };

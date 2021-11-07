@@ -23,8 +23,10 @@ const WorkInfo = (props) => {
         <h4 className="work-artist">{artist}</h4>
         <h4 className="work-created-year">{createdYear}</h4>
         <p className="work-description">{description}</p>
-        <Link className="work-link" to={link} />
-        {tags}
+        <a className="work-link" href={link} target="_blank" rel="noopener noreferrer">{link}</a>
+        <div className="work-info-tags">
+          {tags}
+        </div>
       </div>
     </div>
   );
