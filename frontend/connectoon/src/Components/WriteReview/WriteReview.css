@@ -1,0 +1,44 @@
+.work-write-review {
+  border: 1px solid black;
+}
+
+.work-write-review-header {
+  text-align: left;
+  margin: 10px 10px 10px 20px;
+}
+
+.title-and-score-region {
+  margin: 10px 20px 10px 20px;
+}
+
+.review-title-label {
+  margin: 0 0 0 27px;
+}
+
+.review-title-input {
+  width: 500px;
+}
+
+.review-score-label {
+  margin: 0 0 0 173px;
+}
+
+.content-and-button-region {
+  margin: 10px 20px 10px 20px;
+}
+
+.review-content-label {
+  vertical-align: top;
+}
+
+.review-content-input {
+  width: 700px;
+  resize: none;
+}
+
+.confirm-button {
+  width: 100px;
+  height: 70px;
+  vertical-align: top;
+  margin: 2px 0 4px 70px;
+}
