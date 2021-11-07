@@ -4,7 +4,6 @@ from django.views.decorators.csrf import csrf_exempt
 
 import json
 
-@csrf_exempt
 def add_artist(request):  # TODO
     if request.method == 'POST':
         req_data = json.loads(request.body.decode())
