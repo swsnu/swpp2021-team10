@@ -1,0 +1,11 @@
+.work-info {
+  width: 1000px;
+  margin: 10px max(calc(50% - 500px), 0px) 40px max(calc(50% - 500px), 0px);
+  border: 1px solid black;
+}
+
+.work-information-region {
+  display: inline-block;
+  width: 770px;
+  margin: 10px;
+}

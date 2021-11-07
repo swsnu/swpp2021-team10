@@ -15,6 +15,7 @@ import Board from './Containers/Board/Board';
 import Search from './Containers/Search/Search';
 import MyPage from './Containers/MyPage/MyPage';
 import MyReviews from './Containers/MyReviews/MyReviews';
+import WorkDetail from './Containers/WorkDetail/WorkDetail';
 
 function App() {
   return (
@@ -30,6 +31,7 @@ function App() {
             <Route path="/search" exact component={Search} />
             <Route path="/mypage" exact component={MyPage} />
             <Route path="/myreviews" exact component={MyReviews} />
+            <Route path="/works/:id" exact component={WorkDetail} />
             <Redirect from="/" to="/main" />
           </Switch>
         </div>

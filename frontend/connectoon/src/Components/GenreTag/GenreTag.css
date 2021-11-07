@@ -1,0 +1,33 @@
+.genre-tag {
+  display: inline-block;
+  border: 2px solid #96baff;
+  border-radius: 2cm;
+  background-color: #96baff;
+  color: white;
+  margin: 5px;
+}
+
+.tag-name {
+  display: inline-block;
+  margin: 2px 2px 2px 10px;
+}
+
+.tag-delete-button {
+  display: inline-block;
+  font-size: 15px;
+  background-color: #96baff;
+  border: none;
+  color: white;
+  padding: 0;
+  margin: 2px 10px 2px 2px;
+}
+
+.tag-delete-button:hover {
+  cursor: grab;
+}
+
+.button-empty-space {
+  display: inline-block;
+  width: 2px;
+  margin: 2px 6px 2px 0;
+}
