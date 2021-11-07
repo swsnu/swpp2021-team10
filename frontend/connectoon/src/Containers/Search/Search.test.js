@@ -26,7 +26,7 @@ const stubInitialWorkState = {
       {
         title: 'test',
       },
-    ]
+    ],
   ],
   selectedReviews: [
   ],
@@ -35,7 +35,8 @@ const stubInitialWorkState = {
 const mockStore = getMockStore(stubInitialReviewState, stubInitialTagState, stubInitialUserState, stubInitialWorkState);
 
 describe('<Search />', () => {
-  let search, spyGetSearchWorks;
+  let search;
+  let spyGetSearchWorks;
   beforeEach(() => {
     search = (
       <Provider store={mockStore}>
@@ -47,7 +48,7 @@ describe('<Search />', () => {
       </Provider>
     );
     spyGetSearchWorks = jest.spyOn(actionCreators, 'getSearchWorks')
-      .mockImplementation(() => { return dispatch => {}; });
+      .mockImplementation(() => { return (dispatch) => {}; });
   });
 
   afterEach(() => {
@@ -60,8 +61,8 @@ describe('<Search />', () => {
     expect(wrapper.length).toBe(4);
     const mockedEvent = {
       target: {
-        value: 'hello'
-      }
+        value: 'hello',
+      },
     };
     component.find('input').at(0).simulate('change', mockedEvent);
   });

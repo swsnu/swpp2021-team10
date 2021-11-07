@@ -36,6 +36,6 @@ class WorkTestCase(TestCase):
 
     def test_work_search(self):
         client = Client()
-        response = client.get('/works/search/')
+        response = client.get('/works/search?q="Du')
 
-        self.assertEqual(response.status_code, 501)
+        self.assertEqual(response.status_code, 301)
