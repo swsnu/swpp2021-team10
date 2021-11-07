@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
-class DetailReview extends Component {
+class BoardReview extends Component {
   constructor(props) {
     super(props);
     this.state = { dummyState: true };
@@ -37,8 +37,8 @@ class DetailReview extends Component {
   }
 }
 
-DetailReview.propTypes = {
+BoardReview.propTypes = {
   className: PropTypes.string.isRequired,
 };
 
-export default DetailReview;
+export default BoardReview;
