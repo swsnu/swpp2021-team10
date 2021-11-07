@@ -25,11 +25,11 @@ const dummyWork = {
 class WorkDetail extends Component {
   constructor(props) {
     super(props);
-    this.state = { dummyState: true };
+    this.state = { reviewNum: 10 };
   }
 
   render() {
-    const { dummyState } = this.state;
+    const { reviewNum } = this.state;
     const { title } = this.props;
     return (
       <div className="work-detail">
@@ -46,9 +46,16 @@ class WorkDetail extends Component {
           tagNames={dummyWork.tagNames}
         />
         <WriteReview className="work-write-review" />
-        <h3 id="work-reviews-header">Reviews</h3>
-        <h4 id="work-average-score">{dummyWork.score}</h4>
-        <DetailReview className="detail-review" />
+        <div className="work-review-region">
+          <h3 id="work-reviews-header">
+            Reviews(
+            {reviewNum}
+            )
+          </h3>
+          <img className="work-score-star-icon" src="/images/ratingStar.png" alt="rating" />
+          <h4 id="work-average-score">{dummyWork.score}</h4>
+          <DetailReview className="detail-review" />
+        </div>
       </div>
     );
   }

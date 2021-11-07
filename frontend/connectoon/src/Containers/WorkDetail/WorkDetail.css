@@ -1,4 +1,26 @@
 .work-detail {
   width: 1000px;
-  margin: 0 max(calc(50% - 500px), 0px) 40px max(calc(50% - 500px), 0px);
+  margin: 10px max(calc(50% - 500px), 0px) 10px max(calc(50% - 500px), 0px);
+}
+
+.work-review-region {
+  border: 1px solid black;
+}
+
+#work-reviews-header {
+  margin: 10px 10px 10px 20px;
+  text-align: left;
+  display: inline-block;
+}
+
+.work-score-star-icon {
+  display: inline-block;
+  margin: 0 5px 0 0;
+  width: 15px;
+  height: 15px;
+}
+
+#work-average-score {
+  display: inline-block;
+  margin: 10px 813px 10px 0px;
 }
