@@ -1,5 +1,10 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
+import PropTypes, { func } from 'prop-types';
+
+import { connect } from 'react-redux';
+import { withRouter } from 'react-router';
+
+import * as actionCreators from '../../store/actions/index';
 import GenreTag from '../../Components/GenreTag/GenreTag';
 import './TagSearchWindow.css';
 
@@ -8,37 +13,42 @@ class TagSearchWindow extends Component {
     super(props);
     this.state = {
       genre: '',
+      selectedTags: [],
     };
+    const { onGetTags } = this.props;
+    onGetTags('');
   }
 
   onClickAddTag = (name) => {
-    const { onAddTag } = this.props;
-    onAddTag(name);
+    const { selectedTags } = this.state;
+    const { storedTags, onGetTags } = this.props;
+    const selectedTag = storedTags.filter((x) => x.name === name)[0];
+    this.setState({ genre: '', selectedTags: [...selectedTags, selectedTag] });
+    onGetTags('');
   }
 
   onClickDeleteTag = (name) => {
-    const { onDeleteTag } = this.props;
-    onDeleteTag(name);
+    const { selectedTags } = this.state;
+    const updatedSelectedList = selectedTags.filter((x) => x.name !== name);
+    this.setState({ selectedTags: updatedSelectedList });
   }
 
   render() {
-    const {
-      className,
-      tags,
-      selectedTags,
-    } = this.props;
-    const { genre } = this.state;
+    const { className, storedTags, onGetTags } = this.props;
+    const { genre, selectedTags } = this.state;
 
-    const foundList = tags.filter((x) => {
+    const selectedTagNames = selectedTags.map((x) => x.name);
+
+    const foundList = storedTags.filter((x) => {
       let boolVal = false;
       if (genre.length === 0) {
         if (selectedTags.length === 0) {
-          boolVal = true;
+          boolVal = x.prior;
         } else {
-          boolVal = selectedTags[selectedTags.length - 1].related.includes(x.key);
+          boolVal = selectedTagNames.indexOf(x.name) === -1 && selectedTags[selectedTags.length - 1].related.indexOf(x.key) !== -1;
         }
       } else {
-        boolVal = x.name.indexOf(genre) !== -1;
+        boolVal = selectedTagNames.indexOf(x.name) === -1 && x.name.indexOf(genre) !== -1;
       }
       return boolVal;
     }).map((x) => (
@@ -65,7 +75,7 @@ class TagSearchWindow extends Component {
       <div className={className}>
         <div className="search-genre-tag" align="left">
           <label id="search-genre-tag">Genre</label>
-          <input type="text" id="tag-search-input" value={genre} onChange={(e) => { this.setState({ genre: e.target.value }); }} />
+          <input type="text" id="tag-search-input" value={genre} onChange={(e) => { this.setState({ genre: e.target.value }); onGetTags(e.target.value); }} />
         </div>
         {selectedTags.length !== 0 && <div className="selected-tag">
           {clickedList}
@@ -78,12 +88,27 @@ class TagSearchWindow extends Component {
   }
 }
 
-TagSearchWindow.propTypes = {
-  className: PropTypes.string.isRequired,
-  tags: PropTypes.arrayOf(PropTypes.any).isRequired,
-  selectedTags: PropTypes.arrayOf(PropTypes.any).isRequired,
-  onAddTag: PropTypes.func.isRequired,
-  onDeleteTag: PropTypes.func.isRequired,
+TagSearchWindow.defaultProps = {
+  storedTags: [],
+  onGetTags: func,
 };
 
-export default TagSearchWindow;
+TagSearchWindow.propTypes = {
+  className: PropTypes.string.isRequired,
+  storedTags: PropTypes.arrayOf(PropTypes.any),
+  onGetTags: PropTypes.func,
+};
+
+const mapStateToProps = (state) => {
+  return {
+    storedTags: state.tag.tags,
+  };
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    onGetTags: (keyword) => dispatch(actionCreators.getSearchTags(keyword)),
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(TagSearchWindow));

@@ -1,7 +1,8 @@
+from django.core import validators
 from django.db import models
-from django.db.models.base import Model
+from django.core.validators import MinValueValidator, MaxValueValidator
 
 class Tag(models.Model):
     name = models.CharField(max_length=30)
-
-# Create your models here.
+    related = models.ManyToManyField('self', related_name="tags")
+    prior = models.BooleanField(default=False)

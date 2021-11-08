@@ -4,6 +4,7 @@ export {
   deleteReview,
 } from './review';
 export {
+  getSearchTags,
 } from './tag';
 export {
   logIn,

@@ -12,3 +12,4 @@ export const GET_WORK_REVIEWS = 'GET_WORK_REVIEWS';
 export const GET_MAIN_WORKS = 'GET_MAIN_WORKS';
 export const GET_REC_WORKS = 'GET_REC_WORKS';
 export const GET_SEARCH_WORKS = 'GET_SEARCH_WORKS';
+export const GET_SEARCH_TAGS = 'GET_SEARCH_TAGS';

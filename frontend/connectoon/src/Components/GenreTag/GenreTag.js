@@ -1,5 +1,5 @@
 import React from 'react';
-import PropTypes from 'prop-types';
+import PropTypes, { func } from 'prop-types';
 
 import './GenreTag.css';
 
@@ -35,12 +35,17 @@ const GenreTag = (props) => {
   );
 };
 
+GenreTag.defaultProps = {
+  onAddTag: func,
+  onDeleteTag: func,
+};
+
 GenreTag.propTypes = {
   tagName: PropTypes.string.isRequired,
   deletable: PropTypes.bool.isRequired,
   selected: PropTypes.bool.isRequired,
-  onAddTag: PropTypes.func.isRequired,
-  onDeleteTag: PropTypes.func.isRequired,
+  onAddTag: PropTypes.func,
+  onDeleteTag: PropTypes.func,
 };
 
 export default GenreTag;

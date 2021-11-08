@@ -1,12 +1,11 @@
 from django.http import HttpResponse, HttpResponseNotAllowed, JsonResponse
 from .models import Work
 from artist.models import Artist
-from django.views.decorators.csrf import csrf_exempt
+from tag.models import Tag
 
 import json
 import re
 
-@csrf_exempt
 def work_id(request, id):  # TODO
     if request.method == 'POST':
         req_data = json.loads(request.body.decode())
