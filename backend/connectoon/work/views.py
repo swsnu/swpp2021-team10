@@ -52,6 +52,11 @@ def work_id_review(request, id):
         
         review = Review(author = request_user, work = work, title = title, content = content, score = score)
         review.save()
+        
+        work.review_num = work.review_num + 1
+        work.score_sum = work.score_sum + float(score)
+        work.score_avg = work.score_sum / work.review_num
+        work.save()
         review_json = model_to_dict(review)
         return JsonResponse(review_json, status=201) 
     
@@ -59,8 +64,16 @@ def work_id_review(request, id):
         return HttpResponseNotAllowed(['GET', 'POST'])
 
 
-def work_main(request):  # TODO
-    return HttpResponse(status=501)
+def work_main(request):
+    if request.method == 'GET':
+        most_reviewed_works = Work.objects.all().order_by('-review_num').values()
+        most_reviewed_works_json = json.dumps(list(most_reviewed_works))
+
+        highest_rated_works = Work.objects.all().order_by('-score_avg').values()
+        highest_rated_works_json = json.dumps(list(highest_rated_works))
+        return JsonResponse({"worklists": [{"title" : "Most reviewed works", "works": most_reviewed_works_json}, {"title" : "Highest rated works", "works": highest_rated_works_json}]}, status = 200)
+    else:
+        return HttpResponseNotAllowed(['GET'])
 
 
 def work_recommend(request):  # TODO
