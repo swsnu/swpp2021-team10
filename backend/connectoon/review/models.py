@@ -1,6 +1,8 @@
 from django.db import models
 from django.db.models.deletion import CASCADE
 from django.db.models.fields import DateTimeField
+import datetime
+from django.utils import timezone
 
 from work.models import Work
 from django.contrib.auth import get_user_model
@@ -14,5 +16,5 @@ class Review(models.Model):
     likes = models.IntegerField(default=0)
     title = models.CharField(max_length=200)
     content = models.TextField()
-    updated_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(default=timezone.now)
 # Create your models here.
