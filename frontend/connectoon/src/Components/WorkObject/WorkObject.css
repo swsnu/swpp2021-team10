@@ -30,7 +30,9 @@
 .work-score-star-icon {
   width: 15px;
   height: 15px;
-  display: inline-block;
+  display: inline;
+  padding: 0;
+  vertical-align: bottom;
   margin: 5px 5px 0 0;
 }
 
