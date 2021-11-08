@@ -6,8 +6,9 @@ import { withRouter } from 'react-router';
 
 import * as actionCreators from '../../store/actions/index';
 import WorkList from '../../Components/WorkList/WorkList';
+import TagSearchWindow from '../TagSearchWindow/TagSearchWindow';
+
 import './Search.css';
-import GenreTag from '../../Components/GenreTag/GenreTag';
 
 class Search extends Component {
   constructor(props) {
@@ -28,8 +29,7 @@ class Search extends Component {
           <label id="search-title-artist">Title/Artist</label>
           <input type="text" id="search-title-artist-input" value={title} onChange={(e) => { this.setState({ title: e.target.value }); onGetWorks(e.target.value); }} />
         </div>
-        <GenreTag tagName="러브코미디" deletable={true} />
-        <GenreTag tagName="로맨스" deletable={false} />
+        <TagSearchWindow className="search-genre-tag" />
         {storedWorks !== null && storedWorks.length !== 0 && storedWorks[0].length !== 0 && <WorkList className="ts-wl" class="title-search-work-list" subject="Title search result" workList={storedWorks[0]} workNumInRow={4} />}
         {storedWorks !== null && storedWorks.length !== 0 && storedWorks[1].length !== 0 && <WorkList className="as-wl" class="artist-search-work-list" subject="Artist search result" workList={storedWorks[1]} workNumInRow={4} />}
       </div>

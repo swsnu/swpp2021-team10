@@ -7,6 +7,8 @@
   outline: none;
   height: 30px;
 
+  width: 800px;
+
   font-size: 20px;
   border: none;
   padding-left: 6px;
@@ -17,7 +19,7 @@
 
 .search-title-artist {
 
-  margin: 30px 20px 30px 30px;
+  margin: 30px 20px 12px 30px;
 
   font-style: normal;
   font-weight: bold;
