@@ -9,21 +9,21 @@ const WriteReview = (props) => {
     <div className={className}>
       <h3 className="work-write-review-header">Write Review</h3>
       <div className="title-and-score-region">
-        <label className="review-title-label">
+        <label className="write-review-title-label">
           Title&nbsp;
-          <input type="text" className="review-title-input" name="review-title" />
+          <input type="text" className="write-review-title-input" name="review-title" />
         </label>
-        <label className="review-score-label">
+        <label className="write-review-score-label">
           Score&nbsp;
-          <input type="number" className="review-score-input" name="review-score" />
+          <input type="number" className="write-review-score-input" name="review-score" />
         </label>
       </div>
       <div className="content-and-button-region">
-        <label className="review-content-label">
+        <label className="write-review-content-label">
           Content&nbsp;
-          <textarea className="review-content-input" name="review-content" rows="5" />
+          <textarea className="write-review-content-input" name="review-content" />
         </label>
-        <button type="button" className="confirm-button">Confirm</button>
+        <button type="button" className="write-review-confirm-button">Confirm</button>
       </div>
     </div>
   );
