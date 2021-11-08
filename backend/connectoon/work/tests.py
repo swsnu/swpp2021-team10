@@ -25,15 +25,6 @@ class WorkTestCase(TestCase):
         response = client.get('/works/1/')
         self.assertEqual(response.status_code, 501)
 
-        response = client.get('/token/')
-        csrftoken = response.cookies['csrftoken'].value
-
-        response = client.post('/works/1/', json.dumps({"title": "커튼콜 아래그랑", "artist": "Dummy", "thumb": "dummy",
-                               "description": "dummy", "year": "2021", "link": "dummy", "completion": "False", "score": "0",
-                               "review": "0", "platform": "2"}),
-                               content_type='application/json', HTTP_X_CSRFTOKEN=csrftoken)
-        self.assertEqual(response.status_code, 201)
-
     def test_work_id_review(self):
         client = Client()
         response = client.get('/works/1/reviews/')

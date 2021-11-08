@@ -24,8 +24,4 @@ class ArtistTestCase(TestCase):
         response = client.get('/artists/')
         self.assertEqual(response.status_code, 501)  #fails(501)
 
-        response = client.post('/artists/', json.dumps({'name': 'test'}),
-                               content_type='application/json', HTTP_X_CSRFTOKEN=csrftoken)
-        self.assertEqual(response.status_code, 201)
-
 # Create your tests here.
