@@ -157,10 +157,9 @@ class WorkTestCase(TestCase):
 
         most_reviewed_works = json.loads(response_json['worklists'][0]['works'])
 
-        for i in range(len(most_reviewed_works)):
-            if i!=0:
-                self.assertGreaterEqual(most_reviewed_works[i-1]['review_num'], most_reviewed_works[i]['review_num'])
-
+        self.assertEquals(1, most_reviewed_works[0]['id'])
+        self.assertEquals(2, most_reviewed_works[1]['id'])
+        
     def test_get_work_main_highest_rated(self):
         client = Client()
         response = client.get('/works/main/')
