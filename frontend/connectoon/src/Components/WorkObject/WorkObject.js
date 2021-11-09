@@ -1,5 +1,4 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import WorkThumbnail from '../WorkThumbnail/WorkThumbnail';
 import './WorkObject.css';
 
@@ -19,17 +18,6 @@ const WorkObject = (props) => {
       </div>
     </div>
   );
-};
-
-WorkObject.propTypes = {
-  className: PropTypes.string.isRequired,
-  src: PropTypes.string.isRequired,
-  platform: PropTypes.string.isRequired,
-  completion: PropTypes.bool.isRequired,
-  title: PropTypes.string.isRequired,
-  artists: PropTypes.string.isRequired,
-  createdYear: PropTypes.string.isRequired,
-  score: PropTypes.string.isRequired,
 };
 
 export default WorkObject;
