@@ -1,5 +1,7 @@
+
 from django.http import HttpResponse, HttpResponseNotAllowed
 import json
+import re
 from django.http.response import HttpResponseBadRequest, JsonResponse
 from json.decoder import JSONDecodeError
 from django.forms.models import model_to_dict
@@ -73,10 +75,24 @@ def work_id_review(request, id):
 
 def work_main(request):
     if request.method == 'GET':
-        most_reviewed_works = Work.objects.all().order_by('-review_num').values("id", "title", "thumbnail_picture", "platform_id", "year", "artists", "score_avg", "completion")
+        most_reviewed_work_objects = Work.objects.all().order_by('-review_num')
+        most_reviewed_works = []
+        for work in most_reviewed_work_objects:
+            artist_name = [artist.name for artist in work.artists.all()]
+            most_reviewed_works.append({
+                "id": work.id, "title": work.title, "thumbnail_picture": work.thumbnail_picture, "platform_id": work.platform_id, 
+                "year": work.year, "artists": artist_name, "score_avg": work.score_avg, "completion": work.completion,
+            })
         most_reviewed_works_json = json.dumps(list(most_reviewed_works))
 
-        highest_rated_works = Work.objects.all().order_by('-score_avg').values("id", "title", "thumbnail_picture", "platform_id", "year", "artists", "score_avg", "completion")
+        highest_rated_work_objects = Work.objects.all().order_by('-score_avg')
+        highest_rated_works = []
+        for work in highest_rated_work_objects:
+            artist_name = [artist.name for artist in work.artists.all()]
+            highest_rated_works.append({
+                "id": work.id, "title": work.title, "thumbnail_picture": work.thumbnail_picture, "platform_id": work.platform_id, 
+                "year": work.year, "artists": artist_name, "score_avg": work.score_avg, "completion": work.completion,
+            })
         highest_rated_works_json = json.dumps(list(highest_rated_works))
 
         return JsonResponse({"worklists": [{"title" : "Most reviewed works", "works": most_reviewed_works_json}, {"title" : "Highest rated works", "works": highest_rated_works_json}]}, status = 200)

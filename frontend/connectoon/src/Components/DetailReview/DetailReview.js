@@ -34,7 +34,6 @@ class DetailReview extends Component {
       </label>
     ) : (
       <div className="review-score-region">
-        <h5 className="last-updated-time">lastupdatedtime</h5>
         <img className="review-score-star-icon" src="/images/ratingStar.png" alt="star" />
         <h5 className="review-score-value">4.9</h5>
         <button className="review-like-button" type="button" onClick={() => this.onClickLike()}>

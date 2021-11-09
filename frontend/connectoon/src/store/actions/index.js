@@ -5,4 +5,5 @@ export {
 export {
 } from './user';
 export {
+  getMainWorks,
 } from './work';

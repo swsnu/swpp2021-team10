@@ -27,9 +27,12 @@ module.exports = {
     'import/prefer-default-export': 0,
     'max-len': 0,
     'no-underscore-dangle': 0,
+    'arrow-body-style': 0,
     'prefer-template': 0,
     'no-case-declarations': 0,
     'no-console': 0,
     'jsx-a11y/label-has-associated-control': 0,
+    'react/prop-types': 0,
+    'react/destructuring-assignment': 0,
   },
 };

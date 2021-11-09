@@ -19,15 +19,15 @@
   text-overflow: ellipsis;
 }
 
-.work-title {
+.work-object-title {
   width: 200px;
 }
 
-.work-artist {
+.work-object-artist {
   width: 200px;
 }
 
-.work-score-star-icon {
+.work-object-score-star-icon {
   width: 15px;
   height: 15px;
   display: inline;
@@ -36,11 +36,11 @@
   margin: 5px 5px 0 0;
 }
 
-.work-score {
+.work-object-score {
   width: 140px;
   
 }
 
-.work-created-year {
+.work-object-created-year {
   width: 40px;
 }
