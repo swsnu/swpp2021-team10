@@ -121,15 +121,22 @@ class Main extends Component {
   render() {
     const { workNumInRow } = this.state;
     const { mainWorkLists } = this.props;
-    // const workLists = mainWorkLists.map((mainWorkList) => {
-    //   return <WorkList subject={mainWorkList.title} workList={mainWorkList.works} workNumInRow={workNumInRow} />;
-    // });
+    const workLists = mainWorkLists.map((mainWorkList) => {
+      return (
+        <WorkList
+          className={mainWorkList.title.toLowerCase().replace(' ', '-')[-1] + '-list'}
+          subject={mainWorkList.title}
+          workList={JSON.parse(mainWorkList.works)}
+          workNumInRow={workNumInRow}
+        />
+      );
+    });
 
     return (
       <div className="main-page">
-        {/* {workLists} */}
-        <WorkList className="most-reviewed-work-list" subject="Most revied works" workList={dummyWorks} workNumInRow={workNumInRow} />
-        <WorkList className="most-liked-work-list" subject="Most liked works" workList={[...dummyWorks].reverse()} workNumInRow={workNumInRow} />
+        {workLists}
+        {/* <WorkList className="most-reviewed-work-list" subject="Most revied works" workList={dummyWorks} workNumInRow={workNumInRow} />
+        <WorkList className="most-liked-work-list" subject="Most liked works" workList={[...dummyWorks].reverse()} workNumInRow={workNumInRow} /> */}
       </div>
     );
   }

@@ -8,7 +8,7 @@ export const getMainWorks_ = (mainWorkListDict) => {
 
 export const getMainWorks = () => {
   return (dispatch) => {
-    return axios.get('/api/works/main/')
+    return axios.get('/works/main/')
       .then((res) => {
         dispatch(getMainWorks_(res.data));
       });
