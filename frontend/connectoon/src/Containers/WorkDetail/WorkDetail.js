@@ -52,7 +52,7 @@ class WorkDetail extends Component {
             {reviewNum}
             )
           </h3>
-          <img className="work-score-star-icon" src="/images/ratingStar.png" alt="rating" />
+          <img id="work-score-star-icon" src="/images/ratingStar.png" alt="rating" />
           <h4 id="work-average-score">{dummyWork.score}</h4>
           <DetailReview className="detail-review" />
         </div>

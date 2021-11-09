@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import WorkObject from '../WorkObject/WorkObject';
 import './WorkList.css';
 
+const platformMapper = ['', '/images/naver_logo.png', '/images/kakao_logo.png', '/images/lezhine_logo.png'];
 class WorkList extends Component {
   constructor(props) {
     super(props);
@@ -11,13 +12,13 @@ class WorkList extends Component {
       <WorkObject
         key={work.id}
         className="work-object"
-        src={work.src}
-        platform={work.platform}
+        src={work.thumbnail_picture}
+        platform={platformMapper[work.platform_id]}
         completion={work.completion}
         title={work.title}
-        artist={work.artist}
-        createdYear={work.createdYear}
-        score={work.score}
+        artist={work.artists} // <------- ?
+        createdYear={work.year}
+        score={work.score_avg}
       />
     ));
     this.state = { totalDisplayRow: 1, workObjects };
