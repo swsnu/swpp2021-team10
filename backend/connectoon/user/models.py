@@ -14,7 +14,7 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
         verbose_name = _('user')
         verbose_name_plural = _('users')
 
-    username = models.TextField(max_length=30, blank=True)
+    username = models.TextField(max_length=30, blank=False, unique=True)
     email = models.EmailField(_('email address'), unique=True)
     profile_picture = models.ImageField(upload_to='', null=True)
     is_active = models.BooleanField(default=True)
