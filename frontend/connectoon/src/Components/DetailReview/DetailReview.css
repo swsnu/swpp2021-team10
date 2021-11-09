@@ -3,24 +3,24 @@
   margin: 10px 20px 10px 20px;
 }
 
-.review-upper-region {
+.detail-review > .review-upper-region {
   margin: 5px 0 0 0;
 }
 
-.user-profile-image {
+.detail-review > .user-profile-image {
   width: 30px;
   height: 30px;
   display: inline-block;
 }
 
-h5 {
+.detail-review > h5 {
   display: inline-block;
   margin: 7px 5px 7px 5px;
   vertical-align: top;
   color: gray;
 }
 
-.review-title {
+.detail-review > .review-title {
   display: inline-block;
   margin: 5px 120px 5px 10px;
   vertical-align: top;
@@ -29,7 +29,7 @@ h5 {
   height: 18px;
 }
 
-.review-title-input {
+.detail-review > .review-title-input {
   display: inline-block;
   margin: 5px 140px 5px 10px;
   vertical-align: top;
@@ -38,21 +38,21 @@ h5 {
   height: 18px;
 }
 
-.review-score-region {
+.detail-review > .review-score-region {
   display: inline-block;
 }
 
-.review-score-star-icon {
+.detail-review > .review-score-star-icon {
   width: 15px;
   height: 15px;
   margin: 7px 5px 7px 5px;
 }
 
-.review-score-value {
+.detail-review > .review-score-value {
   color: black;
 }
 
-.review-like-button {
+.detail-review > .review-like-button {
   vertical-align: top;
   border: none;
   width: 15px;
@@ -61,30 +61,30 @@ h5 {
   margin: 7px 5px 7px 5px;
 }
 
-.review-like-button:hover {
+.detail-review > .review-like-button:hover {
   cursor: grab;
 }
 
-.review-like-heart-icon {
+.detail-review > .review-like-heart-icon {
   width: 15px;
   height: 15px;
 }
 
-.review-score-label {
+.detail-review > .review-score-label {
   vertical-align: top;
 }
 
-.review-score-input {
+.detail-review > .review-score-input {
   margin: 5px 5px 5px 5px;
   width: 100px;
   height: 18px;
 }
 
-.review-content-region {
+.detail-review > .review-content-region {
   display: inline-block;
 }
 
-.review-content {
+.detail-review > .review-content {
   border: 1px solid gray;
   padding: 2px 2px 2px 2px;
   width: 700px;
@@ -101,7 +101,7 @@ h5 {
   height: 90px;
 }
 
-.review-content-input {
+.detail-review > .review-content-input {
   padding: 2px 2px 2px 2px;
   width: 700px;
   font-size: 16px;
@@ -110,59 +110,59 @@ h5 {
   height: 90px;
 }
 
-.review-button-region {
+.detail-review > .review-button-region {
   display: inline-block;
   vertical-align: top;
 }
 
-.review-edit-delete-region {
+.detail-review > .review-edit-delete-region {
   width: 120px;
   height: 46px;
   margin: 10px 0 0 0;
 }
 
-.review-save-back-region {
+.detail-review > .review-save-back-region {
   width: 120px;
   height: 102px;
   margin: 10px 0 0 0;
 }
 
-.edit-button {
+.detail-review > .edit-button {
   padding: 0;
   width: 52px;
   margin: 2px 2px 2px 2px;
 }
 
-.delete-button {
+.detail-review > .delete-button {
   padding: 0;
   width: 52px;
   margin: 2px 2px 2px 2px;
 }
 
-.review-more-region {
+.detail-review > .review-more-region {
   width: 42px;
   height: 21px;
   margin: 25px 0 10px 0;
 }
 
-.review-more-button {
+.detail-review > .review-more-button {
   border: none;
   background-color: white;
   text-decoration: none;
   padding: 0;
 }
 
-.review-more-button:hover {
+.detail-review > .review-more-button:hover {
   cursor: grab;
 }
 
-.save-button {
+.detail-review > .save-button {
   padding: 0;
   width: 52px;
   margin: 2px 2px 2px 2px;
 }
 
-.back-button {
+.detail-review > .back-button {
   padding: 0;
   width: 52px;
   margin: 2px 2px 2px 2px;

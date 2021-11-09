@@ -9,9 +9,9 @@ const WorkThumbnail = (props) => {
 
   return (
     <div className={className}>
-      <img className="original-work-object-thumbnail" src={src} alt="work_thumbnail" />
-      <img className="work-object-platform" src={platform} alt="work_platform" />
-      {completion && <img className="work-object-completion" src="/images/work_completion.png" alt="work_completion" />}
+      <img className="original-work-thumbnail" src={src} alt="work_thumbnail" />
+      <img className="work-platform" src={platform} alt="work_platform" />
+      {completion && <img className="work-completion" src="/images/work_completion.png" alt="work_completion" />}
     </div>
   );
 };

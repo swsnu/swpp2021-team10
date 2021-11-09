@@ -4,12 +4,12 @@
   height: 170px;
 }
 
-.original-work-object-thumbnail {
+.original-work-thumbnail {
   width: 200px;
   height: 160px;
 }
 
-.work-object-platform {
+.work-platform {
   display: block;
   margin: 0 auto;
   width: 40px;
@@ -20,7 +20,7 @@
   z-index: 5;
 }
 
-.work-object-completion {
+.work-completion {
   display: block;
   margin: 0 auto;
   width: 40px;
