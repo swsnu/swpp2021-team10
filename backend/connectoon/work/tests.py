@@ -47,7 +47,7 @@ class WorkTestCase(TestCase):
         client = Client()
         response = client.get('/works/10/')
         self.assertEqual(response.status_code, 404)
-
+        
     def test_article_wrong_api(self):
         client = Client()
         response = client.delete('/works/1/')
@@ -89,7 +89,7 @@ class WorkTestCase(TestCase):
     def test_post_work_id_review(self):
         client = Client()
         #client.login(email='dummy@user.com', password='1234', username='dummy')
-
+        
         csrftoken = client.get('/token/').cookies['csrftoken'].value  # Get csrf token from cookie
         response = client.post('/users/login/',
                                json.dumps({'email': 'dummy@user.com', 'password': '1234'}),

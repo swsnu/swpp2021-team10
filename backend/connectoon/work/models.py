@@ -24,6 +24,5 @@ class Work(models.Model):
         (3, 'Lezhin')
     ]
     platform_id = models.IntegerField(choices=PLATFORM_CHOICES)
-    # 중간 table이 따로 필요없을 것 같은데 맞나요?
     tags = models.ManyToManyField(Tag, related_name="works")
     artists = models.ManyToManyField(Artist, related_name="works")
