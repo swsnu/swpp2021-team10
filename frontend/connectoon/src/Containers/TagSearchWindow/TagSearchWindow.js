@@ -21,8 +21,8 @@ class TagSearchWindow extends Component {
 
   onClickAddTag = (name) => {
     const { selectedTags } = this.state;
-    const { storedTags, onAddTag } = this.props;
-    const selectedTag = storedTags.filter((x) => x.name === name)[0];
+    const { storedTags, onGetTags } = this.props;
+    const selectedTag = storedTags.find((x) => x.name === name);
     this.setState({ genre: '', selectedTags: [...selectedTags, selectedTag] });
     onAddTag(name);
   }
