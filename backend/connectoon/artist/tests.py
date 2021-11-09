@@ -15,13 +15,4 @@ class ArtistTestCase(TestCase):
         response = client.get('/token/')
         csrftoken = response.cookies['csrftoken'].value  # Get csrf token from cookie
 
-    def test_post_artist(self):
-        client = Client(enforce_csrf_checks=True)
-
-        response = client.get('/token/')
-        csrftoken = response.cookies['csrftoken'].value
-
-        response = client.get('/artists/')
-        self.assertEqual(response.status_code, 501)  #fails(501)
-
 # Create your tests here.

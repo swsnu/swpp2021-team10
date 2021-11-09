@@ -3,24 +3,11 @@ import PropTypes from 'prop-types';
 import WorkObject from '../WorkObject/WorkObject';
 import './WorkList.css';
 
+const platformMapper = ['/images/naver_logo.png', '/images/kakao_logo.png', '/images/lezhine_logo.png'];
 class WorkList extends Component {
   constructor(props) {
     super(props);
-    const { workList } = props;
-    const workObjects = workList.map((work) => (
-      <WorkObject
-        key={work.id}
-        className="work-object"
-        src={work.src}
-        platform={work.platform}
-        completion={work.completion}
-        title={work.title}
-        artist={work.artist}
-        createdYear={work.createdYear}
-        score={work.score}
-      />
-    ));
-    this.state = { totalDisplayRow: 1, workObjects };
+    this.state = { totalDisplayRow: 1 };
   }
 
   onClickMore = () => {
@@ -30,9 +17,22 @@ class WorkList extends Component {
 
   render() {
     const {
-      workNumInRow, className, subject,
+      workList, workNumInRow, className, subject,
     } = this.props;
-    const { totalDisplayRow, workObjects } = this.state;
+    const { totalDisplayRow } = this.state;
+    const workObjects = workList.map((work) => (
+      <WorkObject
+        key={String(work.id) + work.title}
+        className="work-object"
+        src={work.thumbnail_picture}
+        platform={platformMapper[work.platform_id]}
+        completion={work.completion}
+        title={work.title}
+        artists={work.artists}
+        createdYear={work.year}
+        score={work.score_avg}
+      />
+    ));
     let i = 0;
     const displayingObjects = Array.from({ length: totalDisplayRow });
     for (i = 0; i < totalDisplayRow; i += 1) {

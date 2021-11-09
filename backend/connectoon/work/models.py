@@ -16,6 +16,7 @@ class Work(models.Model):
     completion = models.BooleanField()
     score_sum = models.FloatField(default=0)
     review_num = models.IntegerField(default=0)
+    score_avg = models.FloatField(default=0)
 
     PLATFORM_CHOICES = [
         (1, 'Naver'),

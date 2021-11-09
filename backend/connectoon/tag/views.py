@@ -4,8 +4,6 @@ from .models import Tag
 import json
 import re
 
-#from django.views.decorators.csrf import csrf_exempt
-#@csrf_exempt
 def tag_search(request):  # TODO
     if request.method == 'GET':
         tag_all_list = [tag for tag in Tag.objects.all().values()]

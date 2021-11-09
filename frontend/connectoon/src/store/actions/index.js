@@ -15,9 +15,9 @@ export {
   getMyReviews,
 } from './user';
 export {
+  getMainWorks,
   getWork,
   getWorkReviews,
-  getMainWorks,
   getRecWorks,
   getSearchWorks,
 } from './work';

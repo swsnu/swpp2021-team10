@@ -39,5 +39,12 @@ module.exports = {
     'jsx-a11y/alt-text': 0,
     'jsx-a11y/click-events-have-key-events': 0,
     'jsx-a11y/no-static-element-interactions': 0,
+    'operator-linebreak': 0,
+    'react/jsx-curly-newline': 0,
+    'react/state-in-constructor': 0,
+    'no-else-return': 0,
+    'no-restricted-syntax': 0,
+    'react/prop-types': 0,
+    'react/destructuring-assignment': 0,
   },
 };

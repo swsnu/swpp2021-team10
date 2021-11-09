@@ -2,6 +2,22 @@ import axios from 'axios';
 import { push } from 'connected-react-router';
 import * as actionTypes from './actionTypes';
 
+export const getMainWorks_ = (mainWorkListDict) => {
+  return {
+    type: actionTypes.GET_MAIN_WORKS,
+    mainWorkLists: mainWorkListDict.worklists,
+  };
+};
+
+export const getMainWorks = () => {
+  return (dispatch) => {
+    return axios.get('/works/main/')
+      .then((res) => {
+        dispatch(getMainWorks_(res.data));
+      });
+  };
+};
+
 export const getWork_ = (work) => {
   return {
     type: actionTypes.GET_WORK,
@@ -34,22 +50,6 @@ export const getWorkReviews = (id) => {
   };
 };
 
-export const getMainWorks_ = (works) => {
-  return {
-    type: actionTypes.GET_MAIN_WORKS,
-    selectedWorks: works,
-  };
-};
-
-export const getMainWorks = () => {
-  return (dispatch) => {
-    return axios.get('/works/main/')
-      .then((res) => {
-        dispatch(getMainWorks_(res.data));
-      });
-  };
-};
-
 export const getRecWorks_ = (works) => {
   return {
     type: actionTypes.GET_REC_WORKS,
@@ -73,9 +73,9 @@ export const getSearchWorks_ = (works) => {
   };
 };
 
-export const getSearchWorks = (keyword) => {
+export const getSearchWorks = (keyword, keytag) => {
   return (dispatch) => {
-    return axios.get('/works/search?q=' + keyword)
+    return axios.get('/works/search?q=' + keyword + '&tags=' + keytag)
       .then((res) => {
         dispatch(getSearchWorks_(res.data));
       });

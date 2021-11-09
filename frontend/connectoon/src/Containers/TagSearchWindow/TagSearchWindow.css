@@ -1,6 +1,6 @@
-.search-genre-tag {
+.search-genre-search-window {
   width: 1000px;
-  margin: 0px 20px 5px 36.6px;
+  margin: 0px 20px 5px 73.3px;
 
   font-style: normal;
   font-weight: bold;
@@ -30,11 +30,11 @@
   width: 800px;
   overflow: hidden;
   height: auto;
-  margin: 10px 5px 0 120px;
+  margin: 10px 5px 0 85px;
 }
 
 .found-list {
-  margin: 10px 5px 0 120px;
+  margin: 10px 5px 0 85px;
   width: 800px;
   overflow: hidden;
   height: auto;

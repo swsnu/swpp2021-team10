@@ -18,19 +18,27 @@ const GenreTag = (props) => {
 
   return (
     <div className="genre-tag">
-      {selected && <div className="tag-body">
-        <p className="tag-name">
-          {tagName}
-        </p>
-        {deletable && <button className="tag-delete-button" type="button" onClick={onClickDeleteTag}><img id="delete-img" src="/images/delete.png" /></button>}
-        {!deletable && <div className="button-empty-space" />}
-      </div>}
-      {!selected && <div className="selected-tag-body" onClick={onClickAddTag}>
-        <p className="selected-tag-name">
-          {tagName}
-        </p>
-        <div className="selected-button-empty-space" />
-      </div>}
+      {selected &&
+        <div className="tag-body">
+          <p className="tag-name">
+            {tagName}
+          </p>
+          {deletable &&
+            <button className="tag-delete-button" type="button" onClick={onClickDeleteTag}>
+              <img id="delete-img" src="/images/delete.png" />
+            </button>
+          }
+          {!deletable && <div className="button-empty-space" />}
+        </div>
+      }
+      {!selected &&
+        <div className="selected-tag-body" onClick={onClickAddTag}>
+          <p className="selected-tag-name">
+            {tagName}
+          </p>
+          <div className="selected-button-empty-space" />
+        </div>
+      }
     </div>
   );
 };

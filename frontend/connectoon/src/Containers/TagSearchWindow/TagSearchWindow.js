@@ -21,16 +21,18 @@ class TagSearchWindow extends Component {
 
   onClickAddTag = (name) => {
     const { selectedTags } = this.state;
-    const { storedTags, onGetTags } = this.props;
+    const { storedTags, onAddTag } = this.props;
     const selectedTag = storedTags.filter((x) => x.name === name)[0];
     this.setState({ genre: '', selectedTags: [...selectedTags, selectedTag] });
-    onGetTags('');
+    onAddTag(name);
   }
 
   onClickDeleteTag = (name) => {
     const { selectedTags } = this.state;
+    const { onDeleteTag } = this.props;
     const updatedSelectedList = selectedTags.filter((x) => x.name !== name);
     this.setState({ selectedTags: updatedSelectedList });
+    onDeleteTag(name);
   }
 
   render() {
@@ -53,6 +55,7 @@ class TagSearchWindow extends Component {
       return boolVal;
     }).map((x) => (
       <GenreTag
+        key={x.key}
         tagName={x.name}
         deletable={false}
         selected={false}
@@ -63,6 +66,7 @@ class TagSearchWindow extends Component {
 
     const clickedList = selectedTags.map((x) => (
       <GenreTag
+        key={x.key}
         tagName={x.name}
         deletable={true}
         selected={true}
@@ -75,7 +79,7 @@ class TagSearchWindow extends Component {
       <div className={className}>
         <div className="search-genre-tag" align="left">
           <label id="search-genre-tag">Genre</label>
-          <input type="text" id="tag-search-input" value={genre} onChange={(e) => { this.setState({ genre: e.target.value }); onGetTags(e.target.value); }} />
+          <input type="text" id="tag-search-input" value={genre} onChange={(e) => { this.setState({ genre: e.target.value }); }} />
         </div>
         {selectedTags.length !== 0 && <div className="selected-tag">
           {clickedList}
@@ -91,12 +95,16 @@ class TagSearchWindow extends Component {
 TagSearchWindow.defaultProps = {
   storedTags: [],
   onGetTags: func,
+  onAddTag: func,
+  onDeleteTag: func,
 };
 
 TagSearchWindow.propTypes = {
   className: PropTypes.string.isRequired,
   storedTags: PropTypes.arrayOf(PropTypes.any),
   onGetTags: PropTypes.func,
+  onAddTag: PropTypes.func,
+  onDeleteTag: PropTypes.func,
 };
 
 const mapStateToProps = (state) => {

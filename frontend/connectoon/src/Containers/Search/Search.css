@@ -33,17 +33,14 @@
   margin: 0px 30px 0 0;
 }
 
-.title-search-work-list {
+.title-search-work-list-div {
   width: 116px;
-  height: 28px;
   left: 146px;
   top: 280px;
 }
 
-.artist-search-work-list {
-  position: relative;
+.artist-search-work-list-div {
   width: 116px;
-  height: 28px;
   left: 146px;
   top: 630px;
 }

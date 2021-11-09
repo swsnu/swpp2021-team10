@@ -34,15 +34,21 @@ const stubInitialTagState = {
 const stubInitialUserState = null;
 const stubInitialWorkState = {
   selectedWork: null,
-  selectedWorks: [
+  searchedWorks: [
     [
       {
         title: 'test',
+        artists: [
+          'test',
+        ],
       },
     ],
     [
       {
         title: 'test',
+        artists: [
+          'test',
+        ],
       },
     ],
   ],

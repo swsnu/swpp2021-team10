@@ -11,26 +11,45 @@ import TagSearchWindow from '../TagSearchWindow/TagSearchWindow';
 import './Search.css';
 
 class Search extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      title: '',
-    };
+  state = {
+    title: '',
+    genre: '',
+  };
+
+  onAddTag = (name) => {
+    const { onGetWorks } = this.props;
+    const { title, genre } = this.state;
+    this.setState({ genre: genre + '$' + name });
+    onGetWorks(title, genre + '$' + name);
+  }
+
+  onDeleteTag = (name) => {
+    const { onGetWorks } = this.props;
+    const { title, genre } = this.state;
+    this.setState({ genre: genre.replace('$' + name, '') });
+    onGetWorks(title, genre.replace('$' + name, ''));
   }
 
   render() {
     const { storedWorks, onGetWorks } = this.props;
-    const { title } = this.state;
+    const { title, genre } = this.state;
+
+    console.log(storedWorks);
+
+    const titleList = <WorkList className="ts-wl" class="title-search-work-list" subject="Title search result" workList={storedWorks[0]} workNumInRow={4} />;
+    const artistList = <WorkList className="as-wl" class="artist-search-work-list" subject="Artist search result" workList={storedWorks[1]} workNumInRow={4} />;
+
+    console.log(titleList);
 
     return (
       <div className="search">
         <div className="search-title-artist" align="left">
           <label id="search-title-artist">Title/Artist</label>
-          <input type="text" id="search-title-artist-input" value={title} onChange={(e) => { this.setState({ title: e.target.value }); onGetWorks(e.target.value); }} />
+          <input type="text" id="search-title-artist-input" value={title} onChange={(e) => { this.setState({ title: e.target.value }); onGetWorks(e.target.value, genre); }} />
         </div>
-        <TagSearchWindow className="search-genre-tag" />
-        {storedWorks !== null && storedWorks.length !== 0 && storedWorks[0].length !== 0 && <WorkList className="ts-wl" class="title-search-work-list" subject="Title search result" workList={storedWorks[0]} workNumInRow={4} />}
-        {storedWorks !== null && storedWorks.length !== 0 && storedWorks[1].length !== 0 && <WorkList className="as-wl" class="artist-search-work-list" subject="Artist search result" workList={storedWorks[1]} workNumInRow={4} />}
+        <TagSearchWindow className="search-genre-search-window" onAddTag={this.onAddTag} onDeleteTag={this.onDeleteTag} />
+        {storedWorks[0].length !== 0 && titleList}
+        {storedWorks[1].length !== 0 && artistList}
       </div>
     );
   }
@@ -38,7 +57,7 @@ class Search extends Component {
 
 Search.defaultProps = {
   onGetWorks: func,
-  storedWorks: null,
+  storedWorks: PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.any)),
 };
 
 Search.propTypes = {
@@ -48,13 +67,13 @@ Search.propTypes = {
 
 const mapStateToProps = (state) => {
   return {
-    storedWorks: state.work.selectedWorks,
+    storedWorks: state.work.searchedWorks,
   };
 };
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    onGetWorks: (keyword) => dispatch(actionCreators.getSearchWorks(keyword)),
+    onGetWorks: (keyword, keytag) => dispatch(actionCreators.getSearchWorks(keyword, keytag)),
   };
 };
 
