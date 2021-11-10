@@ -1,4 +1,3 @@
-
 from django.http import HttpResponse, HttpResponseNotAllowed
 import json
 import re
@@ -103,6 +102,55 @@ def work_main(request):
 def work_recommend(request):  # TODO
     return HttpResponse(status=501)
 
-
 def work_search(request):  # TODO
-    return HttpResponse(status=501)
+    if request.method == 'GET':
+        work_all_list = [work for work in Work.objects.all().values()]
+        return_work_list = [[], []]
+        keyword = request.GET.get('q', None)
+        keytag = request.GET.get('tags', None)
+        if keyword == '' and keytag == '':
+            keyword = "Response of empty query must be an empty list!"
+            keytag = "$Responseofemptyquerymustbeanemptylist!"
+
+        keytaglist = keytag.split('$')
+        del keytaglist[0]   #delete empty string
+        
+        for work in work_all_list:
+            tempartist = [artist for artist in Work.objects.get(title=work['title']).artists.all().values()]
+            artistlist = []
+            for ta in tempartist:
+                artistlist.append(ta['name'])
+            artistStr = ""
+            if len(artistlist) > 0:
+                artistStr = artistlist[0]
+                del artistlist[0]
+            for ta in artistlist:
+                artistStr += ", " + ta
+
+            artist_name = [artist.name for artist in Work.objects.get(title=work['title']).artists.all()]
+
+            tagcheck = True
+            taglist = [tag for tag in Work.objects.get(title=work['title']).tags.all().values()]
+            for kta in keytaglist:
+                forcheck = False
+                for ta in taglist:
+                    if ta['name'] == kta:
+                        forcheck = True
+                        break
+                if not forcheck:
+                    tagcheck = False
+                    break
+            
+            if (keyword in work['title']) and tagcheck:
+                return_work_list[0].append({'title': work['title'], 'thumbnail_picture': work['thumbnail_picture'],
+                'description': work['description'], 'createdYear': work['year'], 'link': work['link'],
+                'completion': work['completion'], 'score_avg': work['score_avg'], 'review_num': work['review_num'],
+                'platform_id': work['platform_id'], 'artists': artist_name, 'key': work['id']})
+            elif (keyword in artistStr) and tagcheck:
+                return_work_list[1].append({'title': work['title'], 'thumbnail_picture': work['thumbnail_picture'],
+                'description': work['description'], 'createdYear': work['year'], 'link': work['link'],
+                'completion': work['completion'], 'score_avg': work['score_avg'], 'review_num': work['review_num'],
+                'platform_id': work['platform_id'], 'artists': artist_name, 'key': work['id']})
+        return JsonResponse(return_work_list, safe=False)
+    else:
+        return HttpResponse(status=501)

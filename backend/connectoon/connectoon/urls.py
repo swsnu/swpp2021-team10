@@ -24,5 +24,6 @@ urlpatterns = [
     path('reviews/', include('review.urls')),
     path('tags/', include('tag.urls')),
     path('users/', include('user.urls')),
+    path('artists/', include('artist.urls')),
     path('token/', views.token, name='token'),
 ]

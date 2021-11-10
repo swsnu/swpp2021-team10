@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import WorkObject from '../WorkObject/WorkObject';
 import './WorkList.css';
 
-const platformMapper = ['/images/naver_logo.png', '/images/kakao_logo.png', '/images/lezhine_logo.png'];
+const platformMapper = ['/images/naver_logo.png', '/images/kakao_logo.png', '/images/lezhin_logo.png'];
 class WorkList extends Component {
   constructor(props) {
     super(props);

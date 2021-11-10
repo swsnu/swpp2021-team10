@@ -1,33 +1,83 @@
-.genre-tag {
-  display: inline-block;
-  border: 2px solid #96baff;
-  border-radius: 2cm;
-  background-color: #96baff;
-  color: white;
-  margin: 5px;
+.tag-body {
+  height: 26px;
+  left: 293px;
+  top: 221px;
+
+  float: left;
+
+  background: #96BAFF;
+  border-radius: 44px;
+  margin: 3px;
 }
 
 .tag-name {
   display: inline-block;
-  margin: 2px 2px 2px 10px;
+  margin: 3.2px 3.54px 0px 15px;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 17px;
+
+  color: #FEFEFE;
+}
+
+#delete-img {
+  width: 12px;
+  height: 12px;
 }
 
 .tag-delete-button {
-  display: inline-block;
-  font-size: 15px;
-  background-color: #96baff;
+  margin: 6px 16px 7px 0px;
+
+  width: 12px;
+  height: 12px;
+
+  background-size: 12px;
+  background-color: transparent;
   border: none;
-  color: white;
-  padding: 0;
-  margin: 2px 10px 2px 2px;
 }
 
 .tag-delete-button:hover {
   cursor: grab;
 }
 
+.tag-body:hover {
+  cursor: grab;
+}
+
 .button-empty-space {
   display: inline-block;
-  width: 2px;
+  width: 5px;
   margin: 2px 6px 2px 0;
+}
+
+.selected-tag-body {
+  height: 24px;
+  left: 293px;
+  top: 221px;
+
+  float: left;
+
+  outline: solid 1px #96BAFF;
+  border-radius: 44px;
+  margin: 4px;
+}
+
+.selected-tag-name {
+  display: inline-block;
+  margin: 3.2px 3.54px 0px 15px;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 17px;
+
+  color: #96BAFF;
+}
+
+.selected-button-empty-space {
+  display: inline-block;
+  width: 5px;
+  margin: 2px 6px 2px 0;
+}
+
+.selected-tag-body:hover {
+  cursor: grab;
 }
