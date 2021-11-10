@@ -16,7 +16,7 @@ describe('ActionCreators', () => {
   afterEach(() => {
     jest.clearAllMocks();
   });
-  
+
   it('`getMainWorks` should fetch works correctly', (done) => {
     const stubMainWorksDict = {
       worklists: [
@@ -35,10 +35,10 @@ describe('ActionCreators', () => {
             status: 200,
             data: stubMainWorksDict,
           };
-        resolve(result);
+          resolve(result);
+        });
       });
-    });
-    store.dispatch(workActionCreators.getMainWorks()).then(() => {
+    store.dispatch(actionCreators.getMainWorks()).then(() => {
       const newState = store.getState();
       expect(newState.work.mainWorkLists).toEqual(stubMainWorksDict.worklists);
       expect(spy).toHaveBeenCalledTimes(1);
