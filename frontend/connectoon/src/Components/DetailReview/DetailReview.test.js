@@ -12,7 +12,7 @@ describe('<DetailReview />', () => {
 
   it('should handle click like', () => {
     const component = mount(<DetailReview className="detail-review" />);
-    const wrapper = component.find('.review-like-button');
+    const wrapper = component.find('.detail-review-like-button');
     wrapper.simulate('click');
     expect(component.state('clickLike')).toBeTruthy();
     wrapper.simulate('click');
@@ -21,21 +21,21 @@ describe('<DetailReview />', () => {
 
   it('should handle click edit', () => {
     const component = mount(<DetailReview className="detail-review" />);
-    let wrapper = component.find('.edit-button');
+    let wrapper = component.find('.detail-edit-button');
     wrapper.simulate('click');
     expect(component.state('editMode')).toBeTruthy();
-    wrapper = component.find('.back-button');
+    wrapper = component.find('.detail-back-button');
     expect(wrapper.length).toBe(1);
   });
 
   it('should handle click back', () => {
     const component = mount(<DetailReview className="detail-review" />);
-    let wrapper = component.find('.edit-button');
+    let wrapper = component.find('.detail-edit-button');
     wrapper.simulate('click');
-    wrapper = component.find('.back-button');
+    wrapper = component.find('.detail-back-button');
     wrapper.simulate('click');
     expect(component.state('editMode')).toBeFalsy();
-    wrapper = component.find('.edit-button');
+    wrapper = component.find('.detail-edit-button');
     expect(wrapper.length).toBe(1);
   });
 });

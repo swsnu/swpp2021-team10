@@ -2,11 +2,12 @@
   display: inline-block;
   width: 220px;
   margin: 5px 8px 5px 8px;
+  text-align: center;
 }
 
 .object-description {
   width: 200px;
-  margin: 0 10px 0 10px;
+  margin: 0 10px 10px 10px; /* fix */
 }
 
 .object-description > .description {
@@ -32,7 +33,7 @@
   height: 15px;
   display: inline;
   padding: 0;
-  vertical-align: bottom;
+  vertical-align: top;
   margin: 5px 5px 0 0;
 }
 
@@ -43,4 +44,14 @@
 
 .work-object-created-year {
   width: 40px;
+}
+
+.work-object:hover {
+  cursor: grab;
+  border: 1px solid black;
+  margin: 4px 7px 4px 7px;
+}
+
+.work-object:hover > .object-description > .description {
+  text-decoration: underline;
 }

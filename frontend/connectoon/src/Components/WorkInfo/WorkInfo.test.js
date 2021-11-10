@@ -6,28 +6,29 @@ import WorkInfo from './WorkInfo';
 describe('<WorkInfo />', () => {
   let component;
   beforeEach(() => {
-    const src = 'TEST_SRC';
-    const platform = 'TEST_PLATFORM';
-    const completion = true;
     const title = 'TEST_TITLE';
-    const artist = 'TEST_ARTIST';
-    const createdYear = 'TEST_YEAR';
     const description = 'TEST_DESCRIPTION';
     const link = 'TEST_LINK';
-    const tagNames = [
+    const thumbnailPicture = 'TEST_SRC';
+    const platformId = 0;
+    const year = 'TEST_YEAR';
+    const tags = [
       'TEST_TAG_1', 'TEST_TAG_2',
     ];
+    const artists = [
+      'TEST_ARTIST',
+    ];
+
     component = shallow(<WorkInfo
       className="work-info"
-      src={src}
-      platform={platform}
-      completion={completion}
       title={title}
-      artist={artist}
-      createdYear={createdYear}
       description={description}
       link={link}
-      tagNames={tagNames}
+      thumbnailPicture={thumbnailPicture}
+      platformId={platformId}
+      year={year}
+      tags={tags}
+      artists={artists}
     />);
   });
 

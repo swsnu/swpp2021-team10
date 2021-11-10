@@ -10,10 +10,10 @@ import { history } from '../../store/store';
 import * as workActionCreator from '../../store/actions/work';
 
 jest.mock('../../Components/WorkList/WorkList', () => {
-  return jest.fn(() => {
+  return jest.fn((props) => {
     return (
       <div className="spyWorkList">
-        spyWorkList
+        <div className="spyWork" onClick={() => props.onClickWork(props.workList[0].id)} />
       </div>
     );
   });
@@ -36,9 +36,7 @@ const stubInitailWorkState = {
   mainWorkLists: [
     {
       title: 'Test Works',
-      works: [
-        JSON.stringify(stubWork),
-      ],
+      works: JSON.stringify([stubWork]),
     },
   ],
 };
@@ -73,5 +71,15 @@ describe('<Main />', () => {
     expect(wrapper.length).toBe(1);
     wrapper = component.find('.spyWorkList');
     expect(wrapper.length).toBe(1);
+  });
+
+  it('should handle work click', () => {
+    const spyHistoryPush = jest.spyOn(history, 'push')
+      .mockImplementation((path) => { });
+    const component = mount(main);
+    const wrapper = component.find('.spyWork');
+    wrapper.simulate('click');
+    expect(spyHistoryPush).toHaveBeenCalledTimes(1);
+    expect(spyHistoryPush).toHaveBeenCalledWith('/works/1');
   });
 });

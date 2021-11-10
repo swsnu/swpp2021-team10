@@ -117,6 +117,10 @@ class Main extends Component {
     this.props.onGetMainWorks();
   }
 
+  onClickWork = (workId) => {
+    this.props.history.push('/works/' + String(workId));
+  }
+
   render() {
     const { workNumInRow } = this.state;
     const { mainWorkLists } = this.props;
@@ -128,6 +132,7 @@ class Main extends Component {
           subject={mainWorkList.title}
           workList={JSON.parse(mainWorkList.works)}
           workNumInRow={workNumInRow}
+          onClickWork={(workId) => this.onClickWork(workId)}
         />
       );
     });

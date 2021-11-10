@@ -15,4 +15,12 @@ describe('<WorkObject />', () => {
     const wrapper = component.find('.work-object-artist');
     expect(wrapper.text()).toBe('name1,name2');
   });
+
+  it('should handle work click', () => {
+    const spyWorkClick = jest.fn(() => { });
+    const component = mount(<WorkObject className="work-object" artists={['']} onClickWork={() => spyWorkClick()} />);
+    const wrapper = component.find('div.work-object');
+    wrapper.simulate('click');
+    expect(spyWorkClick).toHaveBeenCalledTimes(1);
+  });
 });

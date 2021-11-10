@@ -15,6 +15,11 @@ class WorkList extends Component {
     this.setState({ totalDisplayRow: totalDisplayRow + 2 });
   };
 
+  onClickWorkObject = (workId) => {
+    const { onClickWork } = this.props;
+    onClickWork(workId);
+  }
+
   render() {
     const {
       workList, workNumInRow, className, subject,
@@ -31,6 +36,7 @@ class WorkList extends Component {
         artists={work.artists}
         createdYear={work.year}
         score={work.score_avg}
+        onClickWork={() => this.onClickWorkObject(work.id)}
       />
     ));
     let i = 0;

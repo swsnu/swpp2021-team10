@@ -3,24 +3,24 @@
   margin: 10px 20px 10px 20px;
 }
 
-.detail-review > .review-upper-region {
+.review-upper-region {
   margin: 5px 0 0 0;
 }
 
-.detail-review > .user-profile-image {
+.detail-user-profile-image {
   width: 30px;
   height: 30px;
   display: inline-block;
 }
 
-.detail-review > h5 {
+.detail-username {
   display: inline-block;
   margin: 7px 5px 7px 5px;
   vertical-align: top;
   color: gray;
 }
 
-.detail-review > .review-title {
+.detail-review-title {
   display: inline-block;
   margin: 5px 120px 5px 10px;
   vertical-align: top;
@@ -29,7 +29,7 @@
   height: 18px;
 }
 
-.detail-review > .review-title-input {
+.detail-review-title-input {
   display: inline-block;
   margin: 5px 140px 5px 10px;
   vertical-align: top;
@@ -38,21 +38,24 @@
   height: 18px;
 }
 
-.detail-review > .review-score-region {
+.review-score-region {
   display: inline-block;
 }
 
-.detail-review > .review-score-star-icon {
+.detail-review-score-star-icon {
   width: 15px;
   height: 15px;
   margin: 7px 5px 7px 5px;
 }
 
-.detail-review > .review-score-value {
+.detail-review-score-value {
+  display: inline-block;
+  margin: 7px 5px 7px 5px;
+  vertical-align: top;
   color: black;
 }
 
-.detail-review > .review-like-button {
+.detail-review-like-button {
   vertical-align: top;
   border: none;
   width: 15px;
@@ -61,30 +64,37 @@
   margin: 7px 5px 7px 5px;
 }
 
-.detail-review > .review-like-button:hover {
+.detail-review-like-button:hover {
   cursor: grab;
 }
 
-.detail-review > .review-like-heart-icon {
+.detail-review-like-heart-icon {
   width: 15px;
   height: 15px;
 }
 
-.detail-review > .review-score-label {
+.detail-review-like-value {
+  display: inline-block;
+  margin: 7px 5px 7px 5px;
+  vertical-align: top;
+  color: gray;
+}
+
+.detail-review-score-label {
   vertical-align: top;
 }
 
-.detail-review > .review-score-input {
+.detail-review-score-input {
   margin: 5px 5px 5px 5px;
   width: 100px;
   height: 18px;
 }
 
-.detail-review > .review-content-region {
+.review-content-region {
   display: inline-block;
 }
 
-.detail-review > .review-content {
+.detail-review-content {
   border: 1px solid gray;
   padding: 2px 2px 2px 2px;
   width: 700px;
@@ -101,7 +111,7 @@
   height: 90px;
 }
 
-.detail-review > .review-content-input {
+.detail-review-content-input {
   padding: 2px 2px 2px 2px;
   width: 700px;
   font-size: 16px;
@@ -110,59 +120,59 @@
   height: 90px;
 }
 
-.detail-review > .review-button-region {
+.review-button-region {
   display: inline-block;
   vertical-align: top;
 }
 
-.detail-review > .review-edit-delete-region {
+.review-edit-delete-region {
   width: 120px;
   height: 46px;
   margin: 10px 0 0 0;
 }
 
-.detail-review > .review-save-back-region {
+.review-save-back-region {
   width: 120px;
   height: 102px;
   margin: 10px 0 0 0;
 }
 
-.detail-review > .edit-button {
+.detail-edit-button {
   padding: 0;
   width: 52px;
   margin: 2px 2px 2px 2px;
 }
 
-.detail-review > .delete-button {
+.detail-delete-button {
   padding: 0;
   width: 52px;
   margin: 2px 2px 2px 2px;
 }
 
-.detail-review > .review-more-region {
+.review-more-region {
   width: 42px;
   height: 21px;
   margin: 25px 0 10px 0;
 }
 
-.detail-review > .review-more-button {
+.detail-review-more-button {
   border: none;
   background-color: white;
   text-decoration: none;
   padding: 0;
 }
 
-.detail-review > .review-more-button:hover {
+.detail-review-more-button:hover {
   cursor: grab;
 }
 
-.detail-review > .save-button {
+.detail-save-button {
   padding: 0;
   width: 52px;
   margin: 2px 2px 2px 2px;
 }
 
-.detail-review > .back-button {
+.detail-back-button {
   padding: 0;
   width: 52px;
   margin: 2px 2px 2px 2px;

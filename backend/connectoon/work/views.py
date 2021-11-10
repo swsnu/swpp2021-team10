@@ -17,10 +17,13 @@ def work_id(request, id):  # TODO
         return HttpResponse(status=404)
 
     if request.method == 'GET':
-        work_json = model_to_dict(work)
-
-        work_json.pop('completion')
-        
+        tag_name = [tag.name for tag in work.tags.all()]
+        artist_name = [artist.name for artist in work.artists.all()]
+        work_json = {
+            "id": work.id, "title": work.title, "description": work.description, "link": work.link,
+            "thumbnail_picture": work.thumbnail_picture, "platform_id": work.platform_id, "year": work.year, 
+            "tags": tag_name, "artists": artist_name, "score_avg": work.score_avg,
+        }
         return JsonResponse(work_json, status = 200)
     else:
         return HttpResponseNotAllowed(['GET'])
