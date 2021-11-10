@@ -12,7 +12,7 @@ const WorkInfo = (props) => {
   } = props;
 
   const tags = tagNames.map((tagName, idx) => (
-    <GenreTag key={tagName + String(idx)} tagName={tagName} deletable={false} />
+    <GenreTag key={tagName + String(idx)} tagName={tagName} selected deletable={false} />
   ));
 
   return (
