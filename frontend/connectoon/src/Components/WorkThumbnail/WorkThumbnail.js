@@ -16,11 +16,4 @@ const WorkThumbnail = (props) => {
   );
 };
 
-WorkThumbnail.propTypes = {
-  className: PropTypes.string.isRequired,
-  src: PropTypes.string.isRequired,
-  platform: PropTypes.string.isRequired,
-  completion: PropTypes.bool.isRequired,
-};
-
 export default WorkThumbnail;
