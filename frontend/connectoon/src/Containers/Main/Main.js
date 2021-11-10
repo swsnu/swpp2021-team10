@@ -124,7 +124,7 @@ class Main extends Component {
       return (
         <WorkList
           key={mainWorkList.title + String(idx)}
-          className={mainWorkList.title.toLowerCase().replaceAll(' ', '-').slice(0, -1) + '-list'}
+          className={mainWorkList.title.toLowerCase().replaceAll(/ /g, '-').slice(0, -1) + '-list'}
           subject={mainWorkList.title}
           workList={JSON.parse(mainWorkList.works)}
           workNumInRow={workNumInRow}

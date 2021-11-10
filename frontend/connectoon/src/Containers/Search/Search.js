@@ -34,12 +34,8 @@ class Search extends Component {
     const { storedWorks, onGetWorks } = this.props;
     const { title, genre } = this.state;
 
-    console.log(storedWorks);
-
     const titleList = <WorkList class="ts-wl" className="title-search-work-list" subject="Title search result" workList={storedWorks[0]} workNumInRow={4} />;
     const artistList = <WorkList class="as-wl" className="artist-search-work-list" subject="Artist search result" workList={storedWorks[1]} workNumInRow={4} />;
-
-    console.log(titleList);
 
     return (
       <div className="search">

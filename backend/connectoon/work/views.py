@@ -143,12 +143,12 @@ def work_search(request):  # TODO
             
             if (keyword in work['title']) and tagcheck:
                 return_work_list[0].append({'title': work['title'], 'thumbnail_picture': work['thumbnail_picture'],
-                'description': work['description'], 'createdYear': work['year'], 'link': work['link'],
+                'description': work['description'], 'year': work['year'], 'link': work['link'],
                 'completion': work['completion'], 'score_avg': work['score_avg'], 'review_num': work['review_num'],
                 'platform_id': work['platform_id'], 'artists': artist_name, 'key': work['id']})
             elif (keyword in artistStr) and tagcheck:
                 return_work_list[1].append({'title': work['title'], 'thumbnail_picture': work['thumbnail_picture'],
-                'description': work['description'], 'createdYear': work['year'], 'link': work['link'],
+                'description': work['description'], 'year': work['year'], 'link': work['link'],
                 'completion': work['completion'], 'score_avg': work['score_avg'], 'review_num': work['review_num'],
                 'platform_id': work['platform_id'], 'artists': artist_name, 'key': work['id']})
         return JsonResponse(return_work_list, safe=False)
