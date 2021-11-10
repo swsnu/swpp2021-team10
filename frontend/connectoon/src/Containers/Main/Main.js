@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import PropTypes from 'prop-types';
 
 import WorkList from '../../Components/WorkList/WorkList';
 import './Main.css';
