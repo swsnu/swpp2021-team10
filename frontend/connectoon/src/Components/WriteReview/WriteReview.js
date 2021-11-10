@@ -29,8 +29,4 @@ const WriteReview = (props) => {
   );
 };
 
-WriteReview.propTypes = {
-  className: PropTypes.string.isRequired,
-};
-
 export default WriteReview;
