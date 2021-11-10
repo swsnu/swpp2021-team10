@@ -1,3 +1,4 @@
-from django.shortcuts import render
+from django.http import HttpResponse, HttpResponseNotAllowed, JsonResponse
+from .models import Artist
 
-# Create your views here.
+import json

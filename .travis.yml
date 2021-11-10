@@ -3,8 +3,9 @@ dist: bionic
 
 jobs:
   include:
-    - language: python
+    - language: python, node_js
       python: "3.7.9"
+      node_js: 14
       addons:
         sonarcloud:
           organization: "swsnu"
@@ -15,19 +16,16 @@ jobs:
         - cd backend/connectoon
         - pip install -r requirements.txt
         - pip install coveralls
-      script:
-        - pylint connectoon/*.py --load-plugins pylint_django
-        - coverage run --source='.' manage.py test
-        - coverage xml
-        - cd ../.. && sonar-scanner
-
-    - language: node_js
-      node_js: 14
-      install:
-        - cd frontend/connectoon
+        - cd ../../frontend/connectoon
         - yarn install
         - yarn global add coveralls
         - gem install coveralls-lcov
       script:
+        - cd ../../backend/connectoon
+        - pylint connectoon/*.py --load-plugins pylint_django
+        - coverage run --source='.' manage.py test
+        - coverage xml
+        - cd ../../frontend/connectoon
         - ./node_modules/.bin/eslint src
         - yarn test --coverage --watchAll=false
+        - cd ../.. && sonar-scanner
