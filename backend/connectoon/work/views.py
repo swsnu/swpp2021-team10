@@ -10,17 +10,20 @@ from review.models import Review
 from django.contrib.auth import get_user_model
 from django.views.decorators.csrf import csrf_exempt
 
-def work_id(request, id):  # TODO
+def work_id(request, id):
     try:
         work = Work.objects.get(id = id)
     except Work.DoesNotExist:
         return HttpResponse(status=404)
 
     if request.method == 'GET':
-        work_json = model_to_dict(work)
-
-        work_json.pop('completion')
-        
+        tag_name = [tag.name for tag in work.tags.all()]
+        artist_name = [artist.name for artist in work.artists.all()]
+        work_json = {
+            "id": work.id, "title": work.title, "description": work.description, "link": work.link,
+            "thumbnail_picture": work.thumbnail_picture, "platform_id": work.platform_id, "year": work.year, 
+            "tags": tag_name, "artists": artist_name, "score_avg": work.score_avg,
+        }
         return JsonResponse(work_json, status = 200)
     else:
         return HttpResponseNotAllowed(['GET'])
@@ -143,14 +146,14 @@ def work_search(request):  # TODO
             
             if (keyword in work['title']) and tagcheck:
                 return_work_list[0].append({'title': work['title'], 'thumbnail_picture': work['thumbnail_picture'],
-                'description': work['description'], 'createdYear': work['year'], 'link': work['link'],
+                'description': work['description'], 'year': work['year'], 'link': work['link'],
                 'completion': work['completion'], 'score_avg': work['score_avg'], 'review_num': work['review_num'],
-                'platform_id': work['platform_id'], 'artists': artist_name, 'key': work['id']})
+                'platform_id': work['platform_id'], 'artists': artist_name, 'id': work['id']})
             elif (keyword in artistStr) and tagcheck:
                 return_work_list[1].append({'title': work['title'], 'thumbnail_picture': work['thumbnail_picture'],
-                'description': work['description'], 'createdYear': work['year'], 'link': work['link'],
+                'description': work['description'], 'year': work['year'], 'link': work['link'],
                 'completion': work['completion'], 'score_avg': work['score_avg'], 'review_num': work['review_num'],
-                'platform_id': work['platform_id'], 'artists': artist_name, 'key': work['id']})
+                'platform_id': work['platform_id'], 'artists': artist_name, 'id': work['id']})
         return JsonResponse(return_work_list, safe=False)
     else:
-        return HttpResponse(status=501)
+        return HttpResponseNotAllowed(['GET'])

@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import PropTypes from 'prop-types';
 
 import WorkList from '../../Components/WorkList/WorkList';
 import './Main.css';
@@ -118,6 +117,10 @@ class Main extends Component {
     this.props.onGetMainWorks();
   }
 
+  onClickWork = (workId) => {
+    this.props.history.push('/works/' + String(workId));
+  }
+
   render() {
     const { workNumInRow } = this.state;
     const { mainWorkLists } = this.props;
@@ -125,10 +128,11 @@ class Main extends Component {
       return (
         <WorkList
           key={mainWorkList.title + String(idx)}
-          className={mainWorkList.title.toLowerCase().replaceAll(' ', '-').slice(0, -1) + '-list'}
+          className={mainWorkList.title.toLowerCase().replace(/ /g, '-').slice(0, -1) + '-list'}
           subject={mainWorkList.title}
           workList={JSON.parse(mainWorkList.works)}
           workNumInRow={workNumInRow}
+          onClickWork={(workId) => this.onClickWork(workId)}
         />
       );
     });

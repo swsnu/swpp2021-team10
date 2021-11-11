@@ -4,10 +4,10 @@ import './WorkObject.css';
 
 const WorkObject = (props) => {
   const {
-    className, src, platform, completion, title, artists, createdYear, score,
+    className, src, platform, completion, title, artists, createdYear, score, onClickWork,
   } = props;
   return (
-    <div className={className}>
+    <div className={className} onClick={() => onClickWork()}>
       <WorkThumbnail className="work-thumbnail" src={src} platform={platform} completion={completion} />
       <div className="object-description">
         <h4 className="work-object-title description">{title}</h4>

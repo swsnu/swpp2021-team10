@@ -4,6 +4,14 @@ import reducer from './work';
 import * as actionTypes from '../actions/actionTypes';
 
 const stubWork = { id: 1 };
+const stubMainWorks = [
+  {
+    title: 'Test Works',
+    works: [
+      JSON.stringify(stubWork),
+    ],
+  },
+];
 const stubReview = { id: 1 };
 
 describe('Work Reducer', () => {
@@ -19,24 +27,12 @@ describe('Work Reducer', () => {
     });
   });
 
-  it('should get main work', () => {
+  it('should return main works', () => {
     const stubInitialState = {
-      selectedWorks: [stubWork],
-      searchedWorks: [[stubWork], [stubWork]],
-      selectedWork: stubWork,
-      selectedReviews: [stubReview],
       mainWorkLists: [stubWork],
     };
-    const newState = reducer(stubInitialState, {
-      type: actionTypes.GET_WORK,
-      mainWorkLists: [stubWork],
-    });
-    expect(newState).toEqual({
-      selectedWorks: [stubWork],
-      searchedWorks: [[stubWork], [stubWork]],
-      selectedReviews: [stubReview],
-      mainWorkLists: [stubWork],
-    });
+    const newState = reducer(stubInitialState, { type: actionTypes.GET_MAIN_WORKS, mainWorkLists: stubMainWorks });
+    expect(newState.mainWorkLists).toEqual(stubMainWorks);
   });
 
   it('should get work', () => {

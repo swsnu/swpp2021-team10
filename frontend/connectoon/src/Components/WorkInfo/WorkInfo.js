@@ -1,48 +1,35 @@
 import React from 'react';
-import PropTypes from 'prop-types';
-import { Link } from 'react-router-dom';
 
 import WorkThumbnail from '../WorkThumbnail/WorkThumbnail';
 import GenreTag from '../GenreTag/GenreTag';
 import './WorkInfo.css';
 
+const platformMapper = ['/images/naver_logo.png', '/images/kakao_logo.png', '/images/lezhin_logo.png'];
+
 const WorkInfo = (props) => {
   const {
-    className, src, platform, completion, title, artist, createdYear, description, link, tagNames,
+    className, title, description, link, thumbnailPicture, platformId, year, tags, artists,
   } = props;
 
-  const tags = tagNames.map((tagName, idx) => (
-    <GenreTag key={tagName + String(idx)} tagName={tagName} deletable={false} />
+  const genreTags = tags.map((tagName, idx) => (
+    <GenreTag key={tagName + String(idx)} tagName={tagName} selected deletable={false} />
   ));
 
   return (
     <div className={className}>
-      <WorkThumbnail className="work-thumbnail" src={src} platform={platform} completion={completion} />
+      <WorkThumbnail className="work-thumbnail" src={thumbnailPicture} platform={platformMapper[platformId]} completion={false} />
       <div className="work-information-region">
         <h3 className="work-title">{title}</h3>
-        <h4 className="work-artist">{artist}</h4>
-        <h4 className="work-created-year">{createdYear}</h4>
+        <h4 className="work-artist">{artists.toString()}</h4>
+        <h4 className="work-created-year">{year}</h4>
         <p className="work-description">{description}</p>
         <a className="work-link" href={link} target="_blank" rel="noopener noreferrer">{link}</a>
         <div className="work-info-tags">
-          {tags}
+          {genreTags}
         </div>
       </div>
     </div>
   );
-};
-
-WorkInfo.propTypes = {
-  className: PropTypes.string.isRequired,
-  src: PropTypes.string.isRequired,
-  platform: PropTypes.string.isRequired,
-  completion: PropTypes.bool.isRequired,
-  title: PropTypes.string.isRequired,
-  artist: PropTypes.string.isRequired,
-  createdYear: PropTypes.string.isRequired,
-  description: PropTypes.string.isRequired,
-  link: PropTypes.string.isRequired,
-  tagNames: PropTypes.arrayOf(PropTypes.string).isRequired,
 };
 
 export default WorkInfo;
