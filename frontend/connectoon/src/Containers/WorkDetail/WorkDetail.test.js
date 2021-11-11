@@ -39,22 +39,24 @@ jest.mock('../../Components/DetailReview/DetailReview', () => {
   });
 });
 
-const stubInitailReviewState = {
+const stubInitialReviewState = {
 };
 
-const stubInitailTagState = {
+const stubInitialTagState = {
 };
 
-const stubInitailUserState = {
+const stubInitialUserState = {
 };
 
-const stubInitailWorkState = {
-  selectedWork: {
-    id: 1, title: 'TEST_TITLE', description: 'TEST_DESC', link: 'TEST_LINK', thumbnail_picture: 'TEST_THUMB', platform_id: 0, year: 2000, tags: ['TAG1'], artists: ['NAME'],
-  },
+const stubWork = {
+  id: 1, title: 'TEST_TITLE', description: 'TEST_DESC', link: 'TEST_LINK', thumbnail_picture: 'TEST_THUMB', platform_id: 0, year: 2000, tags: ['TAG1'], artists: ['NAME'],
 };
 
-const mockStore = getMockStore(stubInitailReviewState, stubInitailTagState, stubInitailUserState, stubInitailWorkState);
+const stubInitialWorkState = {
+  selectedWork: stubWork,
+};
+
+const mockStore = getMockStore(stubInitialReviewState, stubInitialTagState, stubInitialUserState, stubInitialWorkState);
 
 describe('<WorkDetail />', () => {
   let workDetail;
@@ -75,6 +77,24 @@ describe('<WorkDetail />', () => {
 
   afterEach(() => {
     jest.clearAllMocks();
+  });
+
+  it('should not render WorkInfo when there is no selectedWork', () => {
+    const emptyStubInitialWorkState = {};
+    const emptyMockStore = getMockStore(stubInitialReviewState, stubInitialTagState, stubInitialUserState, emptyStubInitialWorkState);
+    workDetail = (
+      <Provider store={emptyMockStore}>
+        <ConnectedRouter history={history}>
+          <Switch>
+            <Route path="/" exact component={WorkDetail} />
+          </Switch>
+        </ConnectedRouter>
+      </Provider>
+    );
+    const component = mount(workDetail);
+    const wrapper = component.find('.work-info');
+    expect(wrapper.length).toBe(0);
+    expect(spyGetWork).toHaveBeenCalledTimes(1);
   });
 
   it('should render WorkDetail', () => {
