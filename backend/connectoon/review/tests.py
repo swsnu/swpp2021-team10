@@ -12,7 +12,7 @@ class ReviewTestCase(TestCase):
         author = User.objects.create_user(
             email='dummy@user.com', password='1234', username='dummy')
         author2 = User.objects.create_user(
-            email='dummy2@user.com', password='1234', username='dummy')
+            email='dummy2@user.com', password='1234', username='dummy1')
         Work.objects.create(
             title='DummyTitle', year=2019, description="HI", 
             link="https://www.naver.com/",completion=True, platform_id=1, review_num = 2, score_sum = 5.0
