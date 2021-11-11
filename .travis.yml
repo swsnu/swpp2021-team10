@@ -12,8 +12,8 @@ jobs:
           token:
             secure: "Mo1K92bHgJkK8OVoAxZnDjiJ3uSt7dNBhE1CsWZ1Dn3vBrzQOtiENNSBfHU9vSm4FqCe+mfwy6pU9CrwMUdtlEmTeqqa4FYwMBINnLl5asSKgpK8Q1fmrv3HHibzSGWCqqlArX2MVa67NA23fLmqZEKQEqamn5w1Cw8oXmq0cwjoLpIeDsk5OW72NoKwmXloLusMDRRpV6RtfhKqH0M0eCNU6x/AVpU7n1q0s4IWiqwMf+h7u930ovfgWNr6JEV426b3i1CqTOh+nRH7ZIkfDV8n7uTAppYkZm9KadbV7gitX6gF7+ftktm9D2bttTkBlt6FCm1XUv1+zeERSgM1olVXpBU2SNHUTv4IfTgwCpZQFxnKg3FGSJeAZ0HFYAODnNfY8fwurM5F2140/7JDfybDpDxt2U5ua6LWMmuB0Amwx9zI2EMN/6sXn0p5XOkrilIy9EoMux8nwTd4dndMwWMJ/9K/1ktxFGbhVsHwcRM67xT6cUKe+pvovHd/blTb7EMeCYVWOH+dFTD/TjI7IEFyqn0nhAetL+I3twVCRX26hiZ2nfjI0xD/ycjV2GQkwQ3Ibm/nRViuTxvdaEM2GjEfcY2uV8G/H1s62Ts1xf2+ppvlU95xHQCFrs9pLhN9grwOoAak8PGoRCzLZ1vMewisJyT8EM/iBcVfaBV9M3s="
       install:
-        - source ~/virtualenv/python3.7/bin/activate
         - cd backend/connectoon
+        - source ~/virtualenv/python3.7/bin/activate
         - pip install -r requirements.txt
         - pip install coveralls
         - cd ../../frontend/connectoon
@@ -25,6 +25,7 @@ jobs:
         - pylint connectoon/*.py --load-plugins pylint_django
         - coverage run --source='.' manage.py test
         - coverage xml
+        - coveralls --merge ../frontend/converage/json
         - cd ../../frontend/connectoon
         - ./node_modules/.bin/eslint src
         - yarn test --coverage --watchAll=false
