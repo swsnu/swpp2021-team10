@@ -9,7 +9,7 @@ import { getMockStore } from '../../test-utils/mocks';
 import { history } from '../../store/store';
 import * as actionCreator from '../../store/actions/work';
 
-jest.mock('../../components/WorkInfo/WorkInfo', () => {
+jest.mock('../../Components/WorkInfo/WorkInfo', () => {
   return jest.fn((props) => {
     return (
       <div className="spyWorkInfo">
@@ -49,7 +49,9 @@ const stubInitailUserState = {
 };
 
 const stubInitailWorkState = {
-  selectedWork: null,
+  selectedWork: {
+    id: 1, title: 'TEST_TITLE', description: 'TEST_DESC', link: 'TEST_LINK', thumbnail_picture: 'TEST_THUMB', platform_id: 0, year: 2000, tags: ['TAG1'], artists: ['NAME'],
+  },
 };
 
 const mockStore = getMockStore(stubInitailReviewState, stubInitailTagState, stubInitailUserState, stubInitailWorkState);
