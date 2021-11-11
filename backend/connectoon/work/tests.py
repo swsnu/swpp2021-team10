@@ -205,4 +205,4 @@ class WorkTestCase(TestCase):
         csrftoken = response.cookies['csrftoken'].value
 
         response = client.post('/works/search/', HTTP_X_CSRFTOKEN=csrftoken)
-        self.assertEqual(response.status_code, 501)
+        self.assertEqual(response.status_code, 405)

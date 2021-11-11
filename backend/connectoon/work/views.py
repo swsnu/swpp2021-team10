@@ -10,7 +10,7 @@ from review.models import Review
 from django.contrib.auth import get_user_model
 from django.views.decorators.csrf import csrf_exempt
 
-def work_id(request, id):  # TODO
+def work_id(request, id):
     try:
         work = Work.objects.get(id = id)
     except Work.DoesNotExist:
@@ -148,12 +148,12 @@ def work_search(request):  # TODO
                 return_work_list[0].append({'title': work['title'], 'thumbnail_picture': work['thumbnail_picture'],
                 'description': work['description'], 'year': work['year'], 'link': work['link'],
                 'completion': work['completion'], 'score_avg': work['score_avg'], 'review_num': work['review_num'],
-                'platform_id': work['platform_id'], 'artists': artist_name, 'key': work['id']})
+                'platform_id': work['platform_id'], 'artists': artist_name, 'id': work['id']})
             elif (keyword in artistStr) and tagcheck:
                 return_work_list[1].append({'title': work['title'], 'thumbnail_picture': work['thumbnail_picture'],
                 'description': work['description'], 'year': work['year'], 'link': work['link'],
                 'completion': work['completion'], 'score_avg': work['score_avg'], 'review_num': work['review_num'],
-                'platform_id': work['platform_id'], 'artists': artist_name, 'key': work['id']})
+                'platform_id': work['platform_id'], 'artists': artist_name, 'id': work['id']})
         return JsonResponse(return_work_list, safe=False)
     else:
-        return HttpResponse(status=501)
+        return HttpResponseNotAllowed(['GET'])
