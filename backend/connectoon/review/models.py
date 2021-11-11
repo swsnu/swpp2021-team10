@@ -1,7 +1,5 @@
 from django.db import models
 from django.db.models.deletion import CASCADE
-from django.db.models.fields import DateTimeField
-import datetime
 from django.utils import timezone
 
 from work.models import Work
