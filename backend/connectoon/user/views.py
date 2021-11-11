@@ -1,3 +1,4 @@
+from django.db import IntegrityError, transaction
 from django.views.decorators.csrf import ensure_csrf_cookie
 from django.contrib.auth import get_user_model, authenticate, login as auth_login
 from django.http import HttpResponse, HttpResponseBadRequest, HttpResponseNotAllowed, HttpResponseForbidden, JsonResponse
@@ -38,13 +39,57 @@ def user_register(request):
             except (Tag.DoesNotExist) as e:
                 return HttpResponseBadRequest()
 
-        created_user = User.objects.create_user(email=email, password=password, username=username)
+        try:
+            with transaction.atomic():
+                created_user = User.objects.create_user(email=email, password=password, username=username)
+        except IntegrityError:
+            return HttpResponseBadRequest()
 
         for tag_obj in tag_found:
             UserTagFav.objects.create(user=created_user, tag=tag_obj)
 
         response_dict = {'id': created_user.id, 'email': created_user.email, 'username': created_user.username}
         return JsonResponse(response_dict, status=201)
+    else:
+        return HttpResponseNotAllowed(['POST'])
+
+
+def user_dup_email(request):
+    User = get_user_model()
+    if request.method == 'POST':
+
+        try:
+            req_data = json.loads(request.body.decode())
+            email = req_data['email']
+        except (KeyError, JSONDecodeError):
+            return HttpResponseBadRequest()
+
+        try:
+            User.objects.get(email=email)
+        except User.DoesNotExist:
+            return HttpResponse(status=204)
+
+        return HttpResponseBadRequest()
+    else:
+        return HttpResponseNotAllowed(['POST'])
+
+
+def user_dup_username(request):
+    User = get_user_model()
+    if request.method == 'POST':
+
+        try:
+            req_data = json.loads(request.body.decode())
+            username = req_data['username']
+        except (KeyError, JSONDecodeError):
+            return HttpResponseBadRequest()
+
+        try:
+            User.objects.get(username=username)
+        except User.DoesNotExist:
+            return HttpResponse(status=204)
+
+        return HttpResponseBadRequest()
     else:
         return HttpResponseNotAllowed(['POST'])
 

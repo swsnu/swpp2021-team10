@@ -53,6 +53,15 @@ class UserTestCase(TestCase):
         self.assertEqual(User.objects.count(), 2)
         self.assertEqual(UserTagFav.objects.count(), 3)
 
+        # Check duplicated username not create
+        response = client.post('/users/',
+                               json.dumps({'email': 'test4@snu.ac.kr', 'username': 'test2', 'password': 'qwe123',
+                                           'tags': [1, 2]}),
+                               content_type='application/json', HTTP_X_CSRFTOKEN=csrftoken)
+        self.assertEqual(response.status_code, 400)
+        self.assertEqual(User.objects.count(), 2)
+        self.assertEqual(UserTagFav.objects.count(), 3)
+
         response = client.post('/users/',
                                json.dumps({'email': 'test3@snu.ac.kr', 'username': 'test3', 'password': 'qwe123',
                                            'tags': []}),
@@ -72,6 +81,49 @@ class UserTestCase(TestCase):
                                            'tags': [1, 5]}),
                                content_type='application/json', HTTP_X_CSRFTOKEN=csrftoken)
         self.assertEqual(response.status_code, 400)
+
+    def test_user_dup(self):
+        client = Client(enforce_csrf_checks=True)
+        response = client.get('/token/')
+        csrftoken = response.cookies['csrftoken'].value  # Get csrf token from cookie
+
+        # Check duplicated email
+        response = client.post('/users/dup/email/',
+                               json.dumps({'email': 'test1@snu.ac.kr'}),
+                               content_type='application/json', HTTP_X_CSRFTOKEN=csrftoken)
+        self.assertEqual(response.status_code, 400)
+
+        response = client.post('/users/dup/email/',
+                               json.dumps({'emal': 'test2@snu.ac.kr'}),
+                               content_type='application/json', HTTP_X_CSRFTOKEN=csrftoken)
+        self.assertEqual(response.status_code, 400)
+
+        response = client.post('/users/dup/email/',
+                               json.dumps({'email': 'test4@snu.ac.kr'}),
+                               content_type='application/json', HTTP_X_CSRFTOKEN=csrftoken)
+        self.assertEqual(response.status_code, 204)
+
+        response = client.get('/users/dup/email/', HTTP_X_CSRFTOKEN=csrftoken)
+        self.assertEqual(response.status_code, 405)
+
+        # Check duplicated username
+        response = client.post('/users/dup/username/',
+                               json.dumps({'username': 'test1'}),
+                               content_type='application/json', HTTP_X_CSRFTOKEN=csrftoken)
+        self.assertEqual(response.status_code, 400)
+
+        response = client.post('/users/dup/username/',
+                               json.dumps({'userame': 'test1'}),
+                               content_type='application/json', HTTP_X_CSRFTOKEN=csrftoken)
+        self.assertEqual(response.status_code, 400)
+
+        response = client.post('/users/dup/username/',
+                               json.dumps({'username': 'test4'}),
+                               content_type='application/json', HTTP_X_CSRFTOKEN=csrftoken)
+        self.assertEqual(response.status_code, 204)
+
+        response = client.get('/users/dup/username/', HTTP_X_CSRFTOKEN=csrftoken)
+        self.assertEqual(response.status_code, 405)
 
     def test_user_login(self):
         client = Client(enforce_csrf_checks=True)
