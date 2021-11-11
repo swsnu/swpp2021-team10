@@ -19,7 +19,7 @@ jest.mock('../../Components/WorkInfo/WorkInfo', () => {
   });
 });
 
-jest.mock('../../components/WriteReview/WriteReview', () => {
+jest.mock('../../Components/WriteReview/WriteReview', () => {
   return jest.fn((props) => {
     return (
       <div className="spyWriteReview">
@@ -29,7 +29,7 @@ jest.mock('../../components/WriteReview/WriteReview', () => {
   });
 });
 
-jest.mock('../../components/DetailReview/DetailReview', () => {
+jest.mock('../../Components/DetailReview/DetailReview', () => {
   return jest.fn((props) => {
     return (
       <div className="spyDetailReview">
