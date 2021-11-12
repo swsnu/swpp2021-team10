@@ -68,7 +68,6 @@ def work_id_review(request, id):
         work.save()
 
         review_json = model_to_dict(review)
-        review_json.pop('updated_at', None)
         return JsonResponse(review_json, status=201) 
     
     else:
