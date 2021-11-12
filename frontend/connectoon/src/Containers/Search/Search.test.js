@@ -10,7 +10,6 @@ import * as workActionCreators from '../../store/actions/work';
 import * as tagActionCreators from '../../store/actions/tag';
 
 import Search from './Search';
-import WorkList from '../../Components/WorkList/WorkList';
 
 const stubInitialReviewState = null;
 const stubInitialTagState = {
@@ -37,9 +36,15 @@ const stubInitialWorkState = {
   searchedWorks: [
     [
       {
-        title: 'test',
+        title: 'test1',
         artists: [
-          'test',
+          'test1',
+        ],
+      },
+      {
+        title: 'test2',
+        artists: [
+          'test2',
         ],
       },
     ],
@@ -97,7 +102,7 @@ describe('<Search />', () => {
   it('should handle tag methods', () => {
     const component = mount(search);
     component.find('.selected-tag-body').at(0).simulate('click');
-    component.find('button').at(0).simulate('click');
+    component.find('.tag-delete-button').at(0).simulate('click');
     component.find('.selected-tag-body').at(0).simulate('click');
 
     const mockedEvent = {
@@ -106,5 +111,9 @@ describe('<Search />', () => {
       },
     };
     component.find('input').at(1).simulate('change', mockedEvent);
+  });
+  it('should handle clicking work object and more button', () => {
+    const component = mount(search);
+    component.find('.work-object').at(0).simulate('click');
   });
 });
