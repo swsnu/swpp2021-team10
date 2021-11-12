@@ -43,3 +43,19 @@ export const deleteReview = (id) => {
       .then((res) => dispatch(deleteReview_(id)));
   };
 };
+
+export const getBoardReviews_ = (boardReviews) => {
+  return {
+    type: actionTypes.GET_BOARD_REVIEWS,
+    boardReviews,
+  };
+};
+
+export const getBoardReviews = () => {
+  return (dispatch) => {
+    return axios.get('/reviews/board/')
+      .then((res) => {
+        dispatch(getBoardReviews_(res.data));
+      });
+  };
+};

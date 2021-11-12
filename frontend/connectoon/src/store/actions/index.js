@@ -2,6 +2,7 @@ export {
   getReview,
   editReview,
   deleteReview,
+  getBoardReviews,
 } from './review';
 export {
   getSearchTags,
