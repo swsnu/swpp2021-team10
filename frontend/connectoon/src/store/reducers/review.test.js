@@ -8,7 +8,11 @@ const stubReview = { id: 1, title: 'test', content: 'test' };
 describe('Review Reducer', () => {
   it('should return default state', () => {
     const newState = reducer(undefined, {}); // initialize
-    expect(newState).toEqual({ reviews: [], selectedReview: null });
+    expect(newState).toEqual({
+      reviews: [],
+      selectedReview: null,
+      boardReviews: [],
+    });
   });
 
   it('should edit review', () => {
@@ -52,6 +56,20 @@ describe('Review Reducer', () => {
     expect(newState).toEqual({
       reviews: [],
       selectedReview: stubSelectedReview,
+      boardReviews: [],
+    });
+  });
+
+  it('should get reviews for board', () => {
+    const stubBoardReviews = [{ id: 1, title: 'title', content: 'content' }, { id: 1, title: 'title', content: 'content' }];
+    const newState = reducer(undefined, {
+      type: actionTypes.GET_BOARD_REVIEWS,
+      boardReviews: stubBoardReviews,
+    });
+    expect(newState).toEqual({
+      reviews: [],
+      selectedReview: null,
+      boardReviews: stubBoardReviews,
     });
   });
 });
