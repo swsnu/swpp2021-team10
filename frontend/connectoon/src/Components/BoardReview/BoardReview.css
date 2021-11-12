@@ -1,0 +1,91 @@
+
+.board-review.thumbnail {
+    width: 200px;
+    flex: 1;
+}
+
+.board-review.detail {
+    flex: 4;
+    vertical-align: baseline;
+    padding: 8px;
+}
+.board-review-header{
+    display: flex;
+    justify-content: space-between;
+}
+
+.review-score-likes-wrapper{
+    align-items: center;
+    display: flex;
+    gap: 8px;
+}
+
+.review-score{
+    align-items: center;
+    display: flex;
+}
+
+.review-score-star-icon{
+    height: 20px;
+    width: 20px;
+}
+
+
+.review-likes{
+    align-items: center;
+    display: flex;
+}
+
+.review-like-button{
+    height: 25px;
+    width: 25px;
+    background-color: transparent;
+    padding: 3px 0;
+    border: transparent;
+    cursor: pointer;
+    text-align: center;
+}
+
+.review-like-heart-icon{
+    height: 20px;
+    width: 20px;
+}
+
+.review-value{
+    margin: 0;
+}
+
+.profile-title-button-wrapper{
+    display: flex;
+    justify-content: space-between;
+}
+
+.profile-title-wrapper{
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.user-profile-image{
+    height: 20px;
+    width: 20px;
+    
+}
+
+.review-content{
+    white-space: pre-wrap;
+    display: -webkit-box;
+    -webkit-line-clamp: 6;
+    -webkit-box-orient: vertical;  
+    overflow: hidden;
+}
+
+.board-review-button-region{
+    display: flex;
+    align-items: center;
+
+}
+
+.review-title{
+    margin:0 ;
+}
