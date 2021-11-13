@@ -25,8 +25,9 @@ jobs:
         - pylint connectoon/*.py --load-plugins pylint_django
         - coverage run --source='.' manage.py test
         - coverage xml
-        - coveralls --merge ../frontend/converage/json
         - cd ../../frontend/connectoon
         - ./node_modules/.bin/eslint src
         - yarn test --coverage --watchAll=false
+        - coveralls-lcov -v -n coverage/lcov.info > coverage.json
         - cd ../.. && sonar-scanner
+        - coveralls --merge ../frontend/coverage.json
