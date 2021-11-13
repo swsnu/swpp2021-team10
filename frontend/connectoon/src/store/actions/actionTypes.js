@@ -2,6 +2,7 @@ export const GET_MAIN_WORKS = 'GET_MAIN_WORKS';
 export const GET_REVIEW = 'GET_REVIEW';
 export const EDIT_REVIEW = 'EDIT_REVIEW';
 export const DELETE_REVIEW = 'DELETE_REVIEW';
+export const GET_BOARD_REVIEWS = 'GET_BOARD_REVIEWS';
 export const LOG_IN = 'LOG_IN';
 export const REGISTER = 'REGISTER';
 export const GET_USER = 'GET_USER';

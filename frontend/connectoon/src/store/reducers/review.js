@@ -4,6 +4,7 @@ const initialState = {
   reviews: [
   ],
   selectedReview: null,
+  boardReviews: [],
 };
 
 const reducer = (state = initialState, action) => {
@@ -23,6 +24,8 @@ const reducer = (state = initialState, action) => {
         return x.id !== action.targetID;
       });
       return { ...state, reviews: deletedReviews };
+    case actionTypes.GET_BOARD_REVIEWS:
+      return { ...state, boardReviews: action.boardReviews };
     default:
       break;
   }

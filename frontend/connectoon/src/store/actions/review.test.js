@@ -7,6 +7,10 @@ const stubReview = {
   id: 0,
 };
 
+const stubBoardReviews = {
+  boardReviews: [stubReview, stubReview],
+};
+
 describe('ActionCreators', () => {
   afterEach(() => {
     jest.clearAllMocks();
@@ -63,6 +67,25 @@ describe('ActionCreators', () => {
       });
 
     store.dispatch(actionCreators.deleteReview(1)).then(() => {
+      expect(spy).toHaveBeenCalledTimes(1);
+      done();
+    });
+  });
+
+  it('\'getBoardReviews\' should fetch reviews correctly', (done) => {
+    const spy = jest.spyOn(axios, 'get')
+      .mockImplementation((url) => {
+        return new Promise((resolve, reject) => {
+          const result = {
+            status: 200,
+            data: stubBoardReviews,
+          };
+          resolve(result);
+        });
+      });
+    store.dispatch(actionCreators.getBoardReviews()).then(() => {
+      const newState = store.getState();
+      expect(newState.review.boardReviews).toBe(stubBoardReviews);
       expect(spy).toHaveBeenCalledTimes(1);
       done();
     });
