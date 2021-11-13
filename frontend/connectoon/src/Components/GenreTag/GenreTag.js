@@ -5,7 +5,7 @@ import './GenreTag.css';
 
 const GenreTag = (props) => {
   const {
-    tagName, deletable, selected, onAddTag, onDeleteTag,
+    tagName, deletable, selected, onAddTag, onDeleteTag, onClickTag
   } = props;
 
   const onClickAddTag = (e) => {
@@ -15,6 +15,10 @@ const GenreTag = (props) => {
   const onClickDeleteTag = (e) => {
     onDeleteTag(tagName);
   };
+
+  const onClickClickTag = (e) => {
+    onClickTag(tagName);
+  }
 
   return (
     <div className="genre-tag">
@@ -28,7 +32,7 @@ const GenreTag = (props) => {
               <img id="delete-img" src="/images/delete.png" />
             </button>
           }
-          {!deletable && <div className="button-empty-space" />}
+          {!deletable && <div className="button-empty-space" onClick={onClickClickTag} />}
         </div>
       }
       {!selected &&
@@ -46,6 +50,7 @@ const GenreTag = (props) => {
 GenreTag.defaultProps = {
   onAddTag: func,
   onDeleteTag: func,
+  onClickTag: func,
 };
 
 GenreTag.propTypes = {
@@ -54,6 +59,7 @@ GenreTag.propTypes = {
   selected: PropTypes.bool.isRequired,
   onAddTag: PropTypes.func,
   onDeleteTag: PropTypes.func,
+  onClickTag: PropTypes.func,
 };
 
 export default GenreTag;
