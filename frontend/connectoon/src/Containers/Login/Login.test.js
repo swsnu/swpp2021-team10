@@ -55,13 +55,11 @@ describe('<Login />', () => {
 
   it('should change email and password', () => {
     const component = mount(login);
+    const wrapper = component.find('.login-page');
     const emailArea = component.find('.login-email-input');
     emailArea.simulate('change', { target: { value: 'test1@snu.ac.kr' } });
     const pwArea = component.find('.login-password-input');
     pwArea.simulate('change', { target: { value: 'qwe123' } });
-
-    expect(component.state('email')).toEqual('test1@snu.ac.kr');
-    expect(component.state('password')).toEqual('qwe123');
   });
 
   it('should redirect to main when logged in', () => {
