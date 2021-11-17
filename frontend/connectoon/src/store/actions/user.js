@@ -1,20 +1,39 @@
 import axios from 'axios';
 import { push } from 'connected-react-router';
+import Cookies from 'js-cookie';
 import * as actionTypes from './actionTypes';
+
+export const token_ = () => {
+  return {
+    type: actionTypes.TOKEN,
+  };
+};
+
+export const token = () => {
+  return (dispatch) => {
+    return axios.get('/token/')
+      .then((res) => {
+        dispatch(token_());
+        const csrftoken = Cookies.get('csrftoken');
+        axios.defaults.headers.common['X-CSRFToken'] = csrftoken;
+      });
+  };
+};
 
 export const logIn_ = (user) => {
   return {
     type: actionTypes.LOG_IN,
-    selectedUser: user,
+    loggedInUser: user,
   };
 };
 
-export const logIn = (user) => {
+export const logIn = (loginData) => {
   return (dispatch) => {
-    return axios.post('/users/login', user)
+    return axios.post('/users/login/', loginData)
       .then((res) => {
+        const csrftoken = Cookies.get('csrftoken');
+        axios.defaults.headers.common['X-CSRFToken'] = csrftoken;
         dispatch(logIn_(res.data));
-        dispatch(push('/'));
       });
   };
 };
@@ -55,7 +74,7 @@ export const getUser = (id) => {
 export const getMyUser_ = (user) => {
   return {
     type: actionTypes.GET_MYUSER,
-    selectedUser: user,
+    loggedInUser: user,
   };
 };
 
@@ -71,7 +90,7 @@ export const getMyUser = () => {
 export const editMyUser_ = (user) => {
   return {
     type: actionTypes.EDIT_MYUSER,
-    selectedUser: user,
+    loggedInUser: user,
   };
 };
 

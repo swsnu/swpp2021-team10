@@ -8,6 +8,7 @@ export {
   getSearchTags,
 } from './tag';
 export {
+  token,
   logIn,
   register,
   getUser,

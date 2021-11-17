@@ -3,27 +3,71 @@ import React from 'react';
 import reducer from './user';
 import * as actionTypes from '../actions/actionTypes';
 
-const stubUser = { id: 1 };
+const stubUser = {
+  id: 1,
+  email: 'test@snu.ac.kr',
+  username: 'test',
+};
 
 describe('User Reducer', () => {
   it('should return default state', () => {
     const newState = reducer(undefined, {}); // initialize
-    expect(newState).toEqual({ users: [], selectedUser: null, myreviews: [] });
+    expect(newState).toEqual({
+      users: [], selectedUser: null, loggedInUser: null, myreviews: [],
+    });
+  });
+
+  it('should get token', () => {
+    const stubInitialState = {
+      users: [stubUser],
+      selectedUser: null,
+      loggedInUser: null,
+      myreviews: [],
+    };
+    const newState = reducer(stubInitialState, {
+      type: actionTypes.TOKEN,
+    });
+    expect(newState).toEqual({
+      users: [stubUser],
+      selectedUser: null,
+      loggedInUser: null,
+      myreviews: [],
+    });
   });
 
   it('should login', () => {
     const stubInitialState = {
       users: [stubUser],
       selectedUser: null,
+      loggedInUser: null,
       myreviews: [],
     };
     const newState = reducer(stubInitialState, {
       type: actionTypes.LOG_IN,
-      selectedUser: stubUser,
+      loggedInUser: stubUser,
     });
     expect(newState).toEqual({
       users: [stubUser],
-      selectedUser: stubUser,
+      selectedUser: null,
+      loggedInUser: stubUser,
+      myreviews: [],
+    });
+  });
+
+  it('should logout', () => {
+    const stubInitialState = {
+      users: [stubUser],
+      selectedUser: null,
+      loggedInUser: stubUser,
+      myreviews: [],
+    };
+    const newState = reducer(stubInitialState, {
+      type: actionTypes.LOG_OUT,
+    });
+    expect(newState).toEqual({
+      users: [stubUser],
+      selectedUser: null,
+      loggedInUser: null,
       myreviews: [],
     });
   });
@@ -32,6 +76,7 @@ describe('User Reducer', () => {
     const stubInitialState = {
       users: [stubUser],
       selectedUser: null,
+      loggedInUser: null,
       myreviews: [],
     };
     const newState = reducer(stubInitialState, {
@@ -41,6 +86,7 @@ describe('User Reducer', () => {
     expect(newState).toEqual({
       users: [stubUser],
       selectedUser: stubUser,
+      loggedInUser: null,
       myreviews: [],
     });
   });
@@ -49,6 +95,7 @@ describe('User Reducer', () => {
     const stubInitialState = {
       users: [stubUser],
       selectedUser: null,
+      loggedInUser: null,
       myreviews: [],
     };
     const newState = reducer(stubInitialState, {
@@ -58,6 +105,7 @@ describe('User Reducer', () => {
     expect(newState).toEqual({
       users: [stubUser],
       selectedUser: stubUser,
+      loggedInUser: null,
       myreviews: [],
     });
   });
@@ -66,15 +114,17 @@ describe('User Reducer', () => {
     const stubInitialState = {
       users: [stubUser],
       selectedUser: null,
+      loggedInUser: null,
       myreviews: [],
     };
     const newState = reducer(stubInitialState, {
       type: actionTypes.GET_MYUSER,
-      selectedUser: stubUser,
+      loggedInUser: stubUser,
     });
     expect(newState).toEqual({
       users: [stubUser],
-      selectedUser: stubUser,
+      selectedUser: null,
+      loggedInUser: stubUser,
       myreviews: [],
     });
   });
@@ -83,15 +133,17 @@ describe('User Reducer', () => {
     const stubInitialState = {
       users: [stubUser],
       selectedUser: null,
+      loggedInUser: null,
       myreviews: [],
     };
     const newState = reducer(stubInitialState, {
       type: actionTypes.EDIT_MYUSER,
-      selectedUser: stubUser,
+      loggedInUser: stubUser,
     });
     expect(newState).toEqual({
       users: [stubUser],
-      selectedUser: stubUser,
+      selectedUser: null,
+      loggedInUser: stubUser,
       myreviews: [],
     });
   });
@@ -100,6 +152,7 @@ describe('User Reducer', () => {
     const stubInitialState = {
       users: [stubUser],
       selectedUser: null,
+      loggedInUser: null,
       myreviews: [],
     };
     const newState = reducer(stubInitialState, {
@@ -109,6 +162,7 @@ describe('User Reducer', () => {
     expect(newState).toEqual({
       users: [stubUser],
       selectedUser: null,
+      loggedInUser: null,
       myreviews: [],
     });
   });
