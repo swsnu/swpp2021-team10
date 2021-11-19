@@ -1,14 +1,22 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
-import './NavBar.css';
 
+import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
+
+import * as actionCreators from '../../store/actions/index';
+
+import './NavBar.css';
 
 class NavBar extends Component {
   constructor(props) {
     super(props);
-    this.state = { loggedIn: false, clickUsername: false };
+    this.state = {
+      loggedIn: false,
+      clickUsername: false,
+      searchWord: '',
+    };
   }
 
   onClickLogin() {
@@ -39,6 +47,13 @@ class NavBar extends Component {
     this.setState({ clickUsername: false });
   }
 
+  onClickSearchGlass() {
+    const { onPutSearchWord, history } = this.props;
+    const { searchWord } = this.state;
+    onPutSearchWord(searchWord);
+    history.push('/search');
+  }
+
   render() {
     const { className } = this.props;
     const { loggedIn, clickUsername } = this.state;
@@ -52,8 +67,10 @@ class NavBar extends Component {
           <Link id="recommendation-tab" to="/recommendation">Recommendation</Link>
           <Link id="board-tab" to="/board">Board</Link>
           <Link id="search-tab" to="/search">Search</Link>
-          <input id="search-input" type="text" placeholder="title, artist, #tag" />
-          <img id="search-glass-icon" src="/images/search_glass_icon.png" alt="search" />
+          <input id="search-input" type="text" placeholder="title, artist, #tag" onChange={(e) => this.setState({ searchWord: e.target.value })} />
+          <button className="search-glass-wrapper" type="button" onClick={() => this.onClickSearchGlass()}>
+            <img id="search-glass-icon" src="/images/search_glass_icon.png" alt="search" />
+          </button>
         </div>
         <div id="user-account-button">
           {!loggedIn && <button id="login-button" className="nav-bar-buttons" type="button" onClick={() => this.onClickLogin()}>LogIn</button>}
@@ -72,4 +89,10 @@ NavBar.propTypes = {
   history: PropTypes.shape().isRequired,
 };
 
-export default withRouter(NavBar);
+const mapDispatchToProps = (dispatch) => {
+  return {
+    onPutSearchWord: (keyword) => dispatch(actionCreators.putSearchWord(keyword)),
+  };
+};
+
+export default connect(null, mapDispatchToProps)(withRouter(NavBar));

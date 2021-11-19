@@ -81,3 +81,10 @@ export const getSearchWorks = (keyword, keytag) => {
       });
   };
 };
+
+export const putSearchWord = (word) => {
+  return {
+    type: actionTypes.PUT_SEARCH_WORD,
+    searchWord: word,
+  };
+};

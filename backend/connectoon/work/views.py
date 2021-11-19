@@ -148,7 +148,7 @@ def work_search(request):  # TODO
                 'description': work['description'], 'year': work['year'], 'link': work['link'],
                 'completion': work['completion'], 'score_avg': work['score_avg'], 'review_num': work['review_num'],
                 'platform_id': work['platform_id'], 'artists': artist_name, 'id': work['id']})
-            elif (keyword in artistStr) and tagcheck:
+            if (keyword in artistStr) and tagcheck:
                 return_work_list[1].append({'title': work['title'], 'thumbnail_picture': work['thumbnail_picture'],
                 'description': work['description'], 'year': work['year'], 'link': work['link'],
                 'completion': work['completion'], 'score_avg': work['score_avg'], 'review_num': work['review_num'],
