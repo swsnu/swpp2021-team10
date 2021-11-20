@@ -111,7 +111,8 @@ def user_login(request):
         # Check Available
         if user is not None:
             auth_login(request, user)
-            return HttpResponse(status=204)
+            response_dict = {'id': user.id, 'username': user.username, 'email': user.email}
+            return JsonResponse(response_dict, status=200)
         else:
             return HttpResponse(status=401)
     else:
