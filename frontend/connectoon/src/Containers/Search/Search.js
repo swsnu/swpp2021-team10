@@ -11,10 +11,18 @@ import TagSearchWindow from '../TagSearchWindow/TagSearchWindow';
 import './Search.css';
 
 class Search extends Component {
-  state = {
-    title: '',
-    genre: '',
-  };
+  constructor(props) {
+    super(props);
+    const { searchWord, onGetWorks } = this.props;
+    this.state = {
+      title: searchWord,
+      genre: '',
+    };
+    const { title } = this.state;
+    if (title !== '') {
+      onGetWorks(title, '');
+    }
+  }
 
   onAddTag = (name) => {
     const { onGetWorks } = this.props;
@@ -58,16 +66,19 @@ class Search extends Component {
 Search.defaultProps = {
   onGetWorks: func,
   storedWorks: PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.any)),
+  searchWord: PropTypes.string,
 };
 
 Search.propTypes = {
   onGetWorks: PropTypes.func,
   storedWorks: PropTypes.arrayOf(PropTypes.any),
+  searchWord: PropTypes.string,
 };
 
 const mapStateToProps = (state) => {
   return {
     storedWorks: state.work.searchedWorks,
+    searchWord: state.work.searchWord,
   };
 };
 

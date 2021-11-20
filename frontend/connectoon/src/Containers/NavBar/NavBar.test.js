@@ -6,17 +6,22 @@ import { Route, Switch } from 'react-router-dom';
 
 import { getMockStore } from '../../test-utils/mocks';
 import { history } from '../../store/store';
+import * as workActionCreators from '../../store/actions/work';
+
 import NavBar from './NavBar';
 
 const stubInitialReviewState = null;
 const stubInitialTagState = null;
 const stubInitialUserState = null;
-const stubInitialWorkState = null;
+const stubInitialWorkState = {
+  searchWord: '',
+};
 
 const mockStore = getMockStore(stubInitialReviewState, stubInitialTagState, stubInitialUserState, stubInitialWorkState);
 
 describe('<NavBar />', () => {
   let navbar;
+  let spyPutSearchWord;
   beforeEach(() => {
     navbar = (
       <Provider store={mockStore}>
@@ -27,6 +32,8 @@ describe('<NavBar />', () => {
         </ConnectedRouter>
       </Provider>
     );
+    spyPutSearchWord = jest.spyOn(workActionCreators, 'putSearchWord')
+      .mockImplementation(() => { return (dispatch) => {}; });
   });
 
   afterEach(() => {
@@ -87,5 +94,16 @@ describe('<NavBar />', () => {
     wrapper.simulate('click');
     wrapper = component.find('#login-button');
     expect(wrapper.length).toBe(1);
+  });
+
+  it('should handle search glass click', () => {
+    const component = mount(navbar);
+    const mockedEvent = {
+      target: {
+        value: 'test',
+      },
+    };
+    component.find('input').at(0).simulate('change', mockedEvent);
+    component.find('.search-glass-wrapper').simulate('click');
   });
 });

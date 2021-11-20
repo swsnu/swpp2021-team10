@@ -13,6 +13,7 @@ const initialState = {
   selectedWork: null,
   selectedReviews: [
   ],
+  searchWord: '',
 };
 
 const reducer = (state = initialState, action) => {
@@ -27,6 +28,8 @@ const reducer = (state = initialState, action) => {
       return { ...state, selectedWorks: action.selectedWorks };
     case actionTypes.GET_SEARCH_WORKS:
       return { ...state, searchedWorks: action.selectedWorks };
+    case actionTypes.PUT_SEARCH_WORD:
+      return { ...state, searchWord: action.searchWord };
     default:
       break;
   }
