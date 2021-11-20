@@ -154,7 +154,7 @@ class UserTestCase(TestCase):
         response = client.post('/users/login/',
                                json.dumps({'email': 'test1@snu.ac.kr', 'password': 'qwe123'}),
                                content_type='application/json', HTTP_X_CSRFTOKEN=csrftoken)
-        self.assertEqual(response.status_code, 204)
+        self.assertEqual(response.status_code, 200)
 
         # Check Not Allowed
         csrftoken = client.get('/token/').cookies['csrftoken'].value  # Get csrf token from cookie
@@ -180,7 +180,7 @@ class UserTestCase(TestCase):
         response = client.post('/users/login/',
                                json.dumps({'email': 'test1@snu.ac.kr', 'password': 'qwe123'}),
                                content_type='application/json', HTTP_X_CSRFTOKEN=csrftoken)
-        self.assertEqual(response.status_code, 204)
+        self.assertEqual(response.status_code, 200)
 
         # Check Successful User me
         csrftoken = client.get('/token/').cookies['csrftoken'].value  # Get csrf token from cookie

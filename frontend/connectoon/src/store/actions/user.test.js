@@ -5,6 +5,8 @@ import store from '../store';
 
 const stubUser = {
   id: 0,
+  email: 'test@snu.ac.kr',
+  username: 'test',
 };
 
 const stubReviews = [
@@ -16,6 +18,23 @@ const stubReviews = [
 describe('ActionCreators', () => {
   afterEach(() => {
     jest.clearAllMocks();
+  });
+
+  it('\'token\' should get token correctly', (done) => {
+    const spy = jest.spyOn(axios, 'get')
+      .mockImplementation((url, rv) => {
+        return new Promise((resolve, reject) => {
+          const result = {
+            status: 204,
+          };
+          resolve(result);
+        });
+      });
+
+    store.dispatch(actionCreators.token()).then(() => {
+      expect(spy).toHaveBeenCalledTimes(1);
+      done();
+    });
   });
 
   it('\'logIn\' should fetch user correctly', (done) => {
@@ -30,7 +49,7 @@ describe('ActionCreators', () => {
         });
       });
 
-    store.dispatch(actionCreators.logIn(stubUser)).then(() => {
+    store.dispatch(actionCreators.logIn({ email: 'test@snu.ac.kr', password: 'qwe123' })).then(() => {
       expect(spy).toHaveBeenCalledTimes(1);
       done();
     });
