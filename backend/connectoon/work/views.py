@@ -7,8 +7,11 @@ from django.forms.models import model_to_dict
 
 from work.models import Work
 from review.models import Review
+from tag.models import Tag
 from django.contrib.auth import get_user_model
 from django.views.decorators.csrf import csrf_exempt
+
+from django.db.models import Q
 
 def work_id(request, id):
     try:
@@ -106,53 +109,39 @@ def work_recommend(request):  # TODO
 
 def work_search(request):  # TODO
     if request.method == 'GET':
-        work_all_list = [work for work in Work.objects.all().values()]
-        return_work_list = [[], []]
         keyword = request.GET.get('q', None)
         keytag = request.GET.get('tags', None)
-        if keyword == '' and keytag == '':
-            keyword = "Response of empty query must be an empty list!"
-            keytag = "$Responseofemptyquerymustbeanemptylist!"
-
-        keytaglist = keytag.split('$')
-        del keytaglist[0]   #delete empty string
         
-        for work in work_all_list:
-            tempartist = [artist for artist in Work.objects.get(title=work['title']).artists.all().values()]
-            artistlist = []
-            for ta in tempartist:
-                artistlist.append(ta['name'])
-            artistStr = ""
-            if len(artistlist) > 0:
-                artistStr = artistlist[0]
-                del artistlist[0]
-            for ta in artistlist:
-                artistStr += ", " + ta
+        return_work_list = [[], []]
+        if keyword == '' and keytag == '':
+            return JsonResponse(return_work_list, safe=False)
+        
+        tag_list = [Tag.objects.get(name=tagname) for tagname in keytag.split('$')[1:]]
+        tag_filtered_work = Work.objects
+        for tag in tag_list:
+            tag_filtered_work = tag_filtered_work.filter(tags__in=[tag]).distinct()
 
-            artist_name = [artist.name for artist in Work.objects.get(title=work['title']).artists.all()]
+        if len(tag_list) == 0:
+            work_title_list = [work for work in Work.objects.filter(Q(title__contains=keyword)).values()]
+            work_artist_list = [work for work in Work.objects.filter(Q(artists__name__contains=keyword)).values()]
+        else:
+            work_title_list = [work for work in tag_filtered_work.filter(Q(title__contains=keyword)).values()]
+            work_artist_list = [work for work in tag_filtered_work.filter(Q(artists__name__contains=keyword)).values()]
 
-            tagcheck = True
-            taglist = [tag for tag in Work.objects.get(title=work['title']).tags.all().values()]
-            for kta in keytaglist:
-                forcheck = False
-                for ta in taglist:
-                    if ta['name'] == kta:
-                        forcheck = True
-                        break
-                if not forcheck:
-                    tagcheck = False
-                    break
-            
-            if (keyword in work['title']) and tagcheck:
-                return_work_list[0].append({'title': work['title'], 'thumbnail_picture': work['thumbnail_picture'],
-                'description': work['description'], 'year': work['year'], 'link': work['link'],
-                'completion': work['completion'], 'score_avg': work['score_avg'], 'review_num': work['review_num'],
-                'platform_id': work['platform_id'], 'artists': artist_name, 'id': work['id']})
-            if (keyword in artistStr) and tagcheck:
-                return_work_list[1].append({'title': work['title'], 'thumbnail_picture': work['thumbnail_picture'],
-                'description': work['description'], 'year': work['year'], 'link': work['link'],
-                'completion': work['completion'], 'score_avg': work['score_avg'], 'review_num': work['review_num'],
-                'platform_id': work['platform_id'], 'artists': artist_name, 'id': work['id']})
+        return_work_list[0] = list(map(lambda work: {'title': work['title'], 'thumbnail_picture': work['thumbnail_picture'],
+        'description': work['description'], 'year': work['year'], 'link': work['link'],
+        'completion': work['completion'], 'score_avg': work['score_avg'], 'review_num': work['review_num'],
+        'platform_id': work['platform_id'],
+        'artists': [artist.name for artist in Work.objects.get(title=work['title']).artists.all()],
+        'id': work['id']}, work_title_list))
+
+        return_work_list[1] = list(map(lambda work: {'title': work['title'], 'thumbnail_picture': work['thumbnail_picture'],
+        'description': work['description'], 'year': work['year'], 'link': work['link'],
+        'completion': work['completion'], 'score_avg': work['score_avg'], 'review_num': work['review_num'],
+        'platform_id': work['platform_id'],
+        'artists': [artist.name for artist in Work.objects.get(title=work['title']).artists.all()],
+        'id': work['id']}, work_artist_list))
+        
         return JsonResponse(return_work_list, safe=False)
     else:
         return HttpResponseNotAllowed(['GET'])

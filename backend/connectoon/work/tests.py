@@ -3,6 +3,7 @@ from django.forms.models import model_to_dict
 from django.core import serializers
 from .models import Work
 from review.models import Review
+from tag.models import Tag
 from django.contrib.auth import get_user_model
 import json
 
@@ -26,6 +27,9 @@ class WorkTestCase(TestCase):
         )
         Review.objects.create(
             work=Work.objects.first(), score=5.0, title="DUMMY2", content="DUMMY_CONTENT2", author=author2
+        )
+        Tag.objects.create(
+            name="Dummy"
         )
         
 
