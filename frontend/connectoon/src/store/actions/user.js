@@ -1,7 +1,9 @@
 import axios from 'axios';
 import { push } from 'connected-react-router';
-import Cookies from 'js-cookie';
 import * as actionTypes from './actionTypes';
+
+axios.defaults.xsrfCookieName = 'csrftoken';
+axios.defaults.xsrfHeaderName = 'X-CSRFToken';
 
 export const token_ = () => {
   return {
@@ -14,8 +16,6 @@ export const token = () => {
     return axios.get('/token/')
       .then((res) => {
         dispatch(token_());
-        const csrftoken = Cookies.get('csrftoken');
-        axios.defaults.headers.common['X-CSRFToken'] = csrftoken;
       });
   };
 };
@@ -31,8 +31,6 @@ export const logIn = (loginData) => {
   return (dispatch) => {
     return axios.post('/users/login/', loginData)
       .then((res) => {
-        const csrftoken = Cookies.get('csrftoken');
-        axios.defaults.headers.common['X-CSRFToken'] = csrftoken;
         dispatch(logIn_(res.data));
       });
   };

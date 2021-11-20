@@ -14,7 +14,6 @@
     "enzyme-adapter-react-16": "^1.15.6",
     "enzyme-adapter-react-17-updated": "^1.0.2",
     "history": "^4.10.1",
-    "js-cookie": "^3.0.1",
     "prop-types": "^15.7.2",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
