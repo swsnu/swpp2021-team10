@@ -96,7 +96,9 @@ describe('<NavBar />', () => {
     expect(wrapper.length).toBe(1);
   });
 
-  it('should handle search glass click', () => {
+  it('should handle search glass click with valid input', () => {
+    const spyHistoryPush = jest.spyOn(history, 'push')
+      .mockImplementation((path) => {});
     const component = mount(navbar);
     const mockedEvent = {
       target: {
@@ -105,5 +107,14 @@ describe('<NavBar />', () => {
     };
     component.find('input').at(0).simulate('change', mockedEvent);
     component.find('.search-glass-wrapper').simulate('click');
+    expect(spyHistoryPush).toHaveBeenCalledWith('/search');
+  });
+
+  it('should handle search glass click with empty input', () => {
+    const spyHistoryPush = jest.spyOn(history, 'push')
+      .mockImplementation((path) => {});
+    const component = mount(navbar);
+    component.find('.search-glass-wrapper').simulate('click');
+    expect(spyHistoryPush).toHaveBeenCalledWith('/search');
   });
 });

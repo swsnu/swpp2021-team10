@@ -59,6 +59,7 @@ const stubInitialWorkState = {
   ],
   selectedReviews: [
   ],
+  searchWord: '',
 };
 
 const mockStore = getMockStore(stubInitialReviewState, stubInitialTagState, stubInitialUserState, stubInitialWorkState);
@@ -99,6 +100,7 @@ describe('<Search />', () => {
     };
     component.find('input').at(0).simulate('change', mockedEvent);
   });
+
   it('should handle tag methods', () => {
     const component = mount(search);
     component.find('.selected-tag-body').at(0).simulate('click');
@@ -112,7 +114,8 @@ describe('<Search />', () => {
     };
     component.find('input').at(1).simulate('change', mockedEvent);
   });
-  it('should handle clicking work object and more button', () => {
+
+  it('should handle clicking work object', () => {
     const component = mount(search);
     component.find('.work-object').at(0).simulate('click');
   });

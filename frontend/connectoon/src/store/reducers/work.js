@@ -13,6 +13,9 @@ const initialState = {
   selectedWork: null,
   selectedReviews: [
   ],
+  recWorkLists: [
+    [],
+  ],
   searchWord: '',
 };
 
@@ -25,7 +28,7 @@ const reducer = (state = initialState, action) => {
     case actionTypes.GET_WORK_REVIEWS:
       return { ...state, selectedReviews: action.selectedReviews };
     case actionTypes.GET_REC_WORKS:
-      return { ...state, selectedWorks: action.selectedWorks };
+      return { ...state, recWorkLists: action.selectedWorks };
     case actionTypes.GET_SEARCH_WORKS:
       return { ...state, searchedWorks: action.selectedWorks };
     case actionTypes.PUT_SEARCH_WORD:

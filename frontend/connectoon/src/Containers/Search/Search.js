@@ -19,9 +19,7 @@ class Search extends Component {
       genre: '',
     };
     const { title } = this.state;
-    if (title !== '') {
-      onGetWorks(title, '');
-    }
+    onGetWorks(title, '');
   }
 
   onAddTag = (name) => {
@@ -59,7 +57,7 @@ class Search extends Component {
         </div>
         <TagSearchWindow className="search-genre-search-window" onAddTag={this.onAddTag} onDeleteTag={this.onDeleteTag} />
         {storedWorks[0].length !== 0 && titleList}
-        {storedWorks[1].length !== 0 && artistList}
+        {title !== '' && storedWorks[1].length !== 0 && artistList}
       </div>
     );
   }
