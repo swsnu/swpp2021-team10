@@ -29,7 +29,7 @@ def work_id(request, id):
         }
         return JsonResponse(work_json, status = 200)
     else:
-        return HttpResponseNotAllowed(['POST', 'GET'])
+        return HttpResponseNotAllowed(['GET'])
 
 
 def work_id_review(request, id):

@@ -18,4 +18,4 @@ def tag_search(request):  # TODO
                 return_tag_list.append({'key': tag['id'], 'name': tag['name'], 'related': related_list, 'prior': tag['prior']})
         return JsonResponse(return_tag_list, safe=False)
     else:
-        return HttpResponse(status=501)
+        return HttpResponseNotAllowed(['GET'])
