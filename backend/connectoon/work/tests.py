@@ -1,3 +1,5 @@
+from urllib.parse import urlencode
+
 from django.test import TestCase, Client
 from django.forms.models import model_to_dict
 from django.core import serializers
@@ -199,13 +201,8 @@ class WorkTestCase(TestCase):
         self.assertEqual(response.status_code, 401)
 
         csrftoken = client.get('/token/').cookies['csrftoken'].value  # Get csrf token from cookie
-        response = client.post('/users/',
-                               json.dumps({'email': 'test', 'username': 'test', 'password': '1234', 'tags': '1'}),
-                               content_type='application/json', HTTP_X_CSRFTOKEN=csrftoken)
-
-        csrftoken = client.get('/token/').cookies['csrftoken'].value  # Get csrf token from cookie
         response = client.post('/users/login/',
-                               json.dumps({'email': 'test', 'password': '1234'}),
+                               json.dumps({'email': 'dummy@user.com', 'password': '1234'}),
                                content_type='application/json', HTTP_X_CSRFTOKEN=csrftoken)
         response = client.get('/works/recommend/')
         self.assertEqual(response.status_code, 200)

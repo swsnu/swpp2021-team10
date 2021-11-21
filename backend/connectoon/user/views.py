@@ -1,10 +1,13 @@
 from django.db import IntegrityError, transaction
+from django.utils.datastructures import MultiValueDictKeyError
 from django.views.decorators.csrf import ensure_csrf_cookie
 from django.contrib.auth import get_user_model, authenticate, login as auth_login
 from django.http import HttpResponse, HttpResponseBadRequest, HttpResponseNotAllowed, HttpResponseForbidden, JsonResponse
 
 import json
 from json.decoder import JSONDecodeError
+
+from django.views.decorators.http import require_POST
 
 from tag.models import Tag
 from user.models import UserTagFav
@@ -18,40 +21,52 @@ def token(request):
         return HttpResponseNotAllowed(['GET'])
 
 
+@require_POST
 def user_register(request):
     User = get_user_model()
-    if request.method == 'POST':
+    try:
+        email = request.POST['email']
+        username = request.POST['username']
+        password = request.POST['password']
+    except MultiValueDictKeyError:
+        return HttpResponseBadRequest()
+
+    tags = request.POST.getlist('tags', [])
+    profile_picture = request.FILES.get('profile_picture')
+
+    tag_found = []
+    for tag_id in tags:
         try:
-            req_data = json.loads(request.body.decode())
-            email = req_data['email']
-            username = req_data['username']
-            password = req_data['password']
-            tags = req_data['tags']
-            # profile_picture = req_data['profile_picture'] TODO : need to implement profile_picture feature
-        except (KeyError, JSONDecodeError) as e:
+            tag_obj = Tag.objects.get(id=tag_id)
+            tag_found.append(tag_obj)
+        except (Tag.DoesNotExist) as e:
             return HttpResponseBadRequest()
 
-        tag_found = []
-        for tag_id in tags:
-            try:
-                tag_obj = Tag.objects.get(id=tag_id)
-                tag_found.append(tag_obj)
-            except (Tag.DoesNotExist) as e:
-                return HttpResponseBadRequest()
+    try:
+        with transaction.atomic():
+            created_user = User.objects.create_user(email=email, password=password, username=username)
+    except IntegrityError:
+        return HttpResponseBadRequest()
 
-        try:
-            with transaction.atomic():
-                created_user = User.objects.create_user(email=email, password=password, username=username)
-        except IntegrityError:
-            return HttpResponseBadRequest()
+    for tag_obj in tag_found:
+        UserTagFav.objects.create(user=created_user, tag=tag_obj)
 
-        for tag_obj in tag_found:
-            UserTagFav.objects.create(user=created_user, tag=tag_obj)
+    if (profile_picture):
+        created_user.profile_picture = profile_picture
+    created_user.save()
 
-        response_dict = {'id': created_user.id, 'email': created_user.email, 'username': created_user.username}
-        return JsonResponse(response_dict, status=201)
-    else:
-        return HttpResponseNotAllowed(['POST'])
+    user_tag = created_user.user_tag.all()
+    tag_list = [{'id': user_tag.tag.id, 'name': user_tag.tag.name} for user_tag in user_tag]
+
+    response_dict = {
+        'id': created_user.id,
+        'email': created_user.email,
+        'username': created_user.username,
+        'tags': tag_list,
+        'profile_picture': request.build_absolute_uri(created_user.profile_picture.url) if created_user.profile_picture else ''
+    }
+
+    return JsonResponse(response_dict, status=201)
 
 
 def user_dup_email(request):
