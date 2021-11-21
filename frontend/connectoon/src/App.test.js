@@ -5,6 +5,6 @@ import App from './App';
 import * as userActionCreators from './store/actions/user';
 
 test('renders learn react link', () => {
-  let spyToken = jest.spyOn(userActionCreators, 'token').mockImplementation(() => { return (dispatch) => {}; });
+  const spyToken = jest.spyOn(userActionCreators, 'token').mockImplementation(() => { return (dispatch) => {}; });
   render(<App />);
 });
