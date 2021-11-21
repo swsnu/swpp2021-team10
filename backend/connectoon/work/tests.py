@@ -196,8 +196,23 @@ class WorkTestCase(TestCase):
     def test_work_recommend(self):
         client = Client()
         response = client.get('/works/recommend/')
+        self.assertEqual(response.status_code, 401)
 
-        self.assertEqual(response.status_code, 501)
+        csrftoken = client.get('/token/').cookies['csrftoken'].value  # Get csrf token from cookie
+        response = client.post('/users/',
+                               json.dumps({'email': 'test', 'username': 'test', 'password': '1234', 'tags': '1'}),
+                               content_type='application/json', HTTP_X_CSRFTOKEN=csrftoken)
+
+        csrftoken = client.get('/token/').cookies['csrftoken'].value  # Get csrf token from cookie
+        response = client.post('/users/login/',
+                               json.dumps({'email': 'test', 'password': '1234'}),
+                               content_type='application/json', HTTP_X_CSRFTOKEN=csrftoken)
+        response = client.get('/works/recommend/')
+        self.assertEqual(response.status_code, 200)
+
+        csrftoken = client.get('/token/').cookies['csrftoken'].value  # Get csrf token from cookie
+        response = client.post('/works/recommend/', HTTP_X_CSRFTOKEN=csrftoken)
+        self.assertEqual(response.status_code, 405)
 
     def test_work_search(self):
         client = Client(enforce_csrf_checks=True)

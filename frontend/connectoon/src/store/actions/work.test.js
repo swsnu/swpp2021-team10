@@ -107,7 +107,7 @@ describe('ActionCreators', () => {
   });
 
   it('\'getRecWorks\' should fetch works correctly', (done) => {
-    const stubWorks = [stubWork];
+    const stubWorks = [[stubWork]];
     const spy = jest.spyOn(axios, 'get')
       .mockImplementation((url) => {
         return new Promise((resolve, reject) => {
@@ -121,7 +121,7 @@ describe('ActionCreators', () => {
 
     store.dispatch(actionCreators.getRecWorks()).then(() => {
       const newState = store.getState();
-      expect(newState.work.selectedWorks).toBe(stubWorks);
+      expect(newState.work.recWorkLists).toBe(stubWorks);
       expect(spy).toHaveBeenCalledTimes(1);
       done();
     });
