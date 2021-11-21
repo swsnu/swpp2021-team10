@@ -1,5 +1,3 @@
-import { render } from 'enzyme';
-import { string } from 'prop-types';
 import React, { Component } from 'react';
 import './WriteReview.css';
 

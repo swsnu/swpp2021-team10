@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
 import './DetailReview.css';
 
 class DetailReview extends Component {
   constructor(props) {
     super(props);
-    this.state = { editMode: false, clickLike: false };
+    this.state = {
+      editMode: false, clickLike: false, title: '', content: '', score: '',
+    };
   }
 
   onClickLike() {
@@ -23,14 +24,25 @@ class DetailReview extends Component {
   }
 
   render() {
-    const { className } = this.props;
+    const { className, review, editable } = this.props;
     const { editMode, clickLike } = this.state;
     const heart = clickLike ? '/images/fullHeart.png' : '/images/emptyHeart.png';
-    const titleElement = editMode ? <input className="detail-review-title-input" /> : <h4 className="detail-review-title">reviewtitle</h4>;
+    const titleElement = editMode ? <input className="detail-review-title-input" /> : <h4 className="detail-review-title">{review.title}</h4>;
     const scoreElement = editMode ? (
       <label className="detail-review-score-label">
         Score&nbsp;
-        <input className="detail-review-score-input" />
+        <input
+          type="number"
+          id="detail-review-score-input"
+          className="detail-review-score-input"
+          name="review-score"
+          min="0.5"
+          max="5.0"
+          placeholder="5.0"
+          step="0.5"
+          required
+          onChange={(event) => this.setState({ score: String(event.target.value) })}
+        />
       </label>
     ) : (
       <div className="review-score-region">
@@ -90,9 +102,5 @@ class DetailReview extends Component {
     );
   }
 }
-
-DetailReview.propTypes = {
-  className: PropTypes.string.isRequired,
-};
 
 export default DetailReview;

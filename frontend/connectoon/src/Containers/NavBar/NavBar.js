@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 
 import { connect } from 'react-redux';
@@ -13,14 +12,14 @@ class NavBar extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      loggedIn: false,
       clickUsername: false,
       searchWord: '',
     };
   }
 
   onClickLogin() {
-    this.setState({ loggedIn: true });
+    const { history } = this.props;
+    history.push('/login');
   }
 
   onClickUsername() {
@@ -43,8 +42,10 @@ class NavBar extends Component {
   }
 
   onClickLogout() {
-    this.setState({ loggedIn: false });
-    this.setState({ clickUsername: false });
+    const { clickUsername } = this.state;
+    this.setState({ clickUsername: !clickUsername });
+    const { onLogOut } = this.props;
+    onLogOut();
   }
 
   onClickSearchGlass() {
@@ -55,8 +56,8 @@ class NavBar extends Component {
   }
 
   render() {
-    const { className } = this.props;
-    const { loggedIn, clickUsername } = this.state;
+    const { className, loggedInUser } = this.props;
+    const { clickUsername } = this.state;
 
     return (
       <div className={className}>
@@ -73,26 +74,28 @@ class NavBar extends Component {
           </button>
         </div>
         <div id="user-account-button">
-          {!loggedIn && <button id="login-button" className="nav-bar-buttons" type="button" onClick={() => this.onClickLogin()}>LogIn</button>}
-          {loggedIn && <button id="username-button" className="nav-bar-buttons" type="button" onClick={() => this.onClickUsername()}>dooly9931</button>}
-          {loggedIn && clickUsername && <button id="mypage-button" className="nav-bar-buttons" type="button" onClick={() => this.onClickMyPage()}>MyPage</button>}
-          {loggedIn && clickUsername && <button id="myreviews-button" className="nav-bar-buttons" type="button" onClick={() => this.onClickMyReviews()}>MyReviews</button>}
-          {loggedIn && clickUsername && <button id="logout-button" className="nav-bar-buttons" type="button" onClick={() => this.onClickLogout()}>LogOut</button>}
+          {!loggedInUser && <button id="login-button" className="nav-bar-buttons" type="button" onClick={() => this.onClickLogin()}>LogIn</button>}
+          {loggedInUser && <button id="username-button" className="nav-bar-buttons" type="button" onClick={() => this.onClickUsername()}>{loggedInUser.username}</button>}
+          {loggedInUser && clickUsername && <button id="mypage-button" className="nav-bar-buttons" type="button" onClick={() => this.onClickMyPage()}>MyPage</button>}
+          {loggedInUser && clickUsername && <button id="myreviews-button" className="nav-bar-buttons" type="button" onClick={() => this.onClickMyReviews()}>MyReviews</button>}
+          {loggedInUser && clickUsername && <button id="logout-button" className="nav-bar-buttons" type="button" onClick={() => this.onClickLogout()}>LogOut</button>}
         </div>
       </div>
     );
   }
 }
 
-NavBar.propTypes = {
-  className: PropTypes.string.isRequired,
-  history: PropTypes.shape().isRequired,
+const mapStateToProps = (state) => {
+  return {
+    loggedInUser: state.user.loggedInUser,
+  };
 };
 
 const mapDispatchToProps = (dispatch) => {
   return {
     onPutSearchWord: (keyword) => dispatch(actionCreators.putSearchWord(keyword)),
+    onLogOut: () => dispatch(actionCreators.logOut()),
   };
 };
 
-export default connect(null, mapDispatchToProps)(withRouter(NavBar));
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(NavBar));

@@ -36,7 +36,7 @@ class WorkDetail extends Component {
 
   render() {
     const { reviewNum } = this.state;
-    const { selectedWork, loggedInUser } = this.props;
+    const { selectedWork, loggedInUser, selectedReviews } = this.props;
     const workInfo = selectedWork ? (
       <WorkInfo
         key={selectedWork.title + String(selectedWork.id)}
@@ -51,22 +51,25 @@ class WorkDetail extends Component {
         artists={selectedWork.artists}
       />
     ) : null;
-    const detailReviews = [
-      <DetailReview key="1" className="detail-review" />,
-      <DetailReview key="2" className="detail-review" />,
-      <DetailReview key="3" className="detail-review" />,
-      <DetailReview key="4" className="detail-review" />,
-    ];
+    const myReview = selectedReviews.filter((review) => {
+      return review.author.id === loggedInUser.id;
+    });
+    const myDetailReview = myReview.length === 1 ?
+      <DetailReview key={myReview[0].id} className="detail-review" review={myReview[0]} editable /> :
+      <WriteReview className="work-write-review" loggedInUser={loggedInUser} onClickReviewConfirm={this.onClickReviewConfirm} />;
+    const detailReviews = selectedReviews.map((review) => {
+      return review.author.id !== loggedInUser.id ? <DetailReview key={review.id} className="detail-review" review={review} editable={false} /> : null;
+    });
 
     return (
       <div className="work-detail" login={loggedInUser}>
         {workInfo}
-        <WriteReview className="work-write-review" loggedInUser={dummyUser} onClickReviewConfirm={this.onClickReviewConfirm} />
+        {myDetailReview}
         <div className="work-review-region">
           <div className="reviews-header-region">
             <h3 id="work-reviews-header">
               Reviews(
-              {reviewNum}
+              {selectedReviews.length}
               )
             </h3>
             <img id="work-score-star-icon" src="/images/ratingStar.png" alt="rating" />

@@ -36,6 +36,10 @@ export const logIn = (loginData) => {
   };
 };
 
+export const logOut = () => {
+  return { type: actionTypes.LOG_OUT };
+};
+
 export const register_ = (user) => {
   return {
     type: actionTypes.REGISTER,
