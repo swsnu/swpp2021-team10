@@ -8,6 +8,7 @@ from django.forms.models import model_to_dict
 from work.models import Work
 from review.models import Review
 from tag.models import Tag
+from user.models import UserTagFav
 from django.contrib.auth import get_user_model
 from django.views.decorators.csrf import csrf_exempt
 
@@ -105,7 +106,29 @@ def work_main(request):
 
 
 def work_recommend(request):  # TODO
-    return HttpResponse(status=501)
+    request_user = request.user
+    User = get_user_model()
+    if request.method == 'GET':
+        if request_user.is_authenticated:
+            return_work_list = [[]]
+
+            tag_list = [Tag.objects.get(id=tag['id']) for tag in request_user.user_tag.all().values()]
+            tag_filtered_work = Work.objects
+            for tag in tag_list:
+                tag_filtered_work = tag_filtered_work.filter(tags__in=[tag]).distinct()
+            
+            return_work_list[0] = list(map(lambda work: {'title': work['title'], 'thumbnail_picture': work['thumbnail_picture'],
+            'description': work['description'], 'year': work['year'], 'link': work['link'],
+            'completion': work['completion'], 'score_avg': work['score_avg'], 'review_num': work['review_num'],
+            'platform_id': work['platform_id'],
+            'artists': [artist.name for artist in Work.objects.get(title=work['title']).artists.all()],
+            'id': work['id']}, [work for work in tag_filtered_work.values()]))
+
+            return JsonResponse(return_work_list, status=200, safe=False)
+        else:
+            return HttpResponse(status=401)
+    else:
+        return HttpResponseNotAllowed(['GET'])
 
 def work_search(request):  # TODO
     if request.method == 'GET':

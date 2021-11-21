@@ -24,6 +24,7 @@ describe('Work Reducer', () => {
       searchedWorks: [[], []],
       selectedWork: null,
       selectedReviews: [],
+      recWorkLists: [[]],
       works: [],
     });
   });
@@ -80,16 +81,18 @@ describe('Work Reducer', () => {
       searchedWorks: [[stubWork], [stubWork]],
       selectedWork: stubWork,
       selectedReviews: [stubReview],
+      recWorkLists: [[]],
     };
     const newState = reducer(stubInitialState, {
       type: actionTypes.GET_REC_WORKS,
-      selectedWorks: [stubWork],
+      selectedWorks: [[stubWork]],
     });
     expect(newState).toEqual({
       selectedWorks: [stubWork],
       searchedWorks: [[stubWork], [stubWork]],
       selectedWork: stubWork,
       selectedReviews: [stubReview],
+      recWorkLists: [[stubWork]],
     });
   });
 
