@@ -122,8 +122,6 @@ describe('<NavBar />', () => {
         value: 'test',
       },
     };
-    component.find('input').at(0).simulate('change', mockedEvent);
-    component.find('.search-glass-wrapper').simulate('click');
     let wrapper = component.find('#search-input');
     wrapper.simulate('change', mockedEvent);
     const newNavbarInstance = component.find(NavBar.WrappedComponent).instance();
@@ -137,7 +135,6 @@ describe('<NavBar />', () => {
 
   it('should handle search glass click with empty input', () => {
     const component = mount(navbar);
-    component.find('.search-glass-wrapper').simulate('click');
     const wrapper = component.find('#search-glass-wrapper');
     wrapper.simulate('click');
     expect(spyPutSearchWord).toHaveBeenCalledTimes(1);
