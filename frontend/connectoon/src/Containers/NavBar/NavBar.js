@@ -19,6 +19,11 @@ class NavBar extends Component {
     };
   }
 
+  componentDidMount() {
+    const { onToken } = this.props;
+    onToken();
+  }
+
   onClickLogin() {
     this.setState({ loggedIn: true });
   }
@@ -43,8 +48,10 @@ class NavBar extends Component {
   }
 
   onClickLogout() {
-    this.setState({ loggedIn: false });
-    this.setState({ clickUsername: false });
+    this.setState({ loggedIn: false }); // dummy!
+    this.setState({ clickUsername: false }); // dummy!
+    const { onLogOut } = this.props;
+    onLogOut();
   }
 
   onClickSearchGlass() {
@@ -92,6 +99,8 @@ NavBar.propTypes = {
 const mapDispatchToProps = (dispatch) => {
   return {
     onPutSearchWord: (keyword) => dispatch(actionCreators.putSearchWord(keyword)),
+    onLogOut: () => dispatch(actionCreators.logOut()),
+    onToken: () => dispatch(actionCreators.token()),
   };
 };
 

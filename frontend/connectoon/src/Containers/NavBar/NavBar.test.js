@@ -7,6 +7,7 @@ import { Route, Switch } from 'react-router-dom';
 import { getMockStore } from '../../test-utils/mocks';
 import { history } from '../../store/store';
 import * as workActionCreators from '../../store/actions/work';
+import * as userActionCreators from '../../store/actions/user';
 
 import NavBar from './NavBar';
 
@@ -22,6 +23,8 @@ const mockStore = getMockStore(stubInitialReviewState, stubInitialTagState, stub
 describe('<NavBar />', () => {
   let navbar;
   let spyPutSearchWord;
+  let spyLogOut;
+  let spyToken;
   beforeEach(() => {
     navbar = (
       <Provider store={mockStore}>
@@ -33,6 +36,10 @@ describe('<NavBar />', () => {
       </Provider>
     );
     spyPutSearchWord = jest.spyOn(workActionCreators, 'putSearchWord')
+      .mockImplementation(() => { return (dispatch) => {}; });
+    spyLogOut = jest.spyOn(userActionCreators, 'logOut')
+      .mockImplementation(() => { return (dispatch) => {}; });
+    spyToken = jest.spyOn(userActionCreators, 'token')
       .mockImplementation(() => { return (dispatch) => {}; });
   });
 

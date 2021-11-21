@@ -10,6 +10,7 @@ export {
 export {
   token,
   logIn,
+  logOut,
   register,
   getUser,
   getMyUser,

@@ -1,6 +1,7 @@
 from django.db import IntegrityError, transaction
 from django.views.decorators.csrf import ensure_csrf_cookie
 from django.contrib.auth import get_user_model, authenticate, login as auth_login
+from django.contrib import auth
 from django.http import HttpResponse, HttpResponseBadRequest, HttpResponseNotAllowed, HttpResponseForbidden, JsonResponse
 
 import json
@@ -117,6 +118,16 @@ def user_login(request):
             return HttpResponse(status=401)
     else:
         return HttpResponseNotAllowed(['POST'])
+
+
+def user_logout(request):
+    if request.method == 'GET':
+        if not request.user.is_authenticated:
+            return HttpResponse(status=401)
+        auth.logout(request)
+        return HttpResponse(status=200)
+    else:
+        return HttpResponseNotAllowed(['GET'])
 
 
 def user_id(request, id):  # TODO
