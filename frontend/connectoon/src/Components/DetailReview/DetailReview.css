@@ -11,6 +11,7 @@
   width: 30px;
   height: 30px;
   display: inline-block;
+  margin: 0 0 0 10px;
 }
 
 .detail-username {
@@ -18,6 +19,10 @@
   margin: 7px 5px 7px 5px;
   vertical-align: top;
   color: gray;
+  width: 60px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .detail-review-title {
@@ -27,6 +32,9 @@
   width: 500px;
   text-align: left;
   height: 18px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .detail-review-title-input {
@@ -84,9 +92,9 @@
   vertical-align: top;
 }
 
-.detail-review-score-input {
+.detail-review-score-select {
   margin: 5px 5px 5px 5px;
-  width: 100px;
+  width: 50px;
   height: 18px;
 }
 

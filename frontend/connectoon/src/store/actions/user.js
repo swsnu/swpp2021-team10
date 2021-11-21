@@ -36,8 +36,19 @@ export const logIn = (loginData) => {
   };
 };
 
+export const logOut_ = () => {
+  return {
+    type: actionTypes.LOG_OUT,
+  };
+};
+
 export const logOut = () => {
-  return { type: actionTypes.LOG_OUT };
+  return (dispatch) => {
+    return axios.get('/users/logout/')
+      .then((res) => {
+        dispatch(logOut_());
+      });
+  };
 };
 
 export const register_ = (user) => {

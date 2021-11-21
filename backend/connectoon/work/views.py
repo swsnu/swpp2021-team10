@@ -14,31 +14,6 @@ from django.views.decorators.csrf import csrf_exempt
 from django.db.models import Q
 
 def work_id(request, id):
-    if request.method == 'POST':
-        req_data = json.loads(request.body.decode())
-        title = req_data['title']
-        thumb = req_data['thumb']
-        description = req_data['description']
-        year = req_data['year']
-        link = req_data['link']
-        completion = req_data['completion']
-        score = req_data['score']
-        review = req_data['review']
-        platform_id = req_data['platform']
-        artist = re.split(',|/', req_data['artist'])
-        work = Work(title=title, thumbnail_picture=thumb, description=description,
-        year=year, link=link, completion=completion, score_sum=score, review_num=review, score_avg=score/review,
-        platform_id=platform_id)
-        work.save()
-        work = Work.objects.get(title=title)
-        for ar in artist:
-            #print(Artist.objects.get(name=ar).name)
-            work.artists.add(Artist.objects.get(name=ar))
-        work.save()
-        return JsonResponse({'title': work.title, 'thumb': work.thumbnail_picture,
-        'description': work.description, 'year': work.year, 'link': work.link,
-        'completion': work.completion, 'score_sum': work.score_sum, 'review_num': work.review_num, 'score_avg': work.score_avg,
-        'plat': work.platform_id}, status=201)
     try:
         work = Work.objects.get(id = id)
     except Work.DoesNotExist:
@@ -58,6 +33,7 @@ def work_id(request, id):
 
 
 def work_id_review(request, id):
+    User = get_user_model()
 
     try:
         work = Work.objects.get(id = id)
@@ -65,11 +41,23 @@ def work_id_review(request, id):
         return HttpResponse(status=404)
 
     if request.method == 'GET':
-        reviews = Review.objects.filter(work = id).values()
+        reviews = Review.objects.filter(work = id)
         response_dict = []
-        
         for review in reviews:
-            response_dict.append(review)
+            work = Work.objects.get(id=review.work_id)
+            work_artist_name = [artist.name for artist in work.artists.all()]
+            work_dict = {
+                "id": work.id, "title": work.title, "thumbnail_picture": work.thumbnail_picture,
+                "platform_id": work.platform_id, "year": work.year, "artists": work_artist_name
+            }
+            author = User.objects.get(id=review.author_id)
+            author_dict = {
+                "id": author.id, "username": author.username, "email": author.email, # "profile_picture": author.profile_picture
+            }
+            response_dict.append({
+                "id": review.id, "title": review.title, "content": review.content, "score": review.score, "likes": review.likes,
+                "work": work_dict, "author": author_dict
+            })
         
         return JsonResponse(response_dict, safe = False)
 

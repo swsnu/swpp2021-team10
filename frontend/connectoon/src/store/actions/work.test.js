@@ -147,4 +147,24 @@ describe('ActionCreators', () => {
       done();
     });
   });
+
+  it('\'postWorkReview\' should post a new review correctly', (done) => {
+    const stubReviewData = {
+      title: 'test_title', content: 'test_content', score: 4.0,
+    };
+    const spy = jest.spyOn(axios, 'post')
+      .mockImplementation((url, data) => {
+        return new Promise((resolve, reject) => {
+          const result = {
+            status: 204,
+          };
+          resolve(result);
+        });
+      });
+    const stubReviewId = 1;
+    store.dispatch(actionCreators.postWorkReview(stubReviewId, stubReviewData)).then(() => {
+      expect(spy).toHaveBeenCalledTimes(1);
+      done();
+    });
+  });
 });

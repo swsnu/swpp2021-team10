@@ -11,7 +11,7 @@ export const getReview_ = (review) => {
 
 export const getReview = (id) => {
   return (dispatch) => {
-    return axios.get('/review/' + id)
+    return axios.get('/reviews/' + id + '/')
       .then((res) => dispatch(getReview_(res.data)));
   };
 };
@@ -23,9 +23,9 @@ export const editReview_ = (review) => {
   };
 };
 
-export const editReview = (review) => {
+export const editReview = (id, review) => {
   return (dispatch) => {
-    return axios.put('/review/' + review.id, review)
+    return axios.put('/reviews/' + id + '/', review)
       .then((res) => dispatch(editReview_(res.data)));
   };
 };
@@ -39,7 +39,7 @@ export const deleteReview_ = (id) => {
 
 export const deleteReview = (id) => {
   return (dispatch) => {
-    return axios.delete('/review/' + id)
+    return axios.delete('/reviews/' + id + '/')
       .then((res) => dispatch(deleteReview_(id)));
   };
 };

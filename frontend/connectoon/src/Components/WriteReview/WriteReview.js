@@ -4,7 +4,7 @@ import './WriteReview.css';
 class WriteReview extends Component {
   constructor(props) {
     super(props);
-    this.state = { title: '', content: '', score: '' };
+    this.state = { title: '', content: '', score: '5.0' };
 
     this.onClickConfirm = this.onClickConfirm.bind(this);
   }
@@ -12,7 +12,7 @@ class WriteReview extends Component {
   onClickConfirm() {
     const { title, content, score } = this.state;
     const { onClickReviewConfirm } = this.props;
-    onClickReviewConfirm(title, content, score);
+    onClickReviewConfirm(title, content, parseFloat(score));
   }
 
   render() {
@@ -28,19 +28,18 @@ class WriteReview extends Component {
           </label>
           <label className="write-review-score-label">
             Score&nbsp;
-            <input
-              type="number"
-              id="write-review-score-input"
-              className="write-review-score-input"
-              name="review-score"
-              min="0.5"
-              max="5.0"
-              placeholder="5.0"
-              step="0.5"
-              required
-              onChange={(event) => this.setState({ score: String(event.target.value) })}
-            />
-            <span className="write-review-score-input-validity" />
+            <select className="write-review-score-select" name="review-score" defaultValue="5.0" onChange={(event) => this.setState({ score: event.target.value })}>
+              <option value="0.5">0.5</option>
+              <option value="1.0">1.0</option>
+              <option value="1.5">1.5</option>
+              <option value="2.0">2.0</option>
+              <option value="2.5">2.5</option>
+              <option value="3.0">3.0</option>
+              <option value="3.5">3.5</option>
+              <option value="4.0">4.0</option>
+              <option value="4.5">4.5</option>
+              <option value="5.0">5.0</option>
+            </select>
           </label>
         </div>
         <div className="content-and-button-region">
@@ -51,7 +50,7 @@ class WriteReview extends Component {
           <button
             type="button"
             className="write-review-confirm-button"
-            disabled={title.match(/^\s*$/g) || content.match(/^\s*$/g) || !document.getElementById('write-review-score-input').validity.valid || !loggedInUser}
+            disabled={title.match(/^\s*$/g) || content.match(/^\s*$/g) || !loggedInUser}
             onClick={this.onClickConfirm}
           >
             {loggedInUser ? 'Confirm' : 'Please Login'}

@@ -3,14 +3,13 @@
   margin: 10px max(calc(50% - 500px), 0px) 10px max(calc(50% - 500px), 0px);
 }
 
-.work-review-region {
-  border: 1px solid black;
+.my-review-region {
+  border-top: 1px solid black;
+  margin: 10px 0 10px 0;
 }
 
-.review-header-region {
-  padding: 0;
-  margin: 0;
-  height: 42px;
+.work-review-region {
+  border-top: 1px solid black;
 }
 
 #work-reviews-header {

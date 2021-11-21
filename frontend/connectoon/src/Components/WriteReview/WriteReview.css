@@ -1,7 +1,7 @@
 .work-write-review {
   width: 1000px;
   margin: 10px max(calc(50% - 500px), 0px) 10px max(calc(50% - 500px), 0px);
-  border: 1px solid black;
+  border-top: 1px solid black;
 }
 
 .work-write-review-header {
@@ -26,19 +26,9 @@
   margin: 0 0 0 212px;
 }
 
-.write-review-score-input {
+.write-review-score-select {
   width: 50px;
   height: 18px;
-}
-
-.write-review-score-input:invalid+.write-review-score-input-validity:after {
-  content: 'invalid';
-  padding-left: 5px;
-}
-
-.write-review-score-input:valid+.write-review-score-input-validity:after {
-  content: 'valid!✓';
-  padding-left: 5px;
 }
 
 .content-and-button-region {

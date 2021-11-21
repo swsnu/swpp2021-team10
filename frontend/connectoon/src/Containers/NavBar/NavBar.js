@@ -69,7 +69,7 @@ class NavBar extends Component {
           <Link id="board-tab" to="/board">Board</Link>
           <Link id="search-tab" to="/search">Search</Link>
           <input id="search-input" type="text" placeholder="title, artist, #tag" onChange={(e) => this.setState({ searchWord: e.target.value })} />
-          <button className="search-glass-wrapper" type="button" onClick={() => this.onClickSearchGlass()}>
+          <button id="search-glass-wrapper" type="button" onClick={() => this.onClickSearchGlass()}>
             <img id="search-glass-icon" src="/images/search_glass_icon.png" alt="search" />
           </button>
         </div>

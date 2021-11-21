@@ -1,17 +1,25 @@
 import React from 'react';
-import { shallow, mount } from 'enzyme';
+import { mount } from 'enzyme';
 
 import DetailReview from './DetailReview';
 
+const stubReview = {
+  title: 'test_title1',
+  content: 'test_content1',
+  score: 5.0,
+  likes: 100,
+  author: 'test_author1',
+};
+
 describe('<DetailReview />', () => {
   it('should render review in WorkDetail', () => {
-    const component = shallow(<DetailReview className="detail-review" />);
-    const wrapper = component.find('.detail-review');
-    expect(wrapper.length).toBeGreaterThan(0);
+    const component = mount(<DetailReview className="detail-review" review={stubReview} editable={false} />);
+    const wrapper = component.find('div.detail-review');
+    expect(wrapper.length).toBe(1);
   });
 
   it('should handle click like', () => {
-    const component = mount(<DetailReview className="detail-review" />);
+    const component = mount(<DetailReview className="detail-review" review={stubReview} editable={false} />);
     const wrapper = component.find('.detail-review-like-button');
     wrapper.simulate('click');
     expect(component.state('clickLike')).toBeTruthy();
@@ -20,7 +28,7 @@ describe('<DetailReview />', () => {
   });
 
   it('should handle click edit', () => {
-    const component = mount(<DetailReview className="detail-review" />);
+    const component = mount(<DetailReview className="detail-review" review={stubReview} editable />);
     let wrapper = component.find('.detail-edit-button');
     wrapper.simulate('click');
     expect(component.state('editMode')).toBeTruthy();
@@ -28,14 +36,51 @@ describe('<DetailReview />', () => {
     expect(wrapper.length).toBe(1);
   });
 
-  it('should handle click back', () => {
-    const component = mount(<DetailReview className="detail-review" />);
+  it('should handle click delete', () => {
+    const spyDeleteReview = jest.fn(() => { });
+    const component = mount(<DetailReview className="detail-review" review={stubReview} editable onClickDeleteReview={() => spyDeleteReview()} />);
+    const wrapper = component.find('.detail-delete-button');
+    wrapper.simulate('click');
+    expect(spyDeleteReview).toHaveBeenCalledTimes(1);
+  });
+
+  it('should handle title, content, score changes', () => {
+    const component = mount(<DetailReview className="detail-review" review={stubReview} editable />);
     let wrapper = component.find('.detail-edit-button');
     wrapper.simulate('click');
+    wrapper = component.find('.detail-review-title-input');
+    wrapper.simulate('change', { target: { value: 'edit_title1' } });
+    wrapper = component.find('.detail-review-score-select');
+    wrapper.simulate('change', { target: { value: '4.0' } });
+    wrapper = component.find('.detail-review-content-input');
+    wrapper.simulate('change', { target: { value: 'edit_content1' } });
+    expect(component.state('title')).toBe('edit_title1');
+    expect(component.state('content')).toBe('edit_content1');
+    expect(component.state('score')).toBe('4.0');
+  });
+
+  it('should handle click save', () => {
+    const spySaveReview = jest.fn(() => { });
+    const component = mount(<DetailReview className="detail-review" review={stubReview} editable onClickSaveReview={() => spySaveReview()} />);
+    let wrapper = component.find('.detail-edit-button');
+    wrapper.simulate('click');
+    wrapper = component.find('.detail-review-title-input');
+    wrapper.simulate('change', { target: { value: 'edit_title1' } });
+    wrapper = component.find('.detail-save-button');
+    wrapper.simulate('click');
+    expect(component.state('editMode')).toBeFalsy();
+    expect(spySaveReview).toHaveBeenCalledTimes(1);
+  });
+
+  it('should handle click back, returning to initial review data', () => {
+    const component = mount(<DetailReview className="detail-review" review={stubReview} editable />);
+    let wrapper = component.find('.detail-edit-button');
+    wrapper.simulate('click');
+    wrapper = component.find('.detail-review-title-input');
+    wrapper.simulate('change', { target: { value: 'edit_title1' } });
     wrapper = component.find('.detail-back-button');
     wrapper.simulate('click');
     expect(component.state('editMode')).toBeFalsy();
-    wrapper = component.find('.detail-edit-button');
-    expect(wrapper.length).toBe(1);
+    expect(component.state('title')).toBe('test_title1');
   });
 });

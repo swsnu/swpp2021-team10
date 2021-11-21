@@ -7,16 +7,6 @@ import WriteReview from '../../Components/WriteReview/WriteReview';
 import DetailReview from '../../Components/DetailReview/DetailReview';
 import * as actionCreators from '../../store/actions/index';
 
-const dummyUser = { id: 1, username: 'user1', email: 'dooly9931@naver.com' };
-const dummyReviews = [
-  {
-    id: 1, title: 'title1', content: 'content1', score: '5', likes: '555', work: { id: 1 }, author: { id: 1, username: 'user1', email: 'email1@email.com' },
-  },
-  {
-    id: 2, title: 'title2', content: 'content2', score: '5', likes: '555', work: { id: 2 }, author: { id: 2, username: 'user2', email: 'email2@email.com' },
-  },
-];
-
 class WorkDetail extends Component {
   constructor(props) {
     super(props);
@@ -31,7 +21,27 @@ class WorkDetail extends Component {
   }
 
   onClickReviewConfirm(title, content, score) {
-    this.props.onPostReview(this.props.match.params.id, { title, content, score });
+    this.props.onPostReview(this.props.match.params.id, { title, content, score })
+      .then(() => {
+        this.props.onGetWork(this.props.match.params.id);
+        this.props.onGetWorkReviews(this.props.match.params.id);
+      });
+  }
+
+  onClickDeleteReview(id) {
+    this.props.onDeleteReview(id)
+      .then(() => {
+        this.props.onGetWork(this.props.match.params.id);
+        this.props.onGetWorkReviews(this.props.match.params.id);
+      });
+  }
+
+  onClickSaveReview(id, title, content, score) {
+    this.props.onEditReview(id, { title, content, score })
+      .then(() => {
+        this.props.onGetWork(this.props.match.params.id);
+        this.props.onGetWorkReviews(this.props.match.params.id);
+      });
   }
 
   render() {
@@ -51,31 +61,55 @@ class WorkDetail extends Component {
         artists={selectedWork.artists}
       />
     ) : null;
-    const myReview = selectedReviews.filter((review) => {
+    const myReview = (loggedInUser && selectedReviews) ? selectedReviews.filter((review) => {
       return review.author.id === loggedInUser.id;
-    });
+    }) : [];
     const myDetailReview = myReview.length === 1 ?
-      <DetailReview key={myReview[0].id} className="detail-review" review={myReview[0]} editable /> :
+      <div className="my-review-region">
+        <h3 id="work-reviews-header">
+          Review
+          {(selectedReviews.length > 1) && 's'}
+          (
+          {selectedReviews.length}
+          )
+        </h3>
+        <img id="work-score-star-icon" src="/images/ratingStar.png" alt="rating" />
+        <h4 id="work-average-score">{selectedWork ? selectedWork.score_avg.toFixed(2) : '0'}</h4>
+        <DetailReview
+          key={myReview[0].id}
+          className="detail-review"
+          review={myReview[0]}
+          editable
+          onClickSaveReview={(title, content, score) => this.onClickSaveReview(myReview[0].id, title, content, score)}
+          onClickDeleteReview={() => this.onClickDeleteReview(myReview[0].id)}
+        />
+      </div> :
       <WriteReview className="work-write-review" loggedInUser={loggedInUser} onClickReviewConfirm={this.onClickReviewConfirm} />;
-    const detailReviews = selectedReviews.map((review) => {
-      return review.author.id !== loggedInUser.id ? <DetailReview key={review.id} className="detail-review" review={review} editable={false} /> : null;
-    });
+    const othersDetailReviews = myReview.length === 1 ?
+      selectedReviews.map((review) => {
+        return review.author.id !== loggedInUser.id ? <DetailReview key={review.id} className="detail-review" review={review} editable={false} /> : null;
+      }) :
+        <div>
+          <div className="others-review-region">
+            <h3 id="work-reviews-header">
+              Review
+              {(selectedReviews.length > 1) && 's'}
+              (
+              {selectedReviews.length}
+              )
+            </h3>
+            <img id="work-score-star-icon" src="/images/ratingStar.png" alt="rating" />
+            <h4 id="work-average-score">{selectedWork ? selectedWork.score_avg.toFixed(2) : '0'}</h4>
+          </div>
+          {selectedReviews.map((review) => { return <DetailReview key={review.id} className="detail-review" review={review} editable={false} />; })}
+        </div>;
 
     return (
       <div className="work-detail" login={loggedInUser}>
         {workInfo}
         {myDetailReview}
         <div className="work-review-region">
-          <div className="reviews-header-region">
-            <h3 id="work-reviews-header">
-              Reviews(
-              {selectedReviews.length}
-              )
-            </h3>
-            <img id="work-score-star-icon" src="/images/ratingStar.png" alt="rating" />
-            <h4 id="work-average-score">{selectedWork ? selectedWork.score_avg : '0'}</h4>
-          </div>
-          {detailReviews}
+          {othersDetailReviews}
         </div>
       </div>
     );
@@ -95,6 +129,8 @@ const mapDispatchToProps = (dispatch) => {
     onGetWork: (id) => dispatch(actionCreators.getWork(id)),
     onPostReview: (id, reviewData) => dispatch(actionCreators.postWorkReview(id, reviewData)),
     onGetWorkReviews: (id) => dispatch(actionCreators.getWorkReviews(id)),
+    onEditReview: (id, reviewData) => dispatch(actionCreators.editReview(id, reviewData)),
+    onDeleteReview: (id) => dispatch(actionCreators.deleteReview(id)),
   };
 };
 
