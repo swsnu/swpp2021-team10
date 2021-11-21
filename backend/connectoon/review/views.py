@@ -35,14 +35,14 @@ def review_id(request, id):  # TODO
         except (KeyError, JSONDecodeError) as e:
             return HttpResponseBadRequest()
         
-        prevReviewScore = review.score
+        prev_review_score = review.score
         review.title = title
         review.content = content
         review.score = score
         review.save()
         
         work = review.work
-        work.score_sum = work.score_sum - prevReviewScore + float(score)
+        work.score_sum = work.score_sum - prev_review_score + float(score)
         work.score_avg = work.score_sum / work.review_num
         work.save()
 
