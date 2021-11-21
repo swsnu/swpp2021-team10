@@ -23,4 +23,5 @@ export {
   getRecWorks,
   getSearchWorks,
   putSearchWord,
+  postWorkReview,
 } from './work';

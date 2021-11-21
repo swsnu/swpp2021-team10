@@ -14,6 +14,31 @@ from django.views.decorators.csrf import csrf_exempt
 from django.db.models import Q
 
 def work_id(request, id):
+    if request.method == 'POST':
+        req_data = json.loads(request.body.decode())
+        title = req_data['title']
+        thumb = req_data['thumb']
+        description = req_data['description']
+        year = req_data['year']
+        link = req_data['link']
+        completion = req_data['completion']
+        score = req_data['score']
+        review = req_data['review']
+        platform_id = req_data['platform']
+        artist = re.split(',|/', req_data['artist'])
+        work = Work(title=title, thumbnail_picture=thumb, description=description,
+        year=year, link=link, completion=completion, score_sum=score, review_num=review, score_avg=score/review,
+        platform_id=platform_id)
+        work.save()
+        work = Work.objects.get(title=title)
+        for ar in artist:
+            #print(Artist.objects.get(name=ar).name)
+            work.artists.add(Artist.objects.get(name=ar))
+        work.save()
+        return JsonResponse({'title': work.title, 'thumb': work.thumbnail_picture,
+        'description': work.description, 'year': work.year, 'link': work.link,
+        'completion': work.completion, 'score_sum': work.score_sum, 'review_num': work.review_num, 'score_avg': work.score_avg,
+        'plat': work.platform_id}, status=201)
     try:
         work = Work.objects.get(id = id)
     except Work.DoesNotExist:
@@ -29,7 +54,7 @@ def work_id(request, id):
         }
         return JsonResponse(work_json, status = 200)
     else:
-        return HttpResponseNotAllowed(['GET'])
+        return HttpResponseNotAllowed(['POST', 'GET'])
 
 
 def work_id_review(request, id):

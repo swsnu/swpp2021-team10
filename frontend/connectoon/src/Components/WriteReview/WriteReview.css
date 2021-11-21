@@ -27,8 +27,18 @@
 }
 
 .write-review-score-input {
-  width: 100px;
+  width: 50px;
   height: 18px;
+}
+
+.write-review-score-input:invalid+.write-review-score-input-validity:after {
+  content: 'invalid';
+  padding-left: 5px;
+}
+
+.write-review-score-input:valid+.write-review-score-input-validity:after {
+  content: 'valid!✓';
+  padding-left: 5px;
 }
 
 .content-and-button-region {

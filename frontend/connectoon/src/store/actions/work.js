@@ -88,3 +88,12 @@ export const putSearchWord = (word) => {
     searchWord: word,
   };
 };
+
+export const postWorkReview = (id, reviewData) => {
+  return (dispatch) => {
+    return axios.post('/works/' + String(id) + '/reviews/', reviewData)
+      .then((res) => {
+        console.log(res.data);
+      });
+  };
+};
