@@ -35,7 +35,7 @@ describe('<Register />', () => {
     );
   });
 
-  it('should render Login', () => {
+  it('should render Register', () => {
     const component = mount(register);
     const wrapper = component.find('.register-page');
     expect(wrapper.length).toBe(1);
