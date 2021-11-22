@@ -10,6 +10,7 @@ export {
 export {
   token,
   logIn,
+  logOut,
   register,
   getUser,
   getMyUser,
@@ -23,4 +24,5 @@ export {
   getRecWorks,
   getSearchWorks,
   putSearchWord,
+  postWorkReview,
 } from './work';

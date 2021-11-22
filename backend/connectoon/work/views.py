@@ -34,6 +34,7 @@ def work_id(request, id):
 
 
 def work_id_review(request, id):
+    User = get_user_model()
 
     try:
         work = Work.objects.get(id = id)
@@ -41,11 +42,23 @@ def work_id_review(request, id):
         return HttpResponse(status=404)
 
     if request.method == 'GET':
-        reviews = Review.objects.filter(work = id).values()
+        reviews = Review.objects.filter(work = id)
         response_dict = []
-        
         for review in reviews:
-            response_dict.append(review)
+            work = Work.objects.get(id=review.work_id)
+            work_artist_name = [artist.name for artist in work.artists.all()]
+            work_dict = {
+                "id": work.id, "title": work.title, "thumbnail_picture": work.thumbnail_picture,
+                "platform_id": work.platform_id, "year": work.year, "artists": work_artist_name
+            }
+            author = User.objects.get(id=review.author_id)
+            author_dict = {
+                "id": author.id, "username": author.username, "email": author.email, # "profile_picture": author.profile_picture
+            }
+            response_dict.append({
+                "id": review.id, "title": review.title, "content": review.content, "score": review.score, "likes": review.likes,
+                "work": work_dict, "author": author_dict
+            })
         
         return JsonResponse(response_dict, safe = False)
 

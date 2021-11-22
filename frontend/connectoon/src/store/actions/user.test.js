@@ -55,6 +55,23 @@ describe('ActionCreators', () => {
     });
   });
 
+  it('\'logOut\' should log out user correctly', (done) => {
+    const spy = jest.spyOn(axios, 'get')
+      .mockImplementation((url, rv) => {
+        return new Promise((resolve, reject) => {
+          const result = {
+            status: 200,
+          };
+          resolve(result);
+        });
+      });
+
+    store.dispatch(actionCreators.logOut()).then(() => {
+      expect(spy).toHaveBeenCalledTimes(1);
+      done();
+    });
+  });
+
   it('\'register\' should fetch user correctly', (done) => {
     const spy = jest.spyOn(axios, 'post')
       .mockImplementation((url, rv) => {

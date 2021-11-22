@@ -16,7 +16,7 @@ class TagTestCase(TestCase):
         csrftoken = response.cookies['csrftoken'].value
 
         response = client.delete('/tags/search/', HTTP_X_CSRFTOKEN=csrftoken)
-        self.assertEqual(response.status_code, 501)  #fails(501)
+        self.assertEqual(response.status_code, 405)
 
         response = client.get('/tags/search/?q=hor')
         self.assertEqual(response.status_code, 200)

@@ -182,6 +182,26 @@ class UserTestCase(TestCase):
         response = client.get('/users/login/', HTTP_X_CSRFTOKEN=csrftoken)
         self.assertEqual(response.status_code, 405)
 
+    def test_user_logout(self):
+         client = Client(enforce_csrf_checks=True)
+
+         # Check Successful Login & Logout
+         csrftoken = client.get('/token/').cookies['csrftoken'].value  # Get csrf token from cookie
+         response = client.post('/users/login/',
+                                json.dumps({'email': 'test1@snu.ac.kr', 'password': 'qwe123'}),
+                                content_type='application/json', HTTP_X_CSRFTOKEN=csrftoken)
+         response = client.get('/users/logout/')
+         self.assertEqual(response.status_code, 200)
+
+         # Check Not Allowed
+         response = client.get('/users/logout/')
+         self.assertEqual(response.status_code, 401)
+
+         # Check Not Allowed
+         csrftoken = client.get('/token/').cookies['csrftoken'].value  # Get csrf token from cookie
+         response = client.post('/users/logout/', HTTP_X_CSRFTOKEN=csrftoken)
+         self.assertEqual(response.status_code, 405)
+
     def test_user_id(self):
         client = Client()
         response = client.get('/users/1/')

@@ -38,24 +38,95 @@ class ReviewTestCase(TestCase):
         self.assertIn("DUM", response.content.decode())
         self.assertIn("DUM_CONTENT", response.content.decode())
         self.assertIn("0.0", response.content.decode())
+    
+    def test_put_review_id(self):
+        client = Client()
+        
+        csrftoken = client.get('/token/').cookies['csrftoken'].value  # Get csrf token from cookie
+        response = client.post('/users/login/',
+                               json.dumps({'email': 'dummy@user.com', 'password': '1234'}),
+                               content_type='application/json', HTTP_X_CSRFTOKEN=csrftoken)
+
+        review_json = { 'title': 'title1', 'content': 'content1', 'score': 4.0 }
+        response = client.put('/reviews/1/', review_json, content_type='application/json')
+
+        self.assertEqual(response.status_code, 200)
+        self.assertIn("title1", response.content.decode())
+        self.assertIn("content1", response.content.decode())
+        self.assertIn("4.0", response.content.decode())
+
+    def test_put_work_id_review_not_logged_in(self):
+        client = Client()
+        
+        review_json = {}
+        response = client.put('/reviews/1/', review_json, content_type='application/json')
+
+        self.assertEqual(response.status_code, 401)
+    
+    def test_put_work_id_review_forbidden(self):
+        client = Client()
+
+        csrftoken = client.get('/token/').cookies['csrftoken'].value  # Get csrf token from cookie
+        response = client.post('/users/login/',
+                               json.dumps({'email': 'dummy@user.com', 'password': '1234'}),
+                               content_type='application/json', HTTP_X_CSRFTOKEN=csrftoken)
+
+        review_json = {}
+        response = client.put('/reviews/2/', review_json, content_type='application/json')
+
+        self.assertEqual(response.status_code, 403)
+    
+    def test_put_work_id_review_json_error(self):
+        client = Client()
+
+        csrftoken = client.get('/token/').cookies['csrftoken'].value  # Get csrf token from cookie
+        response = client.post('/users/login/',
+                               json.dumps({'email': 'dummy@user.com', 'password': '1234'}),
+                               content_type='application/json', HTTP_X_CSRFTOKEN=csrftoken)
+
+        review_json = { 'title': 'title1', 'content': 'content1', 'wrong_key': 4.0 }
+        response = client.put('/reviews/1/', review_json, content_type='application/json')
+
+        self.assertEqual(response.status_code, 400)
+    
+    def test_delete_review_id(self):
+        client = Client()
+
+        csrftoken = client.get('/token/').cookies['csrftoken'].value  # Get csrf token from cookie
+        response = client.post('/users/login/',
+                               json.dumps({'email': 'dummy@user.com', 'password': '1234'}),
+                               content_type='application/json', HTTP_X_CSRFTOKEN=csrftoken)
+
+        response = client.delete('/reviews/1/')
+
+        self.assertEqual(response.status_code, 204)
+
+    def test_delete_review_id_not_logged_in(self):
+        client = Client()
+
+        response = client.delete('/reviews/1/')
+
+        self.assertEqual(response.status_code, 401)
+    
+    def test_delete_review_id_forbidden(self):
+        client = Client()
+
+        csrftoken = client.get('/token/').cookies['csrftoken'].value  # Get csrf token from cookie
+        response = client.post('/users/login/',
+                               json.dumps({'email': 'dummy@user.com', 'password': '1234'}),
+                               content_type='application/json', HTTP_X_CSRFTOKEN=csrftoken)
+
+        response = client.delete('/reviews/2/')
+
+        self.assertEqual(response.status_code, 403)
 
     def test_review_id_wrong_api(self):
         client = Client()
-        response = client.delete('/reviews/1/')
-
-        self.assertEqual(response.status_code, 405)
-        self.assertIn("GET", response.headers['Allow'])
-
         response = client.post('/reviews/1/', {})
 
         self.assertEqual(response.status_code, 405)
         self.assertIn("GET", response.headers['Allow'])
 
-
-        response = client.put('/reviews/1/', {})
-
-        self.assertEqual(response.status_code, 405)
-        self.assertIn("GET", response.headers['Allow'])
 
     def test_review_id_not_exist(self):
         client = Client()

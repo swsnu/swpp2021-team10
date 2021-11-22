@@ -1,7 +1,7 @@
 .work-write-review {
   width: 1000px;
   margin: 10px max(calc(50% - 500px), 0px) 10px max(calc(50% - 500px), 0px);
-  border: 1px solid black;
+  border-top: 1px solid black;
 }
 
 .work-write-review-header {
@@ -26,8 +26,8 @@
   margin: 0 0 0 212px;
 }
 
-.write-review-score-input {
-  width: 100px;
+.write-review-score-select {
+  width: 50px;
   height: 18px;
 }
 
