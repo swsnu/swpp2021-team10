@@ -1,5 +1,8 @@
+import io
 import json
+from urllib.parse import urlencode
 
+from PIL import Image
 from django.contrib.auth import get_user_model
 from django.test import TestCase, Client
 
@@ -40,46 +43,64 @@ class UserTestCase(TestCase):
 
         UserTagFav.objects.create(user=user1, tag=tag1)
 
+    # def generate_photo_file(self):
+    #     file = io.BytesIO()
+    #     image = Image.new('RGBA', size=(100, 100), color=(155, 0, 0))
+    #     image.save(file, 'png')
+    #     file.name = 'test.png'
+    #     file.seek(0)
+    #     return file
+
     def test_user_register(self):
         client = Client(enforce_csrf_checks=True)
         response = client.get('/token/')
         csrftoken = response.cookies['csrftoken'].value  # Get csrf token from cookie
 
         response = client.post('/users/',
-                               json.dumps({'email': 'test2@snu.ac.kr', 'username': 'test2', 'password': 'qwe123',
-                                           'tags': [1, 2]}),
-                               content_type='application/json', HTTP_X_CSRFTOKEN=csrftoken)
+                               urlencode({'email': 'test2@snu.ac.kr', 'username': 'test2', 'password': 'qwe123',
+                                          'tags': ['1', '2']}, True),
+                               content_type='application/x-www-form-urlencoded', HTTP_X_CSRFTOKEN=csrftoken)
         self.assertEqual(response.status_code, 201)
         self.assertEqual(User.objects.count(), 2)
         self.assertEqual(UserTagFav.objects.count(), 3)
 
         # Check duplicated username not create
         response = client.post('/users/',
-                               json.dumps({'email': 'test4@snu.ac.kr', 'username': 'test2', 'password': 'qwe123',
-                                           'tags': [1, 2]}),
-                               content_type='application/json', HTTP_X_CSRFTOKEN=csrftoken)
+                               urlencode({'email': 'test4@snu.ac.kr', 'username': 'test2', 'password': 'qwe123',
+                                           'tags': ['1', '2']}, True),
+                               content_type='application/x-www-form-urlencoded', HTTP_X_CSRFTOKEN=csrftoken)
         self.assertEqual(response.status_code, 400)
         self.assertEqual(User.objects.count(), 2)
         self.assertEqual(UserTagFav.objects.count(), 3)
 
+        # Check without image
         response = client.post('/users/',
-                               json.dumps({'email': 'test3@snu.ac.kr', 'username': 'test3', 'password': 'qwe123',
-                                           'tags': []}),
-                               content_type='application/json', HTTP_X_CSRFTOKEN=csrftoken)
+                               urlencode({'email': 'test3@snu.ac.kr', 'username': 'test3', 'password': 'qwe123',
+                                           'tags': []}, True),
+                               content_type='application/x-www-form-urlencoded', HTTP_X_CSRFTOKEN=csrftoken)
         self.assertEqual(response.status_code, 201)
         self.assertEqual(User.objects.count(), 3)
         self.assertEqual(UserTagFav.objects.count(), 3)
 
+        # Check with image
+        # response = client.post('/users/',
+        #                        {'email': 'test4@snu.ac.kr', 'username': 'test4', 'password': 'qwe123',
+        #                                   'tags': [], 'profile_picture': self.generate_photo_file()},
+        #                        content_type='multipart/formdata', HTTP_X_CSRFTOKEN=csrftoken)
+        # self.assertEqual(response.status_code, 201)
+        # self.assertEqual(User.objects.count(), 4)
+        # self.assertEqual(UserTagFav.objects.count(), 3)
+
         response = client.post('/users/',
-                               json.dumps({'emal': 'test2@snu.ac.kr', 'usename': 'test2', 'password': 'qwe123',
-                                           'tgs': [1, 2]}),
-                               content_type='application/json', HTTP_X_CSRFTOKEN=csrftoken)
+                               urlencode({'emal': 'test2@snu.ac.kr', 'usename': 'test2', 'password': 'qwe123',
+                                           'tgs': [1, 2]}, True),
+                               content_type='application/x-www-form-urlencoded', HTTP_X_CSRFTOKEN=csrftoken)
         self.assertEqual(response.status_code, 400)
 
         response = client.post('/users/',
-                               json.dumps({'email': 'test2@snu.ac.kr', 'username': 'test2', 'password': 'qwe123',
-                                           'tags': [1, 5]}),
-                               content_type='application/json', HTTP_X_CSRFTOKEN=csrftoken)
+                               urlencode({'email': 'test2@snu.ac.kr', 'username': 'test2', 'password': 'qwe123',
+                                           'tags': [1, 5]}, True),
+                               content_type='application/x-www-form-urlencoded', HTTP_X_CSRFTOKEN=csrftoken)
         self.assertEqual(response.status_code, 400)
 
     def test_user_dup(self):
