@@ -15,6 +15,8 @@ export {
   getMyUser,
   editMyUser,
   getMyReviews,
+  dupCheckEmail,
+  dupCheckUsername,
 } from './user';
 export {
   getMainWorks,
