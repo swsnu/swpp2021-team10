@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { withRouter } from 'react-router';
 
 import WorkInfo from '../../Components/WorkInfo/WorkInfo';
 import './WorkDetail.css';
@@ -13,6 +14,7 @@ class WorkDetail extends Component {
     this.state = { reviewNum: 4 };
 
     this.onClickReviewConfirm = this.onClickReviewConfirm.bind(this);
+    this.onClickTag = this.onClickTag.bind(this);
   }
 
   componentDidMount() {
@@ -44,6 +46,10 @@ class WorkDetail extends Component {
       });
   }
 
+  onClickTag(tagName) {
+    this.props.history.push('/search/$' + tagName);
+  }
+
   render() {
     const { reviewNum } = this.state;
     const { selectedWork, loggedInUser, selectedReviews } = this.props;
@@ -59,6 +65,7 @@ class WorkDetail extends Component {
         year={selectedWork.year}
         tags={selectedWork.tags}
         artists={selectedWork.artists}
+        onClickTag={this.onClickTag}
       />
     ) : null;
     const myReview = (loggedInUser && selectedReviews) ? selectedReviews.filter((review) => {
@@ -134,4 +141,4 @@ const mapDispatchToProps = (dispatch) => {
   };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(WorkDetail);
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(WorkDetail));

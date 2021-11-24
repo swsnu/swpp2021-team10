@@ -22,13 +22,17 @@ class Recommendation extends Component {
   }
 
   render() {
-    const { workNumInRow } = this.state;
     const { recWorkLists } = this.props;
+    if (recWorkLists.length < 2) {
+      return null;
+    }
     const genreList = <WorkList class="g-wl" className="genre-based-work-list" subject="Genre-based recommendation" onClickWork={(workId) => this.onClickWork(workId)} workList={recWorkLists[0]} workNumInRow={4} />;
+    const reviewList = <WorkList class="r-wl" className="review-based-work-list" subject="Review-based recommendation" onClickWork={(workId) => this.onClickWork(workId)} workList={recWorkLists[1]} workNumInRow={4} />;
 
     return (
       <div className="recommendation-page">
         {genreList}
+        {reviewList}
       </div>
     );
   }

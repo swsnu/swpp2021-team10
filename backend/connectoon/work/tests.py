@@ -200,6 +200,8 @@ class WorkTestCase(TestCase):
         response = client.get('/works/recommend/')
         self.assertEqual(response.status_code, 401)
 
+        Work.objects.first().tags.add(Tag.objects.first())
+
         csrftoken = client.get('/token/').cookies['csrftoken'].value  # Get csrf token from cookie
         response = client.post('/users/login/',
                                json.dumps({'email': 'dummy@user.com', 'password': '1234'}),

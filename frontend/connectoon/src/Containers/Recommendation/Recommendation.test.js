@@ -30,6 +30,20 @@ const stubInitialWorkState = {
         ],
       },
     ],
+    [
+      {
+        title: 'test1',
+        artists: [
+          'test1',
+        ],
+      },
+      {
+        title: 'test2',
+        artists: [
+          'test2',
+        ],
+      },
+    ],
   ],
 };
 
@@ -60,6 +74,23 @@ describe('<Recommendation />', () => {
     const component = mount(recommendation);
     const wrapper = component.find('.recommendation');
     expect(wrapper.length).toBe(3);
+  });
+
+  it('should render Recommendation with empty workList', () => {
+    const stubInitialWorkStateTest = {
+      recWorkLists: [],
+    };
+    const mockStoreTest = getMockStore(stubInitialReviewState, stubInitialTagState, stubInitialUserState, stubInitialWorkStateTest);
+    recommendation = (
+      <Provider store={mockStoreTest}>
+        <ConnectedRouter history={history}>
+          <Switch>
+            <Route path="/" exact render={() => <Recommendation className="recommendation" />} />
+          </Switch>
+        </ConnectedRouter>
+      </Provider>
+    );
+    mount(recommendation);
   });
 
   it('should handle clicking work object', () => {

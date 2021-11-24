@@ -115,6 +115,23 @@ describe('<Search />', () => {
     component.find('input').at(1).simulate('change', mockedEvent);
   });
 
+  it('should handle branch in render function', () => {
+    const stubInitialTagStateTest = {
+      tags: [],
+    };
+    const mockStoreTest = getMockStore(stubInitialReviewState, stubInitialTagStateTest, stubInitialUserState, stubInitialWorkState);
+    const searchTest = (
+      <Provider store={mockStoreTest}>
+        <ConnectedRouter history={history}>
+          <Switch>
+            <Route path="/" exact render={() => <Search className="search" />} />
+          </Switch>
+        </ConnectedRouter>
+      </Provider>
+    );
+    mount(searchTest);
+  });
+
   it('should handle clicking work object', () => {
     const component = mount(search);
     component.find('.work-object').at(0).simulate('click');

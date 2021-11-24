@@ -5,7 +5,7 @@ import './GenreTag.css';
 
 const GenreTag = (props) => {
   const {
-    tagName, deletable, selected, onAddTag, onDeleteTag,
+    tagName, deletable, selected, onAddTag, onDeleteTag, onClickTag,
   } = props;
 
   const onClickAddTag = (e) => {
@@ -16,8 +16,14 @@ const GenreTag = (props) => {
     onDeleteTag(tagName);
   };
 
+  const onClickTagBody = (e) => {
+    if (selected && !deletable) {
+      onClickTag(tagName);
+    }
+  };
+
   return (
-    <div className="genre-tag">
+    <div className="genre-tag" onClick={onClickTagBody}>
       {selected &&
         <div className="tag-body">
           <p className="tag-name">
@@ -46,6 +52,7 @@ const GenreTag = (props) => {
 GenreTag.defaultProps = {
   onAddTag: func,
   onDeleteTag: func,
+  onClickTag: func,
 };
 
 GenreTag.propTypes = {
@@ -53,7 +60,8 @@ GenreTag.propTypes = {
   deletable: PropTypes.bool.isRequired,
   selected: PropTypes.bool.isRequired,
   onAddTag: PropTypes.func,
-  onDeleteTag: PropTypes.func,
+  onDeleteTag: func,
+  onClickTag: func,
 };
 
 export default GenreTag;

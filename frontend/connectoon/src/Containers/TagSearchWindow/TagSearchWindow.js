@@ -11,12 +11,19 @@ import './TagSearchWindow.css';
 class TagSearchWindow extends Component {
   constructor(props) {
     super(props);
+    const {
+      onGetTags,
+    } = this.props;
     this.state = {
       genre: '',
       selectedTags: [],
     };
-    const { onGetTags } = this.props;
     onGetTags('');
+  }
+
+  componentDidMount() {
+    const { defaultTag } = this.props;
+    this.setState({ selectedTags: defaultTag });
   }
 
   onClickAddTag = (name) => {
@@ -36,7 +43,7 @@ class TagSearchWindow extends Component {
   }
 
   render() {
-    const { className, storedTags, onGetTags } = this.props;
+    const { className, storedTags } = this.props;
     const { genre, selectedTags } = this.state;
 
     const selectedTagNames = selectedTags.map((x) => x.name);
@@ -94,6 +101,7 @@ class TagSearchWindow extends Component {
 
 TagSearchWindow.defaultProps = {
   storedTags: [],
+  defaultTag: PropTypes.arrayOf(PropTypes.any),
   onGetTags: func,
   onAddTag: func,
   onDeleteTag: func,
@@ -102,6 +110,7 @@ TagSearchWindow.defaultProps = {
 TagSearchWindow.propTypes = {
   className: PropTypes.string.isRequired,
   storedTags: PropTypes.arrayOf(PropTypes.any),
+  defaultTag: PropTypes.arrayOf(PropTypes.any),
   onGetTags: PropTypes.func,
   onAddTag: PropTypes.func,
   onDeleteTag: PropTypes.func,
