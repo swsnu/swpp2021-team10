@@ -54,7 +54,6 @@ class Register extends Component {
 
     this.props.dupCheckUsername(usernameData)
       .then(() => {
-        console.log('check username');
         this.setState({ usernameDupCheck: true });
       })
       .catch((e) => {});
@@ -64,7 +63,6 @@ class Register extends Component {
     const { tags } = this.state;
 
     tags.push(tagName);
-    console.log(tags);
     this.setState({ tags });
   };
 
@@ -77,7 +75,6 @@ class Register extends Component {
       }
     }
 
-    console.log(tags);
     this.setState({ tags });
   }
 
