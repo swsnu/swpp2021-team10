@@ -77,7 +77,7 @@ describe('ActionCreators', () => {
       .mockImplementation((url, rv) => {
         return new Promise((resolve, reject) => {
           const result = {
-            status: 200,
+            status: 201,
             data: stubUser,
           };
           resolve(result);
@@ -160,6 +160,40 @@ describe('ActionCreators', () => {
 
     store.dispatch(actionCreators.getMyReviews()).then(() => {
       const newState = store.getState();
+      expect(spy).toHaveBeenCalledTimes(1);
+      done();
+    });
+  });
+
+  it('\'dupCheckEmail\' should check duplication email correctly', (done) => {
+    const spy = jest.spyOn(axios, 'post')
+      .mockImplementation((url, rv) => {
+        return new Promise((resolve, reject) => {
+          const result = {
+            status: 200,
+          };
+          resolve(result);
+        });
+      });
+
+    store.dispatch(actionCreators.dupCheckEmail()).then(() => {
+      expect(spy).toHaveBeenCalledTimes(1);
+      done();
+    });
+  });
+
+  it('\'dupCheckUsername\' should check duplication username correctly', (done) => {
+    const spy = jest.spyOn(axios, 'post')
+      .mockImplementation((url, rv) => {
+        return new Promise((resolve, reject) => {
+          const result = {
+            status: 200,
+          };
+          resolve(result);
+        });
+      });
+
+    store.dispatch(actionCreators.dupCheckUsername()).then(() => {
       expect(spy).toHaveBeenCalledTimes(1);
       done();
     });

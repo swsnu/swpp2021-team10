@@ -20,7 +20,7 @@ import MyPage from './Containers/MyPage/MyPage';
 import MyReviews from './Containers/MyReviews/MyReviews';
 import WorkDetail from './Containers/WorkDetail/WorkDetail';
 import Login from './Containers/Login/Login';
-import Register from './Components/Register/Register';
+import Register from './Containers/Register/Register';
 
 const persistor = persistStore(store);
 

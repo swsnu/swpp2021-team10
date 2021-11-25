@@ -58,9 +58,26 @@ export const register_ = (user) => {
   };
 };
 
-export const register = (user) => {
+export const register = (registerData) => {
   return (dispatch) => {
-    return axios.post('/users/', user)
+    const {
+      email, username, password, image, tags,
+    } = registerData;
+
+    console.log(tags);
+
+    const form = new FormData();
+    form.append('email', email);
+    form.append('username', username);
+    form.append('password', password);
+    form.append('profile_picture', image);
+    if (tags) {
+      tags.forEach((tag) => {
+        form.append('tags', tag);
+      });
+    }
+
+    return axios.post('/users/', form)
       .then((res) => {
         dispatch(register_(res.data));
         dispatch(push('/login'));
@@ -129,5 +146,17 @@ export const getMyReviews = () => {
       .then((res) => {
         dispatch(getMyReviews_(res.data));
       });
+  };
+};
+
+export const dupCheckEmail = (email) => {
+  return () => {
+    return axios.post('/users/dup/email/', email);
+  };
+};
+
+export const dupCheckUsername = (username) => {
+  return () => {
+    return axios.post('/users/dup/username/', username);
   };
 };

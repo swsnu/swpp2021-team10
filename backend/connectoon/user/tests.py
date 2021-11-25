@@ -58,7 +58,7 @@ class UserTestCase(TestCase):
 
         response = client.post('/users/',
                                urlencode({'email': 'test2@snu.ac.kr', 'username': 'test2', 'password': 'qwe123',
-                                          'tags': ['1', '2']}, True),
+                                          'tags': ['tag1', 'tag2']}, True),
                                content_type='application/x-www-form-urlencoded', HTTP_X_CSRFTOKEN=csrftoken)
         self.assertEqual(response.status_code, 201)
         self.assertEqual(User.objects.count(), 2)
@@ -67,7 +67,7 @@ class UserTestCase(TestCase):
         # Check duplicated username not create
         response = client.post('/users/',
                                urlencode({'email': 'test4@snu.ac.kr', 'username': 'test2', 'password': 'qwe123',
-                                           'tags': ['1', '2']}, True),
+                                           'tags': ['tag1', 'tag2']}, True),
                                content_type='application/x-www-form-urlencoded', HTTP_X_CSRFTOKEN=csrftoken)
         self.assertEqual(response.status_code, 400)
         self.assertEqual(User.objects.count(), 2)
@@ -93,13 +93,13 @@ class UserTestCase(TestCase):
 
         response = client.post('/users/',
                                urlencode({'emal': 'test2@snu.ac.kr', 'usename': 'test2', 'password': 'qwe123',
-                                           'tgs': [1, 2]}, True),
+                                           'tgs': ['tag1', 'tag2']}, True),
                                content_type='application/x-www-form-urlencoded', HTTP_X_CSRFTOKEN=csrftoken)
         self.assertEqual(response.status_code, 400)
 
         response = client.post('/users/',
                                urlencode({'email': 'test2@snu.ac.kr', 'username': 'test2', 'password': 'qwe123',
-                                           'tags': [1, 5]}, True),
+                                           'tags': ['tag1', 'tag5']}, True),
                                content_type='application/x-www-form-urlencoded', HTTP_X_CSRFTOKEN=csrftoken)
         self.assertEqual(response.status_code, 400)
 

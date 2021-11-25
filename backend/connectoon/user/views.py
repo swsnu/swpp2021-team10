@@ -35,11 +35,11 @@ def user_register(request):
     profile_picture = request.FILES.get('profile_picture')
 
     tag_found = []
-    for tag_id in tags:
+    for tag_name in tags:
         try:
-            tag_obj = Tag.objects.get(id=tag_id)
+            tag_obj = Tag.objects.get(name=tag_name)
             tag_found.append(tag_obj)
-        except (Tag.DoesNotExist) as e:
+        except Tag.DoesNotExist as e:
             return HttpResponseBadRequest()
 
     try:
@@ -51,7 +51,7 @@ def user_register(request):
     for tag_obj in tag_found:
         UserTagFav.objects.create(user=created_user, tag=tag_obj)
 
-    if (profile_picture):
+    if profile_picture:
         created_user.profile_picture = profile_picture
     created_user.save()
 
@@ -155,8 +155,13 @@ def user_me(request):
             user_tag = request_user.user_tag.all()
             tag_list = [{'id': user_tag.tag.id, 'name': user_tag.tag.name } for user_tag in user_tag]
 
-            # TODO : Add profile_picture
-            response_dict = {'id': request_user.id, 'username': request_user.username, 'email': request_user.email, 'tags': tag_list}
+            response_dict = {
+                'id': request_user.id,
+                'username': request_user.username,
+                'email': request_user.email,
+                'tags': tag_list,
+                'profile_picture': request.build_absolute_uri(request_user.profile_picture.url) if request_user.profile_picture else ''
+            }
             return JsonResponse(response_dict, status=200)
         else:
             return HttpResponse(status=401)
