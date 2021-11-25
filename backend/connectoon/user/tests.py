@@ -84,9 +84,9 @@ class UserTestCase(TestCase):
 
         # Check with image
         # response = client.post('/users/',
-        #                        {'email': 'test4@snu.ac.kr', 'username': 'test4', 'password': 'qwe123',
-        #                                   'tags': [], 'profile_picture': self.generate_photo_file()},
-        #                        content_type='multipart/formdata', HTTP_X_CSRFTOKEN=csrftoken)
+        #                        urlencode({'email': 'test4@snu.ac.kr', 'username': 'test4', 'password': 'qwe123',
+        #                                   'tags': [], 'profile_picture': self.generate_photo_file()}, True),
+        #                        content_type='application/x-www-form-urlencoded', HTTP_X_CSRFTOKEN=csrftoken)
         # self.assertEqual(response.status_code, 201)
         # self.assertEqual(User.objects.count(), 4)
         # self.assertEqual(UserTagFav.objects.count(), 3)
@@ -208,7 +208,7 @@ class UserTestCase(TestCase):
 
         self.assertEqual(response.status_code, 501)
 
-    def test_user_me(self):
+    def test_user_me_get(self):
         client = Client(enforce_csrf_checks=True)
 
         # Check Not Logged in
@@ -231,6 +231,66 @@ class UserTestCase(TestCase):
         # Check Not Allowed
         csrftoken = client.get('/token/').cookies['csrftoken'].value  # Get csrf token from cookie
         response = client.post('/users/me/', HTTP_X_CSRFTOKEN=csrftoken)
+        self.assertEqual(response.status_code, 405)
+
+    def test_user_me_put(self):
+        client = Client()
+
+        # Check Not Logged in
+        response = client.put('/users/me/')
+        self.assertEqual(response.status_code, 401)
+
+        # Login
+        response = client.post('/users/login/',
+                               json.dumps({'email': 'test1@snu.ac.kr', 'password': 'qwe123'}),
+                               content_type='application/json')
+        self.assertEqual(response.status_code, 200)
+
+        # Check only username change
+        response = client.put('/users/me/',
+                               urlencode({'username': 'test2', 'tags': ['tag1']}, True),
+                               content_type='application/x-www-form-urlencoded')
+        self.assertEqual(response.status_code, 200)
+
+        # Check only tag change
+        response = client.put('/users/me/',
+                              urlencode({'tags': ['tag1', 'tag2']}, True),
+                              content_type='application/x-www-form-urlencoded')
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(UserTagFav.objects.count(), 2)
+
+        response = client.put('/users/me/',
+                              urlencode({'tags': []}, True),
+                              content_type='application/x-www-form-urlencoded')
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(UserTagFav.objects.count(), 0)
+
+        # Check tag not appropriate
+        response = client.put('/users/me/',
+                              urlencode({'tags': ['tag1', 'tag5']}, True),
+                              content_type='application/x-www-form-urlencoded')
+        self.assertEqual(response.status_code, 400)
+
+        # Check change password
+        response = client.put('/users/me/',
+                              urlencode({'password': 'qwe1234', 'tags': ['tag1', 'tag2']}, True),
+                              content_type='application/x-www-form-urlencoded')
+        self.assertEqual(response.status_code, 200)
+
+        # Fail Login
+        response = client.post('/users/login/',
+                               json.dumps({'email': 'test1@snu.ac.kr', 'password': 'qwe123'}),
+                               content_type='application/json')
+        self.assertEqual(response.status_code, 401)
+
+        # Success Login
+        response = client.post('/users/login/',
+                               json.dumps({'email': 'test1@snu.ac.kr', 'password': 'qwe1234'}),
+                               content_type='application/json')
+        self.assertEqual(response.status_code, 200)
+
+        # Check Not Allowed
+        response = client.post('/users/me/')
         self.assertEqual(response.status_code, 405)
 
     def test_user_me_review(self):
