@@ -118,6 +118,7 @@ class Main extends Component {
   }
 
   onClickWork = (workId) => {
+    console.debug(this.props.history);
     this.props.history.push('/works/' + String(workId));
   }
 

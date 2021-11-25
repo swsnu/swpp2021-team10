@@ -27,6 +27,11 @@ class BoardReview extends Component {
     this.setState({ editMode: false });
   }
 
+  onClickReview = (workId) => {
+    const { onClickReview } = this.props;
+    onClickReview(workId);
+  }
+
   render() {
     const {
       className, review,
@@ -38,26 +43,26 @@ class BoardReview extends Component {
     const platformMapper = ['/images/naver_logo.png', '/images/kakao_logo.png', '/images/lezhin_logo.png'];
     const reviewTitle = editMode ? <input className="review-title-input" /> : <h4 className="review-title">{review.title}</h4>;
     const buttonElement = editMode ? (
-      <div className="board-review-button-region">
+      <div className="board-review-button-region" onClick={(e) => e.stopPropagation()}>
         <button className="detail-save-button" type="button">save</button>
         <button className="detail-back-button" type="button" onClick={this.onClickBack}>back</button>
       </div>
     ) : (
-      <div className="board-review-button-region">
+      <div className="board-review-button-region" onClick={(e) => e.stopPropagation()}>
         <button className="detail-edit-button" type="button" onClick={this.onClickEdit}>edit</button>
         <button className="detail-delete-button" type="button">delete</button>
       </div>
     );
 
     return (
-      <tr className={className}>
+      <tr className={className} onClick={() => this.onClickReview(review.work.id)}>
         <td className="board-review thumbnail">
           <WorkThumbnail className="work-thumbnail" src={review.work.thumbnail_picture} platform={platformMapper[review.work.platform_id]} />
         </td>
         <td className="board-review detail">
           <div className="board-review-header">
             <h3 className="work-title">{review.work.title}</h3>
-            <div className="review-score-likes-wrapper">
+            <div className="review-score-likes-wrapper" onClick={(e) => e.stopPropagation()}>
               <div className="review-score">
                 <img className="review-score-star-icon" src="/images/ratingStar.png" alt="star" />
                 <h5 className="review-value score">{review.score}</h5>
