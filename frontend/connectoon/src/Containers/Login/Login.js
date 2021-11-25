@@ -27,17 +27,17 @@ class Login extends Component {
     }
 
     return (
-      <div className="login-page">
-        <label className="login-email">
+      <div id="login-page">
+        <label id="login-email">
           <div id="email-label-text">email</div>
-          <input className="login-email-input" type="email" value={this.state.email} onChange={(event) => this.setState({ email: event.target.value })} />
+          <input id="login-email-input" type="email" value={this.state.email} onChange={(event) => this.setState({ email: event.target.value })} />
         </label>
-        <label className="login-password">
+        <label id="login-password">
           <div id="password-label-text">password</div>
-          <input className="login-password-input" type="password" value={this.state.password} onChange={(event) => this.setState({ password: event.target.value })} />
+          <input id="login-password-input" type="password" value={this.state.password} onChange={(event) => this.setState({ password: event.target.value })} />
         </label>
-        <button className="login-submit-button" type="button" onClick={() => this.onClickSubmit()}>submit</button>
-        <Link className="login-register-link" to="/register">register</Link>
+        <button id="login-submit-button" type="button" onClick={() => this.onClickSubmit()}>submit</button>
+        <Link id="login-register-link" to="/register">register</Link>
       </div>
     );
   }
