@@ -124,11 +124,9 @@ def work_recommend(request):  # TODO
     User = get_user_model()
     if request.method == 'GET':
         if request_user.is_authenticated:
-            return_work_list = [[], []]
-
             tag_list = [Tag.objects.get(id=tag['id']) for tag in request_user.user_tag.all().values()]
             
-            return_work_list[0] = list(map(lambda work: {'title': work['title'], 'thumbnail_picture': work['thumbnail_picture'],
+            tag_based_work = list(map(lambda work: {'title': work['title'], 'thumbnail_picture': work['thumbnail_picture'],
             'description': work['description'], 'year': work['year'], 'link': work['link'],
             'completion': work['completion'], 'score_avg': work['score_avg'], 'review_num': work['review_num'],
             'platform_id': work['platform_id'],
@@ -138,7 +136,6 @@ def work_recommend(request):  # TODO
             review_list = [Review.objects.get(id=review['id']) for review in Review.objects.filter(author=request_user).values()]
             review_list.reverse()
             review_list = review_list[:5]
-            review_list.reverse()
 
             tag_dic = {}
             for review in review_list:  
@@ -151,14 +148,14 @@ def work_recommend(request):  # TODO
             sorted_tag_list = list(sorted(tag_dic.items(), key=operator.itemgetter(0), reverse=True))[:3]
             tag_list = [Tag.objects.get(id=tag[0]) for tag in sorted_tag_list[0:1]]
 
-            return_work_list[1] = list(map(lambda work: {'title': work['title'], 'thumbnail_picture': work['thumbnail_picture'],
+            review_based_work = list(map(lambda work: {'title': work['title'], 'thumbnail_picture': work['thumbnail_picture'],
             'description': work['description'], 'year': work['year'], 'link': work['link'],
             'completion': work['completion'], 'score_avg': work['score_avg'], 'review_num': work['review_num'],
             'platform_id': work['platform_id'],
             'artists': [artist.name for artist in Work.objects.get(title=work['title']).artists.all()],
             'id': work['id']}, [work for work in Work.objects.filter(tags__in=tag_list).values()]))
 
-            return JsonResponse(return_work_list, status=200, safe=False)
+            return JsonResponse([tag_based_work, review_based_work], status=200, safe=False)
         else:
             return HttpResponse(status=401)
     else:
