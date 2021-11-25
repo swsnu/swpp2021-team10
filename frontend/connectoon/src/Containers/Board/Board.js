@@ -95,16 +95,21 @@ class Board extends Component {
     // TODO: get isMyReview value by login
   }
 
+  onClickWork = (workId) => {
+    this.props.history.push('/works/' + String(workId));
+  }
+
   render() {
     const { boardReviews } = this.props;
     console.log(boardReviews);
     // const boardReviews = dummyReviews;
 
-    const reviewLists = boardReviews.map((review) => (
+    const reviewLists = boardReviews?.map((review) => (
       <BoardReview
         key={review.id}
         className="board-review"
         review={review}
+        onClickWork={(workId) => this.onClickWork(workId)}
       />
     ));
 

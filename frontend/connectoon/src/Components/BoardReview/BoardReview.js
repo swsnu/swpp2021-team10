@@ -89,12 +89,5 @@ class BoardReview extends Component {
       </tr>);
   }
 }
-BoardReview.propTypes = {
-  className: PropTypes.string.isRequired,
-  score: PropTypes.string.isRequired,
-  likes: PropTypes.string.isRequired,
-  title: PropTypes.string.isRequired,
-  content: PropTypes.string.isRequired,
-};
 
 export default BoardReview;
