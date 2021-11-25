@@ -63,7 +63,7 @@ describe('<Register />', () => {
           resolve(result);
         });
       });
-    const wrapper = component.find('.register-dupchk-email-button');
+    const wrapper = component.find('#register-dupchk-email-button');
     wrapper.simulate('click');
     expect(spy).toHaveBeenCalledTimes(1);
   });
@@ -79,20 +79,20 @@ describe('<Register />', () => {
           resolve(result);
         });
       });
-    const wrapper = component.find('.register-dupchk-username-button');
+    const wrapper = component.find('#register-dupchk-username-button');
     wrapper.simulate('click');
     expect(spy).toHaveBeenCalledTimes(1);
   });
 
   it('should change email, username, password and passwordCheck', () => {
     const component = mount(register);
-    const emailArea = component.find('.register-email-input');
+    const emailArea = component.find('#register-email-input');
     emailArea.simulate('change', { target: { value: 'test1@snu.ac.kr' } });
-    const usernameArea = component.find('.register-username-input');
+    const usernameArea = component.find('#register-username-input');
     usernameArea.simulate('change', { target: { value: 'usernametest' } });
-    const pwArea = component.find('.register-password-input');
+    const pwArea = component.find('#register-password-input');
     pwArea.simulate('change', { target: { value: 'qwe123' } });
-    const pwChkArea = component.find('.register-password-check-input');
+    const pwChkArea = component.find('#register-password-check-input');
     pwChkArea.simulate('change', { target: { value: 'qwe123' } });
   });
 
@@ -109,18 +109,18 @@ describe('<Register />', () => {
         });
       });
     const component = mount(register);
-    const emailArea = component.find('.register-email-input');
+    const emailArea = component.find('#register-email-input');
     emailArea.simulate('change', { target: { value: 'test1@snu.ac.kr' } });
-    const emailDupChkButton = component.find('.register-dupchk-email-button');
+    const emailDupChkButton = component.find('#register-dupchk-email-button');
     emailDupChkButton.simulate('click');
-    const usernameArea = component.find('.register-username-input');
+    const usernameArea = component.find('#register-username-input');
     usernameArea.simulate('change', { target: { value: 'usernametest' } });
-    const usernameDupChkButton = component.find('.register-dupchk-username-button');
+    const usernameDupChkButton = component.find('#register-dupchk-username-button');
     usernameDupChkButton.simulate('click');
     expect(spy).toHaveBeenCalledTimes(2);
-    const pwArea = component.find('.register-password-input');
+    const pwArea = component.find('#register-password-input');
     pwArea.simulate('change', { target: { value: 'qwe123' } });
-    const pwChkArea = component.find('.register-password-check-input');
+    const pwChkArea = component.find('#register-password-check-input');
     pwChkArea.simulate('change', { target: { value: 'qwe123' } });
 
     component.find('Register').at(0).setState({
@@ -128,7 +128,7 @@ describe('<Register />', () => {
       usernameDupCheck: true,
     });
 
-    const submitButton = component.find('.register-submit-button');
+    const submitButton = component.find('#register-submit-button');
     submitButton.simulate('click');
     expect(spyRegister).toHaveBeenCalledTimes(1);
   });

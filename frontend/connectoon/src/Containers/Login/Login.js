@@ -27,7 +27,7 @@ class Login extends Component {
     }
 
     return (
-      <div id="login-page">
+      <div className="login-page">
         <label id="login-email">
           <div id="email-label-text">email</div>
           <input id="login-email-input" type="email" value={this.state.email} onChange={(event) => this.setState({ email: event.target.value })} />

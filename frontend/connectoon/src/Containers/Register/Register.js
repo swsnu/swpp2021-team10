@@ -80,7 +80,7 @@ class Register extends Component {
     }
 
     return (
-      <div id="register-page">
+      <div className="register-page">
         <div id="profile-image-holder">
           {this.state.selectedImage && <img id="register-profile-img" width="250px" src={URL.createObjectURL(this.state.selectedImage)} />}
         </div>

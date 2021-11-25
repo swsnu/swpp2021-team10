@@ -48,7 +48,7 @@ describe('<Login />', () => {
     const spyLogin = jest.spyOn(actionCreatorUser, 'logIn')
       .mockImplementation(() => { return () => {}; });
     const component = mount(login);
-    const wrapper = component.find('.login-submit-button');
+    const wrapper = component.find('#login-submit-button');
     wrapper.simulate('click');
     expect(spyLogin).toHaveBeenCalledTimes(1);
   });
@@ -56,9 +56,9 @@ describe('<Login />', () => {
   it('should change email and password', () => {
     const component = mount(login);
     const wrapper = component.find('.login-page');
-    const emailArea = component.find('.login-email-input');
+    const emailArea = component.find('#login-email-input');
     emailArea.simulate('change', { target: { value: 'test1@snu.ac.kr' } });
-    const pwArea = component.find('.login-password-input');
+    const pwArea = component.find('#login-password-input');
     pwArea.simulate('change', { target: { value: 'qwe123' } });
   });
 
