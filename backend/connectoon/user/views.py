@@ -147,8 +147,13 @@ def user_me(request):
             user_tag = request_user.user_tag.all()
             tag_list = [{'id': user_tag.tag.id, 'name': user_tag.tag.name } for user_tag in user_tag]
 
-            # TODO : Add profile_picture
-            response_dict = {'id': request_user.id, 'username': request_user.username, 'email': request_user.email, 'tags': tag_list}
+            response_dict = {
+                'id': request_user.id,
+                'username': request_user.username,
+                'email': request_user.email,
+                'tags': tag_list,
+                'profile_picture': request.build_absolute_uri(request_user.profile_picture.url) if request_user.profile_picture else ''
+            }
             return JsonResponse(response_dict, status=200)
         else:
             return HttpResponse(status=401)
