@@ -139,7 +139,6 @@ class ReviewTestCase(TestCase):
 
         self.assertEqual(response.status_code, 200)
 
-        print(response.content.decode())
         response_json = json.loads(response.content.decode())['reviews']
 
         for review in response_json:
