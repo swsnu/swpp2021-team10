@@ -9,7 +9,7 @@ from django.test import TestCase, Client
 from tag.models import Tag
 from user.models import UserTagFav
 
-User = get_user_model()
+user_class = get_user_model()
 
 
 class TokenTestCase(TestCase):
@@ -39,7 +39,7 @@ class UserTestCase(TestCase):
         tag2 = Tag.objects.create(name='tag2')
         tag3 = Tag.objects.create(name='tag3')
 
-        user1 = User.objects.create_user(email='test1@snu.ac.kr', username='test1', password='qwe123')
+        user1 = user_class.objects.create_user(email='test1@snu.ac.kr', username='test1', password='qwe123')
 
         UserTagFav.objects.create(user=user1, tag=tag1)
 
@@ -61,7 +61,7 @@ class UserTestCase(TestCase):
                                           'tags': ['1', '2']}, True),
                                content_type='application/x-www-form-urlencoded', HTTP_X_CSRFTOKEN=csrftoken)
         self.assertEqual(response.status_code, 201)
-        self.assertEqual(User.objects.count(), 2)
+        self.assertEqual(user_class.objects.count(), 2)
         self.assertEqual(UserTagFav.objects.count(), 3)
 
         # Check duplicated username not create
@@ -70,7 +70,7 @@ class UserTestCase(TestCase):
                                            'tags': ['1', '2']}, True),
                                content_type='application/x-www-form-urlencoded', HTTP_X_CSRFTOKEN=csrftoken)
         self.assertEqual(response.status_code, 400)
-        self.assertEqual(User.objects.count(), 2)
+        self.assertEqual(user_class.objects.count(), 2)
         self.assertEqual(UserTagFav.objects.count(), 3)
 
         # Check without image
@@ -79,7 +79,7 @@ class UserTestCase(TestCase):
                                            'tags': []}, True),
                                content_type='application/x-www-form-urlencoded', HTTP_X_CSRFTOKEN=csrftoken)
         self.assertEqual(response.status_code, 201)
-        self.assertEqual(User.objects.count(), 3)
+        self.assertEqual(user_class.objects.count(), 3)
         self.assertEqual(UserTagFav.objects.count(), 3)
 
         # Check with image
@@ -243,8 +243,7 @@ class UserTestCase(TestCase):
 class UsersManagersTests(TestCase):
 
     def test_create_user(self):
-        User = get_user_model()
-        user = User.objects.create_user(email='veldic@user.com', password='qwe123', username='veldic')
+        user = user_class.objects.create_user(email='veldic@user.com', password='qwe123', username='veldic')
         self.assertEqual(user.email, 'veldic@user.com')
         self.assertEqual(user.username, 'veldic')
         self.assertTrue(user.is_active)
@@ -252,7 +251,7 @@ class UsersManagersTests(TestCase):
         self.assertFalse(user.is_superuser)
         self.assertEqual(user.__str__(), 'veldic@user.com')
 
-        superuser = User.objects.create_superuser(email='veldic2@user.com', password='qwe123', username='veldic2')
+        superuser = user_class.objects.create_superuser(email='veldic2@user.com', password='qwe123', username='veldic2')
         self.assertEqual(superuser.email, 'veldic2@user.com')
         self.assertEqual(superuser.username, 'veldic2')
         self.assertTrue(superuser.is_active)
@@ -260,19 +259,19 @@ class UsersManagersTests(TestCase):
         self.assertTrue(superuser.is_superuser)
 
         with self.assertRaises(TypeError):
-            User.objects.create_user()
+            user_class.objects.create_user()
         with self.assertRaises(TypeError):
-            User.objects.create_user(email='')
+            user_class.objects.create_user(email='')
         with self.assertRaises(ValueError):
-            User.objects.create_user(email='', password="qwe123")
+            user_class.objects.create_user(email='', password="qwe123")
         with self.assertRaises(ValueError):
-            User.objects.create_user(email='veldicc@user.com', password="qwe123")
+            user_class.objects.create_user(email='veldicc@user.com', password="qwe123")
         with self.assertRaises(ValueError):
-            User.objects.create_user(email='', password="foo", username='veldic')
+            user_class.objects.create_user(email='', password="foo", username='veldic')
 
         with self.assertRaises(ValueError):
-            User.objects.create_superuser(email='veldic33@user.com', password='qwe123', username='veldic3',
+            user_class.objects.create_superuser(email='veldic33@user.com', password='qwe123', username='veldic3',
                                           is_superuser=False)
         with self.assertRaises(ValueError):
-            User.objects.create_superuser(email='veldic33@user.com', password='qwe123', username='veldic3',
+            user_class.objects.create_superuser(email='veldic33@user.com', password='qwe123', username='veldic3',
                                           is_staff=False)

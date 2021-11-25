@@ -34,7 +34,7 @@ def work_id(request, id):
 
 
 def work_id_review(request, id):
-    User = get_user_model()
+    user_class = get_user_model()
 
     try:
         work = Work.objects.get(id = id)
@@ -51,7 +51,7 @@ def work_id_review(request, id):
                 "id": work.id, "title": work.title, "thumbnail_picture": work.thumbnail_picture,
                 "platform_id": work.platform_id, "year": work.year, "artists": work_artist_name
             }
-            author = User.objects.get(id=review.author_id)
+            author = user_class.objects.get(id=review.author_id)
             author_dict = {
                 "id": author.id, "username": author.username, "email": author.email, # "profile_picture": author.profile_picture
             }
@@ -120,7 +120,6 @@ def work_main(request):
 
 def work_recommend(request):  # TODO
     request_user = request.user
-    User = get_user_model()
     if request.method == 'GET':
         if request_user.is_authenticated:
             return_work_list = [[]]
