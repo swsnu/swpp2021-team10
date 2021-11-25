@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
+import { batch, connect } from 'react-redux';
 import * as actionCreators from '../../store/actions/index';
 
 import './Board.css';
@@ -96,8 +96,9 @@ class Board extends Component {
   }
 
   render() {
-    // const { boardReviews } = this.props;
-    const boardReviews = dummyReviews;
+    const { boardReviews } = this.props;
+    console.log(boardReviews);
+    // const boardReviews = dummyReviews;
 
     const reviewLists = boardReviews.map((review) => (
       <BoardReview
@@ -123,9 +124,6 @@ class Board extends Component {
   }
 }
 
-Board.defaultProps = {
-  boardReview: undefined,
-};
 const mapStateToProps = (state) => {
   return {
     boardReviews: state.review.boardReviews,

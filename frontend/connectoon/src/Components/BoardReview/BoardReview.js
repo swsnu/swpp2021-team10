@@ -52,7 +52,7 @@ class BoardReview extends Component {
     return (
       <tr className={className}>
         <td className="board-review thumbnail">
-          <WorkThumbnail className="work-thumbnail" src={review.work.thumbnail_image} platform={platformMapper[review.work.platform_id]} />
+          <WorkThumbnail className="work-thumbnail" src={review.work.thumbnail_picture} platform={platformMapper[review.work.platform_id]} />
         </td>
         <td className="board-review detail">
           <div className="board-review-header">
