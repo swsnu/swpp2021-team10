@@ -35,11 +35,11 @@ def user_register(request):
     profile_picture = request.FILES.get('profile_picture')
 
     tag_found = []
-    for tag_id in tags:
+    for tag_name in tags:
         try:
-            tag_obj = Tag.objects.get(id=tag_id)
+            tag_obj = Tag.objects.get(name=tag_name)
             tag_found.append(tag_obj)
-        except (Tag.DoesNotExist) as e:
+        except Tag.DoesNotExist as e:
             return HttpResponseBadRequest()
 
     try:
@@ -51,7 +51,7 @@ def user_register(request):
     for tag_obj in tag_found:
         UserTagFav.objects.create(user=created_user, tag=tag_obj)
 
-    if (profile_picture):
+    if profile_picture:
         created_user.profile_picture = profile_picture
     created_user.save()
 

@@ -46,16 +46,21 @@ export const register_ = (user) => {
 export const register = (registerData) => {
   return (dispatch) => {
     const {
-      email, username, password, image,
+      email, username, password, image, tags,
     } = registerData;
+
+    console.log(tags);
 
     const form = new FormData();
     form.append('email', email);
     form.append('username', username);
     form.append('password', password);
     form.append('profile_picture', image);
-
-    console.log(image);
+    if (tags) {
+      tags.forEach((tag) => {
+        form.append('tags', tag);
+      });
+    }
 
     return axios.post('/users/', form)
       .then((res) => {

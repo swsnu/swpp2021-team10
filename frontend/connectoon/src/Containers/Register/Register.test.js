@@ -12,9 +12,27 @@ import store, { history } from '../../store/store';
 
 import Register from './Register';
 import * as actionCreatorUser from '../../store/actions/user';
+import * as actionCreatorTag from '../../store/actions/tag';
 
 const stubInitialReviewState = null;
-const stubInitialTagState = null;
+const stubInitialTagState = {
+  tags: [
+    {
+      key: 1,
+      name: 'test1',
+      selected: false,
+      related: [2],
+      prior: true,
+    },
+    {
+      key: 2,
+      name: 'test2',
+      selected: false,
+      related: [],
+      prior: false,
+    },
+  ],
+};
 const stubInitialUserState = {
   user: {
     loggedInUser: null,
@@ -27,6 +45,7 @@ const mockStore = getMockStore(stubInitialReviewState, stubInitialTagState, stub
 describe('<Register />', () => {
   global.URL.createObjectURL = jest.fn();
   let register;
+  let spyGetSearchTags;
   beforeEach(() => {
     const spyToken = jest.spyOn(actionCreatorUser, 'token')
       .mockImplementation(() => { return () => {}; });
@@ -40,6 +59,8 @@ describe('<Register />', () => {
         </ConnectedRouter>
       </Provider>
     );
+    spyGetSearchTags = jest.spyOn(actionCreatorTag, 'getSearchTags')
+      .mockImplementation(() => { return (dispatch) => {}; });
   });
 
   afterEach(() => {
@@ -140,6 +161,13 @@ describe('<Register />', () => {
 
     const wrapper = component.find('#input-profile-image');
     wrapper.simulate('change', { target: { files: [file] } });
+  });
+
+  it('should handle tag methods', () => {
+    const component = mount(register);
+    component.find('.selected-tag-body').at(0).simulate('click');
+    component.find('.tag-delete-button').at(0).simulate('click');
+    component.find('.selected-tag-body').at(0).simulate('click');
   });
 
   it('should redirect to main when logged in', () => {

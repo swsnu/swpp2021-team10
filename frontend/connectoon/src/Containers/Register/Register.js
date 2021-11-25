@@ -13,6 +13,7 @@ class Register extends Component {
     username: '',
     password: '',
     passwordCheck: '',
+    tags: [],
     emailDupCheck: false,
     usernameDupCheck: false,
     passwordAccord: false,
@@ -59,9 +60,30 @@ class Register extends Component {
       .catch((e) => {});
   };
 
+  onAddTag = (tagName) => {
+    const { tags } = this.state;
+
+    tags.push(tagName);
+    console.log(tags);
+    this.setState({ tags });
+  };
+
+  onDeleteTag = (tagName) => {
+    const { tags } = this.state;
+
+    for (let i = 0; i < tags.length; i += 1) {
+      if (tags[i] === tagName) {
+        tags.splice(i, 1);
+      }
+    }
+
+    console.log(tags);
+    this.setState({ tags });
+  }
+
   submitRegisterData = () => {
     const {
-      email, username, password, selectedImage,
+      email, username, password, selectedImage, tags,
     } = this.state;
 
     const registerData = {
@@ -69,6 +91,7 @@ class Register extends Component {
       username,
       password,
       image: selectedImage,
+      tags,
     };
 
     this.props.onRegister(registerData);
@@ -112,7 +135,7 @@ class Register extends Component {
         <h4 id="register-favorite-genres">
           Favorite Genres
         </h4>
-        {/* <TagSearchWindow id="search-genre-search-window" onAddTag={this.onAddTag} onDeleteTag={this.onDeleteTag} /> */}
+        <TagSearchWindow id="search-genre-search-window" onAddTag={this.onAddTag} onDeleteTag={this.onDeleteTag} />
         <br />
         <button id="register-submit-button" onClick={() => this.submitRegisterData()} type="button" disabled={!(this.state.emailDupCheck && this.state.usernameDupCheck && this.checkPasswordAccord())}>submit</button>
       </div>
