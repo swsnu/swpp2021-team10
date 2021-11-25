@@ -10,16 +10,6 @@ import { history } from '../../store/store';
 import * as workActionCreator from '../../store/actions/work';
 import * as reviewActionCreator from '../../store/actions/review';
 
-jest.mock('../../Components/WorkInfo/WorkInfo', () => {
-  return jest.fn((props) => {
-    return (
-      <div className="spyWorkInfo">
-        this is spy workinfo
-      </div>
-    );
-  });
-});
-
 jest.mock('../../Components/WriteReview/WriteReview', () => {
   return jest.fn((props) => {
     return (
@@ -298,5 +288,35 @@ describe('<WorkDetail />', () => {
     const component = mount(workDetail);
     const wrapper = component.find('#work-average-score');
     expect(wrapper.text()).toBe('0');
+  });
+
+  it('should handle clicking tag', () => {
+    const stubInitialUserState = {
+      loggedInUser: stubLoggedInUser,
+    };
+    const stubInitialWorkState = {
+      selectedWork: stubWork,
+      selectedReviews: [
+        { id: 1, author: { id: 1 } },
+        { id: 2, author: { id: 2 } },
+      ],
+    };
+    const mockStore = getMockStore(stubInitialReviewState, stubInitialTagState, stubInitialUserState, stubInitialWorkState);
+    const workDetail = (
+      <Provider store={mockStore}>
+        <ConnectedRouter history={history}>
+          <Switch>
+            <Route path="/" exact component={WorkDetail} />
+          </Switch>
+        </ConnectedRouter>
+      </Provider>
+    );
+    const spyHistoryPush = jest.spyOn(history, 'push')
+      .mockImplementation((path) => { });
+    const component = mount(workDetail);
+    const wrapper = component.find('.genre-tag');
+    wrapper.simulate('click');
+    expect(spyHistoryPush).toHaveBeenCalledTimes(1);
+    expect(spyHistoryPush).toHaveBeenCalledWith('/search/$TAG1');
   });
 });

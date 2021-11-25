@@ -1,6 +1,7 @@
 from django.http import HttpResponse, HttpResponseNotAllowed
 import json
 import re
+import operator
 from django.http.response import HttpResponseBadRequest, JsonResponse
 from json.decoder import JSONDecodeError
 from django.forms.models import model_to_dict
@@ -123,21 +124,38 @@ def work_recommend(request):  # TODO
     User = get_user_model()
     if request.method == 'GET':
         if request_user.is_authenticated:
-            return_work_list = [[]]
-
             tag_list = [Tag.objects.get(id=tag['id']) for tag in request_user.user_tag.all().values()]
-            tag_filtered_work = Work.objects
-            for tag in tag_list:
-                tag_filtered_work = tag_filtered_work.filter(tags__in=[tag]).distinct()
             
-            return_work_list[0] = list(map(lambda work: {'title': work['title'], 'thumbnail_picture': work['thumbnail_picture'],
+            tag_based_work = list(map(lambda work: {'title': work['title'], 'thumbnail_picture': work['thumbnail_picture'],
             'description': work['description'], 'year': work['year'], 'link': work['link'],
             'completion': work['completion'], 'score_avg': work['score_avg'], 'review_num': work['review_num'],
             'platform_id': work['platform_id'],
             'artists': [artist.name for artist in Work.objects.get(title=work['title']).artists.all()],
-            'id': work['id']}, [work for work in tag_filtered_work.values()]))
+            'id': work['id']}, [work for work in Work.objects.filter(tags__in=tag_list).values()]))
 
-            return JsonResponse(return_work_list, status=200, safe=False)
+            review_list = [Review.objects.get(id=review['id']) for review in Review.objects.filter(author=request_user).values()]
+            review_list.reverse()
+            review_list = review_list[:5]
+
+            tag_dic = {}
+            for review in review_list:  
+                for tag in review.work.tags.all():
+                    try:
+                        tag_dic[tag.id] += 1
+                    except:
+                        tag_dic[tag.id] = 1
+            
+            sorted_tag_list = list(sorted(tag_dic.items(), key=operator.itemgetter(0), reverse=True))[:3]
+            tag_list = [Tag.objects.get(id=tag[0]) for tag in sorted_tag_list[0:1]]
+
+            review_based_work = list(map(lambda work: {'title': work['title'], 'thumbnail_picture': work['thumbnail_picture'],
+            'description': work['description'], 'year': work['year'], 'link': work['link'],
+            'completion': work['completion'], 'score_avg': work['score_avg'], 'review_num': work['review_num'],
+            'platform_id': work['platform_id'],
+            'artists': [artist.name for artist in Work.objects.get(title=work['title']).artists.all()],
+            'id': work['id']}, [work for work in Work.objects.filter(tags__in=tag_list).values()]))
+
+            return JsonResponse([tag_based_work, review_based_work], status=200, safe=False)
         else:
             return HttpResponse(status=401)
     else:

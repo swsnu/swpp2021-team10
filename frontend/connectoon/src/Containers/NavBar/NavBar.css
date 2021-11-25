@@ -80,7 +80,7 @@ a:hover {
   z-index: 20;
 }
 
-.search-glass-wrapper {
+#search-glass-wrapper {
   position: fixed;
   left: calc(70% - 15px);
   top: 30px;
@@ -91,7 +91,7 @@ a:hover {
   border: none;
 }
 
-.search-glass-wrapper:hover{
+#search-glass-wrapper:hover{
   cursor: grab;
 }
 

@@ -8,11 +8,15 @@ const platformMapper = ['/images/naver_logo.png', '/images/kakao_logo.png', '/im
 
 const WorkInfo = (props) => {
   const {
-    className, title, description, link, thumbnailPicture, platformId, year, tags, artists,
+    className, title, description, link, thumbnailPicture, platformId, year, tags, artists, onClickTag,
   } = props;
 
+  const onClickTagBody = (tagName) => {
+    onClickTag(tagName);
+  };
+
   const genreTags = tags.map((tagName, idx) => (
-    <GenreTag key={tagName + String(idx)} tagName={tagName} selected deletable={false} />
+    <GenreTag key={tagName + String(idx)} tagName={tagName} selected={true} deletable={false} onClickTag={onClickTagBody} />
   ));
 
   return (

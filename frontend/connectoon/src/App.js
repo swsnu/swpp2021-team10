@@ -36,6 +36,7 @@ function App() {
               <Route path="/main" exact component={Main} />
               <Route path="/recommendation" exact component={Recommendation} />
               <Route path="/board" exact component={Board} />
+              <Route path="/search/:tag" exact component={Search} />
               <Route path="/search" exact component={Search} />
               <Route path="/mypage" exact component={MyPage} />
               <Route path="/myreviews" exact component={MyReviews} />
