@@ -13,8 +13,18 @@ class Board extends Component {
   }
 
   onClickReview = (workId) => {
-    console.debug(this.props.history);
     this.props.history.push('/works/' + String(workId));
+  }
+
+  onClickSaveReview(id, title, content, score) {
+    this.props.onEditReview(id, { title, content, score });
+  }
+
+  onClickDeleteReview(id) {
+    this.props.onDeleteReview(id)
+      .then(() => {
+        this.props.onGetBoardReviews();
+      });
   }
 
   render() {
@@ -28,6 +38,8 @@ class Board extends Component {
         review={review}
         onClickReview={(workId) => this.onClickReview(workId)}
         isMyReview={loggedInUser.id === review.author.id}
+        onClickSaveReview={(title, content, score) => this.onClickSaveReview(review.id, title, content, score)}
+        onClickDeleteReview={() => this.onClickDeleteReview(review.id)}
       />
     ));
 
