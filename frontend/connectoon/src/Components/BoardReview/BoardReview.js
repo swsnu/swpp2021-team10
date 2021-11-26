@@ -34,8 +34,9 @@ class BoardReview extends Component {
 
   render() {
     const {
-      className, review,
+      className, review, isMyReview,
     } = this.props;
+    console.log(review.id, isMyReview);
     const {
       editMode, clickLike,
     } = this.state;
@@ -81,7 +82,7 @@ class BoardReview extends Component {
               <div className="author-name">{review.author.username}</div>
               {reviewTitle}
             </div>
-            {buttonElement}
+            {isMyReview ? buttonElement : null}
           </div>
           {
             editMode

@@ -18,7 +18,7 @@ class Board extends Component {
   }
 
   render() {
-    const { boardReviews } = this.props;
+    const { boardReviews, loggedInUser } = this.props;
     // const boardReviews = dummyReviews;
 
     const reviewLists = boardReviews?.map((review) => (
@@ -27,6 +27,7 @@ class Board extends Component {
         className="board-review"
         review={review}
         onClickReview={(workId) => this.onClickReview(workId)}
+        isMyReview={loggedInUser.id === review.author.id}
       />
     ));
 
@@ -49,12 +50,15 @@ class Board extends Component {
 const mapStateToProps = (state) => {
   return {
     boardReviews: state.review.boardReviews,
+    loggedInUser: state.user.loggedInUser,
   };
 };
 
 const mapDispatchToProps = (dispatch) => {
   return {
     onGetBoardReviews: () => dispatch(actionCreators.getBoardReviews()),
+    onEditReview: (id, reviewData) => dispatch(actionCreators.editReview(id, reviewData)),
+    onDeleteReview: (id) => dispatch(actionCreators.deleteReview(id)),
   };
 };
 
