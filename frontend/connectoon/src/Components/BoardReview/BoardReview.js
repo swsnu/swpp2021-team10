@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import WorkThumbnail from '../WorkThumbnail/WorkThumbnail';
 import './BoardReview.css';
+import * as actionCreators from '../../store/actions/index';
 
 class BoardReview extends Component {
   constructor(props) {
@@ -59,6 +60,19 @@ class BoardReview extends Component {
   onClickReview = (workId) => {
     const { onClickReview } = this.props;
     onClickReview(workId);
+  }
+
+  onClickSave() {
+    this.setState({ editMode: false });
+    const { title, content, score } = this.state;
+    const { onClickSaveReview } = this.props;
+    console.log(title, content, score);
+    onClickSaveReview(title, content, parseFloat(score));
+  }
+
+  onClickDelete() {
+    const { onClickDeleteReview } = this.props;
+    onClickDeleteReview();
   }
 
   render() {
@@ -160,5 +174,12 @@ class BoardReview extends Component {
       </tr>);
   }
 }
+const mapStateToProps = (state) => {
+  return {
+    selectedWork: state.work.selectedWork,
+    loggedInUser: state.user.loggedInUser,
+    selectedReviews: state.work.selectedReviews,
+  };
+};
 
 export default BoardReview;
