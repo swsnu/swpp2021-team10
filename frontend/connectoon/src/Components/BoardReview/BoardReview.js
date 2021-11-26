@@ -56,6 +56,11 @@ class BoardReview extends Component {
     onClickDeleteReview();
   }
 
+  onClickReview = (workId) => {
+    const { onClickReview } = this.props;
+    onClickReview(workId);
+  }
+
   render() {
     const {
       className, review, isMyReview,
