@@ -76,8 +76,8 @@ def review_id(request, id):  # TODO
 
 @require_GET
 def review_board(request):
-    board_reviews = Review.objects.filter(likes__gte=10).order_by('updated_at')
-    #board_reviews = Review.objects.select_related('work').order_by('updated_at')
+    #board_reviews = Review.objects.filter(likes__gte=10).order_by('-updated_at')
+    board_reviews = Review.objects.select_related('work').order_by('-updated_at')
     User = get_user_model()
     response_dict = []
 
