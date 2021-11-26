@@ -8,7 +8,7 @@ const stubReview = {
 };
 
 const stubBoardReviews = {
-  boardReviews: [stubReview, stubReview],
+  reviews: [stubReview, stubReview],
 };
 
 describe('ActionCreators', () => {
@@ -85,7 +85,7 @@ describe('ActionCreators', () => {
       });
     store.dispatch(actionCreators.getBoardReviews()).then(() => {
       const newState = store.getState();
-      expect(newState.review.boardReviews).toBe(stubBoardReviews);
+      expect(newState.review.boardReviews).toBe(stubBoardReviews.reviews);
       expect(spy).toHaveBeenCalledTimes(1);
       done();
     });

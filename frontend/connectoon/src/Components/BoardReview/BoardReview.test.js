@@ -5,6 +5,7 @@ import BoardReview from './BoardReview';
 
 describe('<BoardReview />', () => {
   let component;
+  let spyReviewClick;
   beforeEach(() => {
     const dummyWorks = [
       {
@@ -38,10 +39,12 @@ describe('<BoardReview />', () => {
       title: 'Dummy Review Title',
       content: 'Dummy Content\nLong\nLong\nLogn\nLong\nFinish\n',
     };
+    spyReviewClick = jest.fn();
     component = mount(<BoardReview
       key={dummyReview.id}
       className="board-review"
       review={dummyReview}
+      onClickReview={spyReviewClick}
     />);
   });
 
@@ -51,7 +54,6 @@ describe('<BoardReview />', () => {
 
   it('should render review in BoardReview', () => {
     const wrapper = component.find('.board-review');
-    console.log(component.debug());
     expect(wrapper.length).toBeGreaterThan(0);
   });
 
@@ -79,5 +81,11 @@ describe('<BoardReview />', () => {
     expect(component.state('editMode')).toBeFalsy();
     wrapper = component.find('.detail-edit-button');
     expect(wrapper.length).toBe(1);
+  });
+
+  it('should handle review click', () => {
+    const wrapper = component.find('.board-review').first();
+    wrapper.simulate('click');
+    expect(spyReviewClick).toHaveBeenCalledTimes(1);
   });
 });

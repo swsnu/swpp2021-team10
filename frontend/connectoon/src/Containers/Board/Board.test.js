@@ -1,5 +1,5 @@
 import React from 'react';
-import { mount } from 'enzyme';
+import { mount, shallow } from 'enzyme';
 import { Provider } from 'react-redux';
 import { ConnectedRouter } from 'connected-react-router';
 import { Switch, Route } from 'react-router';
@@ -13,35 +13,55 @@ jest.mock('../../Components/BoardReview/BoardReview', () => {
   return jest.fn((props) => {
     return (
       <div className="spyBoardReview">
-        <div className="spyReview" />
+        <div className="spyReview" onClick={() => props.onClickReview(props.review.reviews[0].work.id)} />
       </div>
     );
   });
 });
 
-const stubInitailReviewState = {
+const stubInitialWorkState = {
 };
 
-const stubInitailTagState = {
+const stubInitialTagState = {
 };
 
-const stubInitailUserState = {
+const stubInitialUserState = {
 };
 
 const stubWork = {
   id: 1, title: 'TEST_TITLE', thumbnail_image: 'TEST_SRC', platform_id: 0, year: 2000, artists: ['TEST_ARTIST'], score_avg: 0, completion: true,
 };
 
-const stubInitailWorkState = {
-  mainWorkLists: [
+const stubAuthor = [
+  {
+    id: 1,
+    email: 'dummy@swpp.com',
+    profile_img: '',
+    username: 'dummyuser',
+  },
+];
+
+const stubReviews = [
+  {
+    id: 1,
+    work: stubWork,
+    author: stubAuthor[0],
+    score: 3.5,
+    likes: 10,
+    title: 'Dummy Review Title',
+    content: 'Dummy Content\nLong\nLong\nLogn\nLong\nFinish\n',
+  },
+];
+
+const stubInitialReviewState = {
+  boardReviews: [
     {
-      title: 'Test Works',
-      works: JSON.stringify([stubWork]),
+      reviews: stubReviews,
     },
   ],
 };
 
-const mockStore = getMockStore(stubInitailReviewState, stubInitailTagState, stubInitailUserState, stubInitailWorkState);
+const mockStore = getMockStore(stubInitialReviewState, stubInitialTagState, stubInitialUserState, stubInitialWorkState);
 
 describe('<Board />', () => {
   let board;
@@ -69,5 +89,15 @@ describe('<Board />', () => {
     expect(spyGetBoardReviews).toHaveBeenCalledTimes(1);
     const wrapper = component.find('.board-table');
     expect(wrapper.length).toBe(1);
+  });
+
+  it('should handle review click', () => {
+    const spyHistoryPush = jest.spyOn(history, 'push')
+      .mockImplementation((path) => { });
+    const component = mount(board);
+    const wrapper = component.find('.spyReview');
+    wrapper.simulate('click');
+    // expect(spyHistoryPush).toHaveBeenCalledTimes(1);
+    // expect(spyHistoryPush).toHaveBeenCalledWith('/works/1');
   });
 });
