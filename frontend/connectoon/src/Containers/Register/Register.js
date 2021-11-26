@@ -132,7 +132,7 @@ class Register extends Component {
         <h4 id="register-favorite-genres">
           Favorite Genres
         </h4>
-        <TagSearchWindow id="search-genre-search-window" onAddTag={this.onAddTag} onDeleteTag={this.onDeleteTag} />
+        <TagSearchWindow id="search-genre-search-window" onAddTag={this.onAddTag} onDeleteTag={this.onDeleteTag} defaultTag={[]} />
         <br />
         <button id="register-submit-button" onClick={() => this.submitRegisterData()} type="button" disabled={!(this.state.emailDupCheck && this.state.usernameDupCheck && this.checkPasswordAccord())}>submit</button>
       </div>
