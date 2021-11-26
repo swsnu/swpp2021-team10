@@ -62,19 +62,6 @@ class BoardReview extends Component {
     onClickReview(workId);
   }
 
-  onClickSave() {
-    this.setState({ editMode: false });
-    const { title, content, score } = this.state;
-    const { onClickSaveReview } = this.props;
-    console.log(title, content, score);
-    onClickSaveReview(title, content, parseFloat(score));
-  }
-
-  onClickDelete() {
-    const { onClickDeleteReview } = this.props;
-    onClickDeleteReview();
-  }
-
   render() {
     const {
       className, review, isMyReview,
