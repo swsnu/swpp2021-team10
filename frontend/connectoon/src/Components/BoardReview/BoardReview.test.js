@@ -1,50 +1,52 @@
 import React from 'react';
-import { shallow, mount } from 'enzyme';
+import { shallow, mount, ReactWrapper } from 'enzyme';
 
 import BoardReview from './BoardReview';
+
+const dummyWorks = [
+  {
+    id: 1,
+    src: 'https://shared-comic.pstatic.net/thumb/webtoon/721948/thumbnail/thumbnail_IMAG06_eef5b6c4-39dc-46d9-89d1-1a1ee357b696.jpg',
+    platform: '/images/naver_logo.png',
+    platform_id: 1,
+    completion: false,
+    thumbnail_image: 'https://ccdn.lezhin.com/v2/comics/5/images/tall.webp?updated=1602829186999&width=720',
+    title: 'Study Group',
+    artist: 'Shin, Hyeongwook & Yu, Seungyeon',
+    createdYear: '2019',
+    score: '4.9',
+  },
+];
+const dummyAuthor = [
+  {
+    id: 1,
+    email: 'dummy@swpp.com',
+    profile_img: '',
+    username: 'dummyuser',
+  },
+];
+const dummyReview =
+{
+  id: 1,
+  work: dummyWorks[0],
+  author: dummyAuthor[0],
+  score: 3.5,
+  likes: 10,
+  title: 'Dummy Review Title',
+  content: 'Dummy Content\nLong\nLong\nLogn\nLong\nFinish\n',
+};
 
 describe('<BoardReview />', () => {
   let component;
   let spyReviewClick;
   beforeEach(() => {
-    const dummyWorks = [
-      {
-        id: 1,
-        src: 'https://shared-comic.pstatic.net/thumb/webtoon/721948/thumbnail/thumbnail_IMAG06_eef5b6c4-39dc-46d9-89d1-1a1ee357b696.jpg',
-        platform: '/images/naver_logo.png',
-        platform_id: 1,
-        completion: false,
-        thumbnail_image: 'https://ccdn.lezhin.com/v2/comics/5/images/tall.webp?updated=1602829186999&width=720',
-        title: 'Study Group',
-        artist: 'Shin, Hyeongwook & Yu, Seungyeon',
-        createdYear: '2019',
-        score: '4.9',
-      },
-    ];
-    const dummyAuthor = [
-      {
-        id: 1,
-        email: 'dummy@swpp.com',
-        profile_img: '',
-        username: 'dummyuser',
-      },
-    ];
-    const dummyReview =
-    {
-      id: 1,
-      work: dummyWorks[0],
-      author: dummyAuthor[0],
-      score: 3.5,
-      likes: 10,
-      title: 'Dummy Review Title',
-      content: 'Dummy Content\nLong\nLong\nLogn\nLong\nFinish\n',
-    };
     spyReviewClick = jest.fn();
     component = mount(<BoardReview
       key={dummyReview.id}
       className="board-review"
       review={dummyReview}
       onClickReview={spyReviewClick}
+      isMyReview={true}
     />);
   });
 
@@ -87,5 +89,18 @@ describe('<BoardReview />', () => {
     const wrapper = component.find('.board-review').first();
     wrapper.simulate('click');
     expect(spyReviewClick).toHaveBeenCalledTimes(1);
+  });
+
+  it('should not show buttons when different user', () => {
+    component = mount(<BoardReview
+      key={1}
+      className="board-review"
+      review={dummyReview}
+      onClickReview={spyReviewClick}
+      isMyReview={false}
+    />);
+    const wrapper = component.find('.board-review-button-region');
+    console.log(wrapper);
+    expect(wrapper.get(0)).toBeFalsy();
   });
 });
