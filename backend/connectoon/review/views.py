@@ -65,7 +65,10 @@ def review_id(request, id):  # TODO
         work = review.work
         work.score_sum = work.score_sum - review.score
         work.review_num = work.review_num - 1
-        work.score_avg = work.score_sum / work.review_num
+        if work.review_num == 0:
+            work.score_avg = 0
+        else:
+            work.score_avg = work.score_sum / work.review_num
         work.save()
         
         review.delete()

@@ -101,6 +101,21 @@ class ReviewTestCase(TestCase):
 
         self.assertEqual(response.status_code, 204)
 
+    def test_delete_review_id_to_zero(self):
+        client = Client()
+
+        csrftoken = client.get('/token/').cookies['csrftoken'].value  # Get csrf token from cookie
+        response = client.post('/users/login/',
+                               json.dumps({'email': 'dummy@user.com', 'password': '1234'}),
+                               content_type='application/json', HTTP_X_CSRFTOKEN=csrftoken)
+
+        response = client.delete('/reviews/1/')
+        response = client.delete('/reviews/1/')
+        #print(response.content.decode())
+        #self.assertIn("0", response.content.decode())
+
+        self.assertEqual(response.status_code, 204)
+
     def test_delete_review_id_not_logged_in(self):
         client = Client()
 
