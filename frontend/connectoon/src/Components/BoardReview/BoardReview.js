@@ -65,6 +65,7 @@ class BoardReview extends Component {
     const {
       className, review, isMyReview,
     } = this.props;
+    console.log(review.id, isMyReview);
     const {
       editMode, clickLike, title, content, score, likes,
     } = this.state;
