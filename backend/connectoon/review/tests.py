@@ -156,6 +156,7 @@ class ReviewTestCase(TestCase):
         response_json = json.loads(response.content.decode())['reviews']
 
         for review in response_json:
+            print("r",review)
             self.assertGreaterEqual(review['likes'], 10)
 
     def test_review_board_wrong_api(self):
