@@ -37,7 +37,7 @@ class Board extends Component {
         className="board-review"
         review={review}
         onClickReview={(workId) => this.onClickReview(workId)}
-        isMyReview={loggedInUser.id === review.author.id}
+        isMyReview={loggedInUser && loggedInUser.id === review.author.id}
         onClickSaveReview={(title, content, score) => this.onClickSaveReview(review.id, title, content, score)}
         onClickDeleteReview={() => this.onClickDeleteReview(review.id)}
       />
