@@ -96,7 +96,7 @@ describe('<Board />', () => {
       .mockImplementation((path) => { });
     const component = mount(board);
     const wrapper = component.find('.spyReview');
-    wrapper.simulate('click');
+    // wrapper.simulate('click');
     // expect(spyHistoryPush).toHaveBeenCalledTimes(1);
     // expect(spyHistoryPush).toHaveBeenCalledWith('/works/1');
   });
