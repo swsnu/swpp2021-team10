@@ -25,7 +25,12 @@ const stubInitialWorkState = {
 const stubInitialTagState = {
 };
 
+const stubLoggedInUser = {
+  id: 1,
+};
+
 const stubInitialUserState = {
+  loggedInUser: stubLoggedInUser,
 };
 
 const stubWork = {
