@@ -2,7 +2,8 @@ from django.db import IntegrityError, transaction
 from django.utils.datastructures import MultiValueDictKeyError
 from django.views.decorators.csrf import ensure_csrf_cookie
 from django.contrib.auth import get_user_model, authenticate, login as auth_login, logout as auth_logout
-from django.http import HttpResponse, HttpResponseBadRequest, HttpResponseNotAllowed, HttpResponseForbidden, JsonResponse
+from django.http import HttpResponse, HttpResponseBadRequest, HttpResponseNotAllowed, HttpResponseForbidden, \
+    JsonResponse, QueryDict
 
 import json
 from json.decoder import JSONDecodeError
@@ -164,8 +165,77 @@ def user_me(request):
             return JsonResponse(response_dict, status=200)
         else:
             return HttpResponse(status=401)
+    if request.method == 'PUT':
+        if request_user.is_authenticated:
+
+            request.method = 'POST'
+            request._load_post_and_files()
+            request.method = 'PUT'
+            request.PUT = request.POST
+
+            try:
+                username = request.POST['username']
+            except MultiValueDictKeyError:
+                username = None
+
+            try:
+                password = request.POST['password']
+            except MultiValueDictKeyError:
+                password = None
+
+            tags = request.POST.getlist('tags', [])
+            profile_picture = request.FILES.get('profile_picture')
+
+            tag_new = []
+            for tag_name in tags:
+                try:
+                    tag_obj = Tag.objects.get(name=tag_name)
+                    tag_new.append(tag_obj)
+                except Tag.DoesNotExist as e:
+                    return HttpResponseBadRequest()
+
+            user_tag_old = request_user.user_tag.all()
+
+            # delete UserTagFav if not in request
+            for user_tag in user_tag_old:
+                if not(user_tag.tag.name in tags):
+                    user_tag.delete()
+
+            # create new UserTagFav if not exist
+            user_tag_old_name_list = [ut.tag.name for ut in user_tag_old]
+            for tag in tag_new:
+                if not(tag.name in user_tag_old_name_list):
+                    UserTagFav.objects.create(user=request_user, tag=tag)
+
+            # change data
+            if username:
+                request_user.username = username
+
+            if password:
+                request_user.set_password(password)
+
+            if profile_picture:
+                request_user.profile_picture = profile_picture
+
+            request_user.save()
+
+            updated_user_tag = request_user.user_tag.all()
+            tag_list = [{'id': user_tag.tag.id, 'name': user_tag.tag.name} for user_tag in updated_user_tag]
+
+            response_dict = {
+                'id': request_user.id,
+                'email': request_user.email,
+                'username': request_user.username,
+                'tags': tag_list,
+                'profile_picture': request.build_absolute_uri(
+                    request_user.profile_picture.url) if request_user.profile_picture else ''
+            }
+
+            return JsonResponse(response_dict, status=200)
+        else:
+            return HttpResponse(status=401)
     else:
-        return HttpResponseNotAllowed(['GET'])
+        return HttpResponseNotAllowed(['GET', 'PUT'])
 
 
 
