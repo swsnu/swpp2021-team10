@@ -18,12 +18,12 @@
 }
 
 .write-review-title-input {
-  width: 500px;
+  width: 690px;
   height: 18px;
 }
 
 .write-review-score-label {
-  margin: 0 0 0 212px;
+  margin: 0 0 0 70px;
 }
 
 .write-review-score-select {
@@ -48,5 +48,5 @@
   width: 100px;
   height: 96px;
   vertical-align: top;
-  margin: 0 0 0 70px;
+  margin: 0 0 0 60px;
 }

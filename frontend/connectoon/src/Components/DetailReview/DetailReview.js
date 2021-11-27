@@ -73,7 +73,7 @@ class DetailReview extends Component {
         </select>
       </label>
     ) : (
-      <div className="review-score-region">
+      <div>
         <img className="detail-review-score-star-icon" src="/images/ratingStar.png" alt="star" />
         <h5 className="detail-review-score-value">{parseFloat(score).toFixed(1)}</h5>
         <button className="detail-review-like-button" type="button" onClick={() => this.onClickLike()}>
@@ -87,11 +87,7 @@ class DetailReview extends Component {
         className="detail-review-content-input"
         value={content}
         onChange={(event) => this.setState({ content: event.target.value })}
-      /> : (
-        <div className="review-content-region">
-          <p className="detail-review-content">{content}</p>
-        </div>
-      );
+      /> : <p className="detail-review-content">{content}</p>;
     const buttonElement = editMode ? (
       <div className="review-button-region">
         <div className="review-save-back-region">
@@ -107,7 +103,7 @@ class DetailReview extends Component {
         </div>
       </div>
     ) : (
-      <div className="review-button-region">
+      <div>
         <div className="review-edit-delete-region">
           <button className="detail-edit-button" type="button" onClick={() => this.onClickEdit()}>edit</button>
           <button className="detail-delete-button" type="button" onClick={() => this.onClickDelete()}>delete</button>
@@ -120,16 +116,28 @@ class DetailReview extends Component {
 
     return (
       <div className={className}>
-        <div className="review-upper-region">
-          <img className="detail-user-profile-image" src="/images/dummyAccountIcon.jpeg" alt="user-profile" />
-          <h5 className="detail-username">{review.author.username}</h5>
-          {titleElement}
-          {scoreElement}
-        </div>
-        <div className="review-lower-region">
-          {contentElement}
-          {editable && buttonElement}
-        </div>
+        <table className="detail-review-table">
+          <tbody>
+            <tr className="detail-review-row-1">
+              <td className="detail-review-col">
+                <img className="detail-user-profile-image" src="/images/dummyAccountIcon.jpeg" alt="user-profile" />
+                <h5 className="detail-username">{review.author.username}</h5>
+                {titleElement}
+              </td>
+              <td className="detail-review-col">
+                {scoreElement}
+              </td>
+            </tr>
+            <tr className="detail-review-row-2">
+              <td className="detail-review-col">
+                {contentElement}
+              </td>
+              <td className="detail-review-col">
+                {editable && buttonElement}
+              </td>
+            </tr>
+          </tbody>
+        </table>
       </div>
     );
   }
