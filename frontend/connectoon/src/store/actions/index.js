@@ -3,6 +3,8 @@ export {
   editReview,
   deleteReview,
   getBoardReviews,
+  putLike,
+  unputLike,
 } from './review';
 export {
   getSearchTags,

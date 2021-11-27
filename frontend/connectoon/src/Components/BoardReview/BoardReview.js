@@ -8,7 +8,6 @@ class BoardReview extends Component {
     const { review } = this.props;
     this.state = {
       editMode: false,
-      clickLike: false,
       title: review.title,
       content: review.content,
       score: review.score,
@@ -16,6 +15,7 @@ class BoardReview extends Component {
     };
 
     this.onClickLike = this.onClickLike.bind(this);
+    this.onClickUnlike = this.onClickUnlike.bind(this);
     this.onClickEdit = this.onClickEdit.bind(this);
     this.onClickBack = this.onClickBack.bind(this);
     this.onClickSave = this.onClickSave.bind(this);
@@ -23,9 +23,19 @@ class BoardReview extends Component {
   }
 
   onClickLike() {
-    const { clickLike } = this.state;
-    this.setState({ clickLike: !clickLike });
+    const { onClickLikeReview, clickedLike } = this.props;
+    onClickLikeReview();
+    const { likes } = this.state;
+    this.setState({ likes: likes + 1, clickedLike: !clickedLike });
+
     // TODO: + or - like number
+  }
+
+  onClickUnlike() {
+    const { onClickUnlikeReview, clickedLike } = this.props;
+    onClickUnlikeReview();
+    const { likes } = this.state;
+    this.setState({ likes: likes - 1, clickedLike: !clickedLike });
   }
 
   onClickEdit() {
@@ -63,12 +73,12 @@ class BoardReview extends Component {
 
   render() {
     const {
-      className, review, isMyReview,
+      className, review, isMyReview, clickedLike,
     } = this.props;
     const {
-      editMode, clickLike, title, content, score, likes,
+      editMode, title, content, score, likes,
     } = this.state;
-    const heart = clickLike ? '/images/fullHeart.png' : '/images/emptyHeart.png';
+    const heart = clickedLike ? '/images/fullHeart.png' : '/images/emptyHeart.png';
     const platformMapper = ['/images/naver_logo.png', '/images/kakao_logo.png', '/images/lezhin_logo.png'];
     const reviewTitle = editMode ?
       <div onClick={(e) => e.stopPropagation()}>
@@ -137,7 +147,7 @@ class BoardReview extends Component {
               {reviewScore}
 
               <div className="review-likes">
-                <button className="review-like-button" type="button" onClick={this.onClickLike}>
+                <button className="review-like-button" type="button" onClick={clickedLike ? this.onClickUnlike : this.onClickLike}>
                   <img className="review-like-heart-icon" src={heart} />
                 </button>
                 <h5 className="review-value like">{review.likes}</h5>

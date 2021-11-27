@@ -9,7 +9,6 @@ import BoardReview from '../../Components/BoardReview/BoardReview';
 class Board extends Component {
   componentDidMount() {
     this.props.onGetBoardReviews();
-    // TODO: get isMyReview value by login
   }
 
   onClickReview = (workId) => {
@@ -27,21 +26,38 @@ class Board extends Component {
       });
   }
 
+  onClickLikeReview(id) {
+    this.props.onPutLike(id)
+      .then(() => {
+        this.props.onGetBoardReviews();
+      });
+  }
+
+  onClickUnlikeReview(id) {
+    this.props.onUnputLike(id)
+      .then(() => {
+        this.props.onGetBoardReviews();
+      });
+  }
+
   render() {
     const { boardReviews, loggedInUser } = this.props;
-    // const boardReviews = dummyReviews;
 
-    const reviewLists = boardReviews?.map((review) => (
-      <BoardReview
-        key={String(review.id)}
-        className="board-review"
-        review={review}
-        onClickReview={(workId) => this.onClickReview(workId)}
-        isMyReview={loggedInUser && loggedInUser.id === review.author.id}
-        onClickSaveReview={(title, content, score) => this.onClickSaveReview(review.id, title, content, score)}
-        onClickDeleteReview={() => this.onClickDeleteReview(review.id)}
-      />
-    ));
+    const reviewLists = boardReviews?.map((review) => {
+      return (
+        <BoardReview
+          key={String(review.id)}
+          className="board-review"
+          review={review}
+          onClickReview={(workId) => this.onClickReview(workId)}
+          isMyReview={loggedInUser && loggedInUser.id === review.author.id}
+          onClickSaveReview={(title, content, score) => this.onClickSaveReview(review.id, title, content, score)}
+          onClickDeleteReview={() => this.onClickDeleteReview(review.id)}
+          onClickLikeReview={() => this.onClickLikeReview(review.id)}
+          onClickUnlikeReview={() => this.onClickUnlikeReview(review.id)}
+          clickedLike={review.clickedLike}
+        />);
+    });
 
     return (
       <table className="board-table">
@@ -63,6 +79,7 @@ const mapStateToProps = (state) => {
   return {
     boardReviews: state.review.boardReviews,
     loggedInUser: state.user.loggedInUser,
+    clickedLike: state.review.clickedLike,
   };
 };
 
@@ -71,6 +88,8 @@ const mapDispatchToProps = (dispatch) => {
     onGetBoardReviews: () => dispatch(actionCreators.getBoardReviews()),
     onEditReview: (id, reviewData) => dispatch(actionCreators.editReview(id, reviewData)),
     onDeleteReview: (id) => dispatch(actionCreators.deleteReview(id)),
+    onPutLike: (id) => dispatch(actionCreators.putLike(id)),
+    onUnputLike: (id) => dispatch(actionCreators.unputLike(id)),
   };
 };
 

@@ -45,6 +45,7 @@ export const deleteReview = (id) => {
 };
 
 export const getBoardReviews_ = (boardReviewsDict) => {
+  console.log(boardReviewsDict);
   return {
     type: actionTypes.GET_BOARD_REVIEWS,
     boardReviews: boardReviewsDict.reviews,
@@ -56,6 +57,38 @@ export const getBoardReviews = () => {
     return axios.get('/reviews/board/')
       .then((res) => {
         dispatch(getBoardReviews_(res.data));
+      });
+  };
+};
+
+export const putLike_ = (review) => {
+  return {
+    type: actionTypes.PUT_LIKE,
+    likeTargetReview: review,
+  };
+};
+
+export const putLike = (id) => {
+  return (dispatch) => {
+    return axios.put('/reviews/' + id + '/like/')
+      .then((res) => {
+        dispatch(putLike_(res.data));
+      });
+  };
+};
+
+export const unputLike_ = (review) => {
+  return {
+    type: actionTypes.PUT_UNLIKE,
+    unlikeTargetID: review,
+  };
+};
+
+export const unputLike = (id) => {
+  return (dispatch) => {
+    return axios.put('/reviews/' + id + '/unlike/')
+      .then((res) => {
+        dispatch(unputLike_(res.data));
       });
   };
 };

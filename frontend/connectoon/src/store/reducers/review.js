@@ -5,6 +5,7 @@ const initialState = {
   ],
   selectedReview: null,
   boardReviews: [],
+  clickedLike: null,
 };
 
 const reducer = (state = initialState, action) => {
@@ -26,6 +27,22 @@ const reducer = (state = initialState, action) => {
       return { ...state, reviews: deletedReviews };
     case actionTypes.GET_BOARD_REVIEWS:
       return { ...state, boardReviews: action.boardReviews };
+    case actionTypes.PUT_LIKE:
+      const likeReviews = state.reviews.map((x) => {
+        if (x.id === action.likeTargetReview.id) {
+          return action.likeTargetReview;
+        }
+        return x;
+      });
+      return { ...state, reviews: likeReviews };
+    case actionTypes.PUT_UNLIKE:
+      const unlikeReviews = state.reviews.map((x) => {
+        if (x.id === action.unlikeTargetReview.id) {
+          return action.unlikeTargetReview;
+        }
+        return x;
+      });
+      return { ...state, reviews: unlikeReviews };
     default:
       break;
   }
