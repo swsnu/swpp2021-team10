@@ -16,3 +16,7 @@ class Review(models.Model):
     content = models.TextField()
     updated_at = models.DateTimeField(auto_now_add=True)
 # Create your models here.
+
+class ReviewUserLike(models.Model):
+    user = models.ForeignKey(get_user_model(), related_name='reviewlike', on_delete=models.CASCADE)
+    review = models.ForeignKey(Review, related_name='likeuser', on_delete=models.CASCADE)

@@ -9,7 +9,7 @@ from django.forms.models import model_to_dict
 from django.contrib.auth import get_user_model
 
 from work.models import Work
-from .models import Review
+from .models import Review, ReviewUserLike
 
 
 def review_id(request, id):  # TODO
@@ -96,9 +96,66 @@ def review_board(request):
         author_dict = {
             "id": author.id, "username": author.username, "email": author.email, # "profile_picture": author.profile_picture
         }
+
+        request_user = request.user
+        if not request_user.is_authenticated:
+            clickedLikeReview = False
+        elif ReviewUserLike.objects.filter(user = request_user, review = review):
+            clickedLikeReview = True
+        else:
+            clickedLikeReview = False
+
         response_dict.append({
             "id": review.id, "title": review.title, "content": review.content, "score": review.score, "likes": review.likes,
-            "work": work_dict, "author": author_dict
+            "work": work_dict, "author": author_dict, "clickedLike": clickedLikeReview
         })
 
     return JsonResponse({"reviews": response_dict}, status = 200, safe=False)
+
+def review_like(request, id):
+    try:
+        review = Review.objects.get(id = id)
+    except Review.DoesNotExist:
+        return HttpResponse(status=404)
+
+    if request.method == 'PUT':
+        request_user = request.user
+        if not request_user.is_authenticated:
+            return HttpResponse(status = 401)
+        if ReviewUserLike.objects.filter(user = request_user, review = review):
+            return HttpResponse(status = 403)
+
+        review.likes += 1
+        review.save()
+        like = ReviewUserLike(user=request_user, review=review)
+        like.save()
+
+        return JsonResponse({"like": model_to_dict(like), "like_num": review.likes}, status=200, safe=False)
+
+    else:
+        return HttpResponseNotAllowed(['GET, PUT'])
+
+def review_unlike(request, id):
+    try:
+        review = Review.objects.get(id = id)
+    except Review.DoesNotExist:
+        return HttpResponse(status=404)
+        
+    if request.method == 'PUT':
+        request_user = request.user
+        if not request_user.is_authenticated:
+            return HttpResponse(status = 401)
+
+        try:
+            like = ReviewUserLike.objects.get(user = request_user, review = review)
+        except ReviewUserLike.DoesNotExist:
+            return HttpResponse(status=404)
+        like.delete()
+
+        review.likes -= 1
+        review.save()
+
+        return JsonResponse({"like": model_to_dict(like), "like_num": review.likes}, status=200, safe=False)
+
+    else:
+        return HttpResponseNotAllowed(['PUT'])
