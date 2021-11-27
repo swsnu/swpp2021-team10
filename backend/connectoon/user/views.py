@@ -23,7 +23,7 @@ def token(request):
 
 @require_POST
 def user_register(request):
-    User = get_user_model()
+    user_class = get_user_model()
     try:
         email = request.POST['email']
         username = request.POST['username']
@@ -44,7 +44,7 @@ def user_register(request):
 
     try:
         with transaction.atomic():
-            created_user = User.objects.create_user(email=email, password=password, username=username)
+            created_user = user_class.objects.create_user(email=email, password=password, username=username)
     except IntegrityError:
         return HttpResponseBadRequest()
 
@@ -70,7 +70,7 @@ def user_register(request):
 
 
 def user_dup_email(request):
-    User = get_user_model()
+    user_class = get_user_model()
     if request.method == 'POST':
 
         try:
@@ -80,8 +80,8 @@ def user_dup_email(request):
             return HttpResponseBadRequest()
 
         try:
-            User.objects.get(email=email)
-        except User.DoesNotExist:
+            user_class.objects.get(email=email)
+        except user_class.DoesNotExist:
             return HttpResponse(status=204)
 
         return HttpResponseBadRequest()
@@ -90,7 +90,7 @@ def user_dup_email(request):
 
 
 def user_dup_username(request):
-    User = get_user_model()
+    user_class = get_user_model()
     if request.method == 'POST':
 
         try:
@@ -100,8 +100,8 @@ def user_dup_username(request):
             return HttpResponseBadRequest()
 
         try:
-            User.objects.get(username=username)
-        except User.DoesNotExist:
+            user_class.objects.get(username=username)
+        except user_class.DoesNotExist:
             return HttpResponse(status=204)
 
         return HttpResponseBadRequest()
@@ -148,7 +148,6 @@ def user_id(request, id):  # TODO
 
 def user_me(request):
     request_user = request.user
-    User = get_user_model()
     if request.method == 'GET':
         if request_user.is_authenticated:
 

@@ -8,10 +8,10 @@ import json
 
 class ReviewTestCase(TestCase):
     def setUp(self):
-        User = get_user_model()
-        author = User.objects.create_user(
+        user_class = get_user_model()
+        author = user_class.objects.create_user(
             email='dummy@user.com', password='1234', username='dummy')
-        author2 = User.objects.create_user(
+        author2 = user_class.objects.create_user(
             email='dummy2@user.com', password='1234', username='dummy1')
         Work.objects.create(
             title='DummyTitle', year=2019, description="HI", 
