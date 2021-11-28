@@ -105,14 +105,11 @@
   font-size: 16px;
   margin: 2px 20px 2px 20px;
   text-align: left;
-  display: -webkit-box;
   word-wrap: break-word;
-  -webkit-line-clamp: 5;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  overflow-y: scroll;
   line-height: 18px;
   height: 90px;
+  white-space: pre-line;
 }
 
 .detail-review-content-input {
@@ -124,16 +121,16 @@
   height: 90px;
 }
 
-.review-edit-delete-region {
+.detail-review-edit-delete-region {
   width: 120px;
-  height: 46px;
-  margin: 10px 0 0 0;
+  height: 34px;
+  margin: 0;
 }
 
-.review-save-back-region {
+.detail-review-save-back-region {
   width: 120px;
-  height: 102px;
-  margin: 10px 0 0 0;
+  height: 34px;
+  margin: 0;
 }
 
 .detail-edit-button {
@@ -146,23 +143,6 @@
   padding: 0;
   width: 52px;
   margin: 2px 2px 2px 2px;
-}
-
-.review-more-region {
-  width: 42px;
-  height: 21px;
-  margin: 25px 0 10px 0;
-}
-
-.detail-review-more-button {
-  border: none;
-  background-color: white;
-  text-decoration: none;
-  padding: 0;
-}
-
-.detail-review-more-button:hover {
-  cursor: grab;
 }
 
 .detail-save-button {

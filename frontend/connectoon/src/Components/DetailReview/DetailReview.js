@@ -88,31 +88,22 @@ class DetailReview extends Component {
         value={content}
         onChange={(event) => this.setState({ content: event.target.value })}
       /> : <p className="detail-review-content">{content}</p>;
-    const buttonElement = editMode ? (
-      <div className="review-button-region">
-        <div className="review-save-back-region">
-          <button
-            className="detail-save-button"
-            type="button"
-            disabled={title.match(/^\s*$/g) || content.match(/^\s*$/g)}
-            onClick={() => this.onClickSave()}
-          >
-            save
-          </button>
-          <button className="detail-back-button" type="button" onClick={() => this.onClickBack()}>back</button>
-        </div>
-      </div>
-    ) : (
-      <div>
-        <div className="review-edit-delete-region">
-          <button className="detail-edit-button" type="button" onClick={() => this.onClickEdit()}>edit</button>
-          <button className="detail-delete-button" type="button" onClick={() => this.onClickDelete()}>delete</button>
-        </div>
-        <div className="review-more-region">
-          <button className="detail-review-more-button" type="button">more...</button>
-        </div>
-      </div>
-    );
+    const buttonElement = editMode ?
+      <div className="detail-review-save-back-region">
+        <button
+          className="detail-save-button"
+          type="button"
+          disabled={title.match(/^\s*$/g) || content.match(/^\s*$/g)}
+          onClick={() => this.onClickSave()}
+        >
+          save
+        </button>
+        <button className="detail-back-button" type="button" onClick={() => this.onClickBack()}>back</button>
+      </div> :
+      <div className="detail-review-edit-delete-region">
+        <button className="detail-edit-button" type="button" onClick={() => this.onClickEdit()}>edit</button>
+        <button className="detail-delete-button" type="button" onClick={() => this.onClickDelete()}>delete</button>
+      </div>;
 
     return (
       <div className={className}>
