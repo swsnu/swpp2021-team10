@@ -26,6 +26,7 @@ class ReviewTestCase(TestCase):
         Review.objects.create(
             work=Work.objects.first(), score=5.0, title="DUMMY2", content="DUMMY_CONTENT2", author=author2
         )
+        review = Review(work=Work.objects.first(), score=0.0, title="DUM", content="DUM_CONTENT", likes=10, author=author)
 
     def test_review_count(self):
         self.assertEqual(Review.objects.all().count(), 2)
@@ -110,11 +111,9 @@ class ReviewTestCase(TestCase):
                                content_type='application/json', HTTP_X_CSRFTOKEN=csrftoken)
 
         response = client.delete('/reviews/1/')
-        response = client.delete('/reviews/1/')
-        #print(response.content.decode())
-        #self.assertIn("0", response.content.decode())
-
         self.assertEqual(response.status_code, 204)
+        response = client.delete('/reviews/2/')
+        #self.assertEqual(response.status_code, 204)
 
     def test_delete_review_id_not_logged_in(self):
         client = Client()
@@ -157,7 +156,6 @@ class ReviewTestCase(TestCase):
         response_json = json.loads(response.content.decode())['reviews']
 
         for review in response_json:
-            print("r",review)
             self.assertGreaterEqual(review['likes'], 10)
 
     def test_review_board_wrong_api(self):
