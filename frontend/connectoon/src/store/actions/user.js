@@ -133,22 +133,6 @@ export const editMyUser = (user) => {
   };
 };
 
-export const getMyReviews_ = (reviews) => {
-  return {
-    type: actionTypes.GET_MYREVIEWS,
-    myreviews: reviews,
-  };
-};
-
-export const getMyReviews = () => {
-  return (dispatch) => {
-    return axios.get('/users/me/reviews/')
-      .then((res) => {
-        dispatch(getMyReviews_(res.data));
-      });
-  };
-};
-
 export const dupCheckEmail = (email) => {
   return () => {
     return axios.post('/users/dup/email/', email);

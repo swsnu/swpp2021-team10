@@ -2,20 +2,6 @@ import axios from 'axios';
 import { push } from 'connected-react-router';
 import * as actionTypes from './actionTypes';
 
-export const getReview_ = (review) => {
-  return {
-    type: actionTypes.GET_REVIEW,
-    selectedReview: review,
-  };
-};
-
-export const getReview = (id) => {
-  return (dispatch) => {
-    return axios.get('/reviews/' + id + '/')
-      .then((res) => dispatch(getReview_(res.data)));
-  };
-};
-
 export const editReview_ = (review) => {
   return {
     type: actionTypes.EDIT_REVIEW,
@@ -44,10 +30,19 @@ export const deleteReview = (id) => {
   };
 };
 
-export const getBoardReviews_ = (boardReviewsDict) => {
+export const getReviews_ = (reviews) => {
   return {
-    type: actionTypes.GET_BOARD_REVIEWS,
-    boardReviews: boardReviewsDict.reviews,
+    type: actionTypes.GET_REVIEWS,
+    reviews,
+  };
+};
+
+export const getWorkReviews = (id) => {
+  return (dispatch) => {
+    return axios.get('/works/' + id + '/reviews/')
+      .then((res) => {
+        dispatch(getReviews_(res.data.reviews));
+      });
   };
 };
 
@@ -55,7 +50,16 @@ export const getBoardReviews = () => {
   return (dispatch) => {
     return axios.get('/reviews/board/')
       .then((res) => {
-        dispatch(getBoardReviews_(res.data));
+        dispatch(getReviews_(res.data.reviews));
+      });
+  };
+};
+
+export const getMyReviews = () => {
+  return (dispatch) => {
+    return axios.get('/users/me/reviews/')
+      .then((res) => {
+        dispatch(getReviews_(res.data.reviews));
       });
   };
 };

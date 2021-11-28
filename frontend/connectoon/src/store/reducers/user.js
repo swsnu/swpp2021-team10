@@ -5,8 +5,6 @@ const initialState = {
   ],
   selectedUser: null,
   loggedInUser: null,
-  myreviews: [
-  ],
 };
 
 const reducer = (state = initialState, action) => {
@@ -25,8 +23,6 @@ const reducer = (state = initialState, action) => {
       return { ...state, loggedInUser: action.loggedInUser };
     case actionTypes.EDIT_MYUSER:
       return { ...state, loggedInUser: action.loggedInUser };
-    case actionTypes.GET_MYREVIEWS:
-      return { ...state, myreviews: action.myreviews };
     default:
       break;
   }

@@ -146,25 +146,6 @@ describe('ActionCreators', () => {
     });
   });
 
-  it('\'getMyReviews\' should fetch reviews correctly', (done) => {
-    const spy = jest.spyOn(axios, 'get')
-      .mockImplementation((url) => {
-        return new Promise((resolve, reject) => {
-          const result = {
-            status: 200,
-            data: stubReviews,
-          };
-          resolve(result);
-        });
-      });
-
-    store.dispatch(actionCreators.getMyReviews()).then(() => {
-      const newState = store.getState();
-      expect(spy).toHaveBeenCalledTimes(1);
-      done();
-    });
-  });
-
   it('\'dupCheckEmail\' should check duplication email correctly', (done) => {
     const spy = jest.spyOn(axios, 'post')
       .mockImplementation((url, rv) => {

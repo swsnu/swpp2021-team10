@@ -61,7 +61,7 @@ def work_id_review(request, id):
                 "work": work_dict, "author": author_dict
             })
         
-        return JsonResponse(response_dict, safe = False)
+        return JsonResponse({ "reviews": response_dict }, status=200, safe = False)
 
 
     elif request.method == 'POST':

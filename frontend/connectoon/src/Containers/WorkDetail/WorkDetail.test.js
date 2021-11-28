@@ -31,9 +31,6 @@ jest.mock('../../Components/DetailReview/DetailReview', () => {
   });
 });
 
-const stubInitialReviewState = {
-};
-
 const stubInitialTagState = {
 };
 
@@ -65,7 +62,7 @@ describe('<WorkDetail />', () => {
       .mockImplementation((id) => { return (dispatch) => {}; });
     spyPostReview = jest.spyOn(workActionCreator, 'postWorkReview')
       .mockImplementation((id, reviewData) => { return (dispatch) => { return new Promise((resolve, reject) => resolve()); }; });
-    spyGetWorkReviews = jest.spyOn(workActionCreator, 'getWorkReviews')
+    spyGetWorkReviews = jest.spyOn(reviewActionCreator, 'getWorkReviews')
       .mockImplementation((id) => { return (dispatch) => {}; });
     spyEditReview = jest.spyOn(reviewActionCreator, 'editReview')
       .mockImplementation((id, reviewData) => { return (dispatch) => { return new Promise((resolve, reject) => resolve()); }; });
@@ -83,7 +80,9 @@ describe('<WorkDetail />', () => {
     };
     const stubInitialWorkState = {
       selectedWork: null,
-      selectedReviews: [],
+    };
+    const stubInitialReviewState = {
+      reviews: [],
     };
     const mockStore = getMockStore(stubInitialReviewState, stubInitialTagState, stubInitialUserState, stubInitialWorkState);
     const workDetail = (
@@ -108,7 +107,9 @@ describe('<WorkDetail />', () => {
     };
     const stubInitialWorkState = {
       selectedWork: stubWork,
-      selectedReviews: [],
+    };
+    const stubInitialReviewState = {
+      reviews: [],
     };
     const mockStore = getMockStore(stubInitialReviewState, stubInitialTagState, stubInitialUserState, stubInitialWorkState);
     const workDetail = (
@@ -132,7 +133,9 @@ describe('<WorkDetail />', () => {
     };
     const stubInitialWorkState = {
       selectedWork: stubWork,
-      selectedReviews: [],
+    };
+    const stubInitialReviewState = {
+      reviews: [],
     };
     const mockStore = getMockStore(stubInitialReviewState, stubInitialTagState, stubInitialUserState, stubInitialWorkState);
     const workDetail = (
@@ -158,7 +161,9 @@ describe('<WorkDetail />', () => {
     };
     const stubInitialWorkState = {
       selectedWork: stubWork,
-      selectedReviews: [
+    };
+    const stubInitialReviewState = {
+      reviews: [
         { id: 1, author: { id: 1 } },
       ],
     };
@@ -186,7 +191,9 @@ describe('<WorkDetail />', () => {
     };
     const stubInitialWorkState = {
       selectedWork: stubWork,
-      selectedReviews: [
+    };
+    const stubInitialReviewState = {
+      reviews: [
         { id: 1, author: { id: 1 } },
       ],
     };
@@ -214,7 +221,9 @@ describe('<WorkDetail />', () => {
     };
     const stubInitialWorkState = {
       selectedWork: stubWork,
-      selectedReviews: [
+    };
+    const stubInitialReviewState = {
+      reviews: [
         { id: 1, author: { id: 1 } },
         { id: 2, author: { id: 2 } },
       ],
@@ -242,7 +251,9 @@ describe('<WorkDetail />', () => {
     };
     const stubInitialWorkState = {
       selectedWork: stubWork,
-      selectedReviews: [
+    };
+    const stubInitialReviewState = {
+      reviews: [
         { id: 1, author: { id: 2 } },
         { id: 2, author: { id: 3 } },
       ],
@@ -270,7 +281,9 @@ describe('<WorkDetail />', () => {
     };
     const stubInitialWorkState = {
       selectedWork: null,
-      selectedReviews: [
+    };
+    const stubInitialReviewState = {
+      reviews: [
         { id: 1, author: { id: 1 } },
         { id: 2, author: { id: 2 } },
       ],
@@ -296,7 +309,9 @@ describe('<WorkDetail />', () => {
     };
     const stubInitialWorkState = {
       selectedWork: stubWork,
-      selectedReviews: [
+    };
+    const stubInitialReviewState = {
+      reviews: [
         { id: 1, author: { id: 1 } },
         { id: 2, author: { id: 2 } },
       ],

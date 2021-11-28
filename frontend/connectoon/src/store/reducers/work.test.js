@@ -12,7 +12,6 @@ const stubMainWorks = [
     ],
   },
 ];
-const stubReview = { id: 1 };
 
 describe('Work Reducer', () => {
   it('should return default state', () => {
@@ -23,7 +22,6 @@ describe('Work Reducer', () => {
       selectedWorks: [],
       searchedWorks: [[], []],
       selectedWork: null,
-      selectedReviews: [],
       recWorkLists: [[]],
       works: [],
     });
@@ -39,48 +37,19 @@ describe('Work Reducer', () => {
 
   it('should get work', () => {
     const stubInitialState = {
-      selectedWorks: [stubWork],
-      searchedWorks: [[stubWork], [stubWork]],
-      selectedWork: stubWork,
-      selectedReviews: [stubReview],
+      selectedWork: null,
     };
     const newState = reducer(stubInitialState, {
       type: actionTypes.GET_WORK,
       selectedWork: stubWork,
     });
     expect(newState).toEqual({
-      selectedWorks: [stubWork],
-      searchedWorks: [[stubWork], [stubWork]],
       selectedWork: stubWork,
-      selectedReviews: [stubReview],
-    });
-  });
-
-  it('should get work reviews', () => {
-    const stubInitialState = {
-      selectedWorks: [stubWork],
-      searchedWorks: [[stubWork], [stubWork]],
-      selectedWork: stubWork,
-      selectedReviews: [stubReview],
-    };
-    const newState = reducer(stubInitialState, {
-      type: actionTypes.GET_WORK_REVIEWS,
-      selectedReviews: [stubReview],
-    });
-    expect(newState).toEqual({
-      selectedWorks: [stubWork],
-      searchedWorks: [[stubWork], [stubWork]],
-      selectedWork: stubWork,
-      selectedReviews: [stubReview],
     });
   });
 
   it('should get recommended works', () => {
     const stubInitialState = {
-      selectedWorks: [stubWork],
-      searchedWorks: [[stubWork], [stubWork]],
-      selectedWork: stubWork,
-      selectedReviews: [stubReview],
       recWorkLists: [[]],
     };
     const newState = reducer(stubInitialState, {
@@ -88,30 +57,20 @@ describe('Work Reducer', () => {
       selectedWorks: [[stubWork]],
     });
     expect(newState).toEqual({
-      selectedWorks: [stubWork],
-      searchedWorks: [[stubWork], [stubWork]],
-      selectedWork: stubWork,
-      selectedReviews: [stubReview],
       recWorkLists: [[stubWork]],
     });
   });
 
   it('should get searched works', () => {
     const stubInitialState = {
-      selectedWorks: [stubWork],
-      searchedWorks: [[stubWork], [stubWork]],
-      selectedWork: stubWork,
-      selectedReviews: [stubReview],
+      searchedWorks: [[], []],
     };
     const newState = reducer(stubInitialState, {
       type: actionTypes.GET_SEARCH_WORKS,
-      selectedWorks: [[stubWork], [stubWork]],
+      selectedWorks: [[stubWork], [stubWork, stubWork]],
     });
     expect(newState).toEqual({
-      selectedWorks: [stubWork],
-      searchedWorks: [[stubWork], [stubWork]],
-      selectedWork: stubWork,
-      selectedReviews: [stubReview],
+      searchedWorks: [[stubWork], [stubWork, stubWork]],
     });
   });
 

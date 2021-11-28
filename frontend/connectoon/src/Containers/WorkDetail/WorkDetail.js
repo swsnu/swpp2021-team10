@@ -127,7 +127,7 @@ const mapStateToProps = (state) => {
   return {
     selectedWork: state.work.selectedWork,
     loggedInUser: state.user.loggedInUser,
-    selectedReviews: state.work.selectedReviews,
+    selectedReviews: state.review.reviews,
   };
 };
 
