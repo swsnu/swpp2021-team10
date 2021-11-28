@@ -9,7 +9,6 @@ from django.forms.models import model_to_dict
 from django.contrib.auth import get_user_model
 
 from work.models import Work
-from work.models import Work
 from .models import Review
 
 
@@ -79,9 +78,9 @@ def review_id(request, id):  # TODO
 
 @require_GET
 def review_board(request):
-    #board_reviews = Review.objects.filter(likes__gte=10).order_by('-updated_at')
-    board_reviews = Review.objects.select_related('work').order_by('-updated_at')
-    User = get_user_model()
+    board_reviews = Review.objects.filter(likes__gte=10).order_by('-updated_at')
+    #board_reviews = Review.objects.select_related('work').order_by('-updated_at')
+    user_class = get_user_model()
     response_dict = []
 
     for review in board_reviews:
@@ -93,7 +92,7 @@ def review_board(request):
             "platform_id": work.platform_id, "year": work.year, "artists": work_artist_name
         }
         
-        author = User.objects.get(id=review.author_id)
+        author = user_class.objects.get(id=review.author_id)
         author_dict = {
             "id": author.id, "username": author.username, "email": author.email, # "profile_picture": author.profile_picture
         }
