@@ -12,9 +12,13 @@ import Board from './Board';
 jest.mock('../../Components/BoardReview/BoardReview', () => {
   return jest.fn((props) => {
     return (
-      <div className="spyBoardReview">
-        <div className="spyReview" onClick={() => props.onClickReview(props.review.reviews[0].work.id)} />
-      </div>
+      <tr className="spyBoardReview">
+        <td>
+          <div className="spyReview" onClick={() => props.onClickReview(props.review.work.id)} />
+          <button type="button" className="spy-delete-button" onClick={() => props.onClickDeleteReview()} />
+          <button type="button" className="spy-save-button" onClick={() => props.onClickSaveReview()} />
+        </td>
+      </tr>
     );
   });
 });
@@ -50,7 +54,12 @@ const stubReviews = [
   {
     id: 1,
     work: stubWork,
-    author: stubAuthor[0],
+    author: {
+      id: 1,
+      email: 'dummy@swpp.com',
+      profile_img: '',
+      username: 'dummyuser',
+    },
     score: 3.5,
     likes: 10,
     title: 'Dummy Review Title',
@@ -59,11 +68,7 @@ const stubReviews = [
 ];
 
 const stubInitialReviewState = {
-  boardReviews: [
-    {
-      reviews: stubReviews,
-    },
-  ],
+  boardReviews: stubReviews,
 };
 
 const mockStore = getMockStore(stubInitialReviewState, stubInitialTagState, stubInitialUserState, stubInitialWorkState);
@@ -71,18 +76,25 @@ const mockStore = getMockStore(stubInitialReviewState, stubInitialTagState, stub
 describe('<Board />', () => {
   let board;
   let spyGetBoardReviews;
+  let spyEditReview;
+  let spyDeleteReview;
   beforeEach(() => {
     board = (
       <Provider store={mockStore}>
         <ConnectedRouter history={history}>
           <Switch>
-            <Route path="/" exact render={() => <Board />} />
+            {/* eslint-disable-next-line */}
+            <Route path="/" exact render={(props) => <Board {...props} />} />
           </Switch>
         </ConnectedRouter>
       </Provider>
     );
     spyGetBoardReviews = jest.spyOn(reviewActionCreator, 'getBoardReviews')
       .mockImplementation(() => { return (dispatch) => {}; });
+    spyEditReview = jest.spyOn(reviewActionCreator, 'editReview')
+      .mockImplementation((id, reviewData) => { return (dispatch) => { return new Promise((resolve, reject) => resolve()); }; });
+    spyDeleteReview = jest.spyOn(reviewActionCreator, 'deleteReview')
+      .mockImplementation((id) => { return (dispatch) => { return new Promise((resolve, reject) => resolve()); }; });
   });
 
   afterEach(() => {
@@ -101,8 +113,22 @@ describe('<Board />', () => {
       .mockImplementation((path) => { });
     const component = mount(board);
     const wrapper = component.find('.spyReview');
-    // wrapper.simulate('click');
-    // expect(spyHistoryPush).toHaveBeenCalledTimes(1);
-    // expect(spyHistoryPush).toHaveBeenCalledWith('/works/1');
+    wrapper.simulate('click');
+    expect(spyHistoryPush).toHaveBeenCalledTimes(1);
+    expect(spyHistoryPush).toHaveBeenCalledWith('/works/1');
+  });
+
+  it('should handle click edit', () => {
+    const component = mount(board);
+    const wrapper = component.find('.spy-save-button');
+    wrapper.simulate('click');
+    expect(spyEditReview).toHaveBeenCalledTimes(1);
+  });
+
+  it('should handle click delete', () => {
+    const component = mount(board);
+    const wrapper = component.find('.spy-delete-button');
+    wrapper.simulate('click');
+    expect(spyDeleteReview).toHaveBeenCalledTimes(1);
   });
 });

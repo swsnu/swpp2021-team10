@@ -1,9 +1,6 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import { withRouter } from 'react-router';
 import WorkThumbnail from '../WorkThumbnail/WorkThumbnail';
 import './BoardReview.css';
-import * as actionCreators from '../../store/actions/index';
 
 class BoardReview extends Component {
   constructor(props) {
@@ -36,7 +33,10 @@ class BoardReview extends Component {
   }
 
   onClickBack() {
-    this.setState({ editMode: false });
+    const { review } = this.props;
+    this.setState({
+      editMode: false, title: review.title, content: review.content, score: review.score,
+    });
   }
 
   onClickReview = (workId) => {
@@ -48,7 +48,6 @@ class BoardReview extends Component {
     this.setState({ editMode: false });
     const { title, content, score } = this.state;
     const { onClickSaveReview } = this.props;
-    console.log(title, content, score);
     onClickSaveReview(title, content, parseFloat(score));
   }
 
@@ -61,7 +60,6 @@ class BoardReview extends Component {
     const {
       className, review, isMyReview,
     } = this.props;
-    console.log(review.id, isMyReview);
     const {
       editMode, clickLike, title, content, score, likes,
     } = this.state;
@@ -156,12 +154,5 @@ class BoardReview extends Component {
       </tr>);
   }
 }
-const mapStateToProps = (state) => {
-  return {
-    selectedWork: state.work.selectedWork,
-    loggedInUser: state.user.loggedInUser,
-    selectedReviews: state.work.selectedReviews,
-  };
-};
 
 export default BoardReview;
