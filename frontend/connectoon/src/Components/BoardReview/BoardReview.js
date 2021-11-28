@@ -1,16 +1,25 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
 import WorkThumbnail from '../WorkThumbnail/WorkThumbnail';
 import './BoardReview.css';
 
 class BoardReview extends Component {
   constructor(props) {
     super(props);
-    this.state = { editMode: false, clickLike: false };
+    const { review } = this.props;
+    this.state = {
+      editMode: false,
+      clickLike: false,
+      title: review.title,
+      content: review.content,
+      score: review.score,
+      likes: review.likes,
+    };
 
     this.onClickLike = this.onClickLike.bind(this);
     this.onClickEdit = this.onClickEdit.bind(this);
     this.onClickBack = this.onClickBack.bind(this);
+    this.onClickSave = this.onClickSave.bind(this);
+    this.onClickDelete = this.onClickDelete.bind(this);
   }
 
   onClickLike() {
@@ -24,44 +33,104 @@ class BoardReview extends Component {
   }
 
   onClickBack() {
+    const { review } = this.props;
+    this.setState({
+      editMode: false, title: review.title, content: review.content, score: review.score,
+    });
+  }
+
+  onClickReview = (workId) => {
+    const { onClickReview } = this.props;
+    onClickReview(workId);
+  }
+
+  onClickSave() {
     this.setState({ editMode: false });
+    const { title, content, score } = this.state;
+    const { onClickSaveReview } = this.props;
+    onClickSaveReview(title, content, parseFloat(score));
+  }
+
+  onClickDelete() {
+    const { onClickDeleteReview } = this.props;
+    onClickDeleteReview();
   }
 
   render() {
     const {
-      className, review,
+      className, review, isMyReview,
     } = this.props;
     const {
-      editMode, clickLike,
+      editMode, clickLike, title, content, score, likes,
     } = this.state;
     const heart = clickLike ? '/images/fullHeart.png' : '/images/emptyHeart.png';
     const platformMapper = ['/images/naver_logo.png', '/images/kakao_logo.png', '/images/lezhin_logo.png'];
-    const reviewTitle = editMode ? <input className="review-title-input" /> : <h4 className="review-title">{review.title}</h4>;
+    const reviewTitle = editMode ?
+      <div onClick={(e) => e.stopPropagation()}>
+        <input
+          className="review-title-input"
+          value={title}
+          onChange={(event) => this.setState({ title: event.target.value })}
+        />
+      </div>
+      : <h4 className="review-title">{title}</h4>;
     const buttonElement = editMode ? (
-      <div className="board-review-button-region">
-        <button className="detail-save-button" type="button">save</button>
+      <div className="board-review-button-region" onClick={(e) => e.stopPropagation()}>
+        <button className="detail-save-button" type="button" onClick={this.onClickSave}>save</button>
         <button className="detail-back-button" type="button" onClick={this.onClickBack}>back</button>
       </div>
     ) : (
-      <div className="board-review-button-region">
+      <div className="board-review-button-region" onClick={(e) => e.stopPropagation()}>
         <button className="detail-edit-button" type="button" onClick={this.onClickEdit}>edit</button>
-        <button className="detail-delete-button" type="button">delete</button>
+        <button className="detail-delete-button" type="button" onClick={this.onClickDelete}>delete</button>
+      </div>
+    );
+    const reviewContent = editMode
+      ? <div onClick={(e) => e.stopPropagation()}>
+        <textarea
+          className="review-content-input"
+          value={content}
+          onChange={(event) => this.setState({ content: event.target.value })}
+        />
+      </div>
+      : <p className="review-content">{content}</p>;
+
+    const reviewScore = editMode ? (
+      <div>
+        <label className="detail-review-score-label">
+          Score&nbsp;
+          <select className="detail-review-score-select" key={score} name="review-score" defaultValue={score} onChange={(event) => this.setState({ score: event.target.value })}>
+            <option value="0.5">0.5</option>
+            <option value="1.0">1.0</option>
+            <option value="1.5">1.5</option>
+            <option value="2.0">2.0</option>
+            <option value="2.5">2.5</option>
+            <option value="3.0">3.0</option>
+            <option value="3.5">3.5</option>
+            <option value="4.0">4.0</option>
+            <option value="4.5">4.5</option>
+            <option value="5.0">5.0</option>
+          </select>
+        </label>
+      </div>
+    ) : (
+      <div className="review-score">
+        <img className="review-score-star-icon" src="/images/ratingStar.png" alt="star" />
+        <h5 className="review-value score">{score}</h5>
       </div>
     );
 
     return (
-      <tr className={className}>
+      <tr className={className} onClick={() => this.onClickReview(review.work.id)}>
         <td className="board-review thumbnail">
-          <WorkThumbnail className="work-thumbnail" src={review.work.thumbnail_image} platform={platformMapper[review.work.platform_id]} />
+          <WorkThumbnail className="work-thumbnail" src={review.work.thumbnail_picture} platform={platformMapper[review.work.platform_id]} />
         </td>
         <td className="board-review detail">
           <div className="board-review-header">
             <h3 className="work-title">{review.work.title}</h3>
-            <div className="review-score-likes-wrapper">
-              <div className="review-score">
-                <img className="review-score-star-icon" src="/images/ratingStar.png" alt="star" />
-                <h5 className="review-value score">{review.score}</h5>
-              </div>
+            <div className="review-score-likes-wrapper" onClick={(e) => e.stopPropagation()}>
+              {reviewScore}
+
               <div className="review-likes">
                 <button className="review-like-button" type="button" onClick={this.onClickLike}>
                   <img className="review-like-heart-icon" src={heart} />
@@ -76,25 +145,14 @@ class BoardReview extends Component {
               <div className="author-name">{review.author.username}</div>
               {reviewTitle}
             </div>
-            {buttonElement}
+            {isMyReview ? buttonElement : null}
           </div>
-          {
-            editMode
-              ? <input className="review-content-input" />
-              : <p className="review-content">{review.content}</p>
-          }
+          {reviewContent}
 
         </td>
 
       </tr>);
   }
 }
-BoardReview.propTypes = {
-  className: PropTypes.string.isRequired,
-  score: PropTypes.string.isRequired,
-  likes: PropTypes.string.isRequired,
-  title: PropTypes.string.isRequired,
-  content: PropTypes.string.isRequired,
-};
 
 export default BoardReview;

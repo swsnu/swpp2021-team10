@@ -44,10 +44,10 @@ export const deleteReview = (id) => {
   };
 };
 
-export const getBoardReviews_ = (boardReviews) => {
+export const getBoardReviews_ = (boardReviewsDict) => {
   return {
     type: actionTypes.GET_BOARD_REVIEWS,
-    boardReviews,
+    boardReviews: boardReviewsDict.reviews,
   };
 };
 

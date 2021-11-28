@@ -26,6 +26,7 @@ class ReviewTestCase(TestCase):
         Review.objects.create(
             work=Work.objects.first(), score=5.0, title="DUMMY2", content="DUMMY_CONTENT2", author=author2
         )
+        review = Review(work=Work.objects.first(), score=0.0, title="DUM", content="DUM_CONTENT", likes=10, author=author)
 
     def test_review_count(self):
         self.assertEqual(Review.objects.all().count(), 2)
@@ -101,6 +102,19 @@ class ReviewTestCase(TestCase):
 
         self.assertEqual(response.status_code, 204)
 
+    def test_delete_review_id_to_zero(self):
+        client = Client()
+
+        csrftoken = client.get('/token/').cookies['csrftoken'].value  # Get csrf token from cookie
+        response = client.post('/users/login/',
+                               json.dumps({'email': 'dummy@user.com', 'password': '1234'}),
+                               content_type='application/json', HTTP_X_CSRFTOKEN=csrftoken)
+
+        response = client.delete('/reviews/1/')
+        self.assertEqual(response.status_code, 204)
+        response = client.delete('/reviews/2/')
+        #self.assertEqual(response.status_code, 204)
+
     def test_delete_review_id_not_logged_in(self):
         client = Client()
 
@@ -139,7 +153,7 @@ class ReviewTestCase(TestCase):
 
         self.assertEqual(response.status_code, 200)
 
-        response_json = json.loads(json.loads(response.content.decode())["reviews"])
+        response_json = json.loads(response.content.decode())['reviews']
 
         for review in response_json:
             self.assertGreaterEqual(review['likes'], 10)
