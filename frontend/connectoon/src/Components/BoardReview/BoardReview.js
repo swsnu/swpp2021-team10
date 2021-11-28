@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import WorkThumbnail from '../WorkThumbnail/WorkThumbnail';
 import './BoardReview.css';
-import * as actionCreators from '../../store/actions/index';
 
 class BoardReview extends Component {
   constructor(props) {
@@ -66,7 +65,6 @@ class BoardReview extends Component {
     const {
       className, review, isMyReview,
     } = this.props;
-    console.log(review.id, isMyReview);
     const {
       editMode, clickLike, title, content, score, likes,
     } = this.state;
@@ -161,12 +159,5 @@ class BoardReview extends Component {
       </tr>);
   }
 }
-const mapStateToProps = (state) => {
-  return {
-    selectedWork: state.work.selectedWork,
-    loggedInUser: state.user.loggedInUser,
-    selectedReviews: state.work.selectedReviews,
-  };
-};
 
 export default BoardReview;

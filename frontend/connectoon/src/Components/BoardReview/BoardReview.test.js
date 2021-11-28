@@ -40,6 +40,7 @@ describe('<BoardReview />', () => {
   let component;
   let spyReviewClick;
 <<<<<<< HEAD
+<<<<<<< HEAD
   const spySaveReview = jest.fn(() => { });
   const spyDeleteReview = jest.fn(() => { });
   beforeEach(() => {
@@ -66,6 +67,23 @@ describe('<BoardReview />', () => {
       isMyReview={true}
     />);
 >>>>>>> 9d95cf1 (modified frontend for board)
+=======
+  const spySaveReview = jest.fn(() => { });
+  const spyDeleteReview = jest.fn(() => { });
+  beforeEach(() => {
+    spyReviewClick = jest.fn();
+    component = mount(
+      <BoardReview
+        key={dummyReview.id}
+        className="board-review"
+        review={dummyReview}
+        onClickReview={spyReviewClick}
+        isMyReview={true}
+        onClickDeleteReview={spyDeleteReview}
+        onClickSaveReview={spySaveReview}
+      />,
+    );
+>>>>>>> 6ffacb5 (modified frontend testing)
   });
 
   afterEach(() => {
@@ -122,6 +140,7 @@ describe('<BoardReview />', () => {
       isMyReview={false}
     />);
     const wrapper = component.find('.board-review-button-region');
+<<<<<<< HEAD
 <<<<<<< HEAD
     expect(wrapper.get(0)).toBeFalsy();
   });
@@ -199,4 +218,75 @@ describe('<BoardReview />', () => {
     expect(wrapper.get(0)).toBeFalsy();
   });
 >>>>>>> c22868a (for testing)
+=======
+    expect(wrapper.get(0)).toBeFalsy();
+  });
+
+  it('should handle click like', () => {
+    const wrapper = component.find('.review-like-button');
+    wrapper.simulate('click');
+    expect(component.state('clickLike')).toBeTruthy();
+    wrapper.simulate('click');
+    expect(component.state('clickLike')).toBeFalsy();
+  });
+
+  it('should handle click edit, not go to work-detail', () => {
+    let wrapper = component.find('.detail-edit-button');
+    wrapper.simulate('click');
+    expect(component.state('editMode')).toBeTruthy();
+
+    wrapper = component.find('.review-title-input');
+    wrapper.simulate('click');
+    expect(spyReviewClick).toHaveBeenCalledTimes(0);
+
+    wrapper = component.find('.review-content-input');
+    wrapper.simulate('click');
+    expect(spyReviewClick).toHaveBeenCalledTimes(0);
+
+    wrapper = component.find('.detail-back-button');
+    expect(wrapper.length).toBe(1);
+  });
+
+  it('should handle click delete', () => {
+    const wrapper = component.find('.detail-delete-button');
+    wrapper.simulate('click');
+    expect(spyDeleteReview).toHaveBeenCalledTimes(1);
+  });
+
+  it('should handle title, content, score changes', () => {
+    let wrapper = component.find('.detail-edit-button');
+    wrapper.simulate('click');
+    wrapper = component.find('.review-title-input');
+    wrapper.simulate('change', { target: { value: 'edit_title1' } });
+    wrapper = component.find('.detail-review-score-select');
+    wrapper.simulate('change', { target: { value: '4.0' } });
+    wrapper = component.find('.review-content-input');
+    wrapper.simulate('change', { target: { value: 'edit_content1' } });
+    expect(component.state('title')).toBe('edit_title1');
+    expect(component.state('content')).toBe('edit_content1');
+    expect(component.state('score')).toBe('4.0');
+  });
+
+  it('should handle click save', () => {
+    let wrapper = component.find('.detail-edit-button');
+    wrapper.simulate('click');
+    wrapper = component.find('.review-title-input');
+    wrapper.simulate('change', { target: { value: 'edit_title1' } });
+    wrapper = component.find('.detail-save-button');
+    wrapper.simulate('click');
+    expect(component.state('editMode')).toBeFalsy();
+    expect(spySaveReview).toHaveBeenCalledTimes(1);
+  });
+
+  it('should handle click back, returning to initial review data', () => {
+    let wrapper = component.find('.detail-edit-button');
+    wrapper.simulate('click');
+    wrapper = component.find('.review-title-input');
+    wrapper.simulate('change', { target: { value: 'edit_title1' } });
+    wrapper = component.find('.detail-back-button');
+    wrapper.simulate('click');
+    expect(component.state('editMode')).toBeFalsy();
+    expect(component.state('title')).toBe('Dummy Review Title');
+  });
+>>>>>>> 6ffacb5 (modified frontend testing)
 });
