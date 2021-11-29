@@ -70,7 +70,7 @@ export const putLike_ = (review) => {
 
 export const putLike = (id) => {
   return (dispatch) => {
-    return axios.put('/reviews/' + id + '/like/')
+    return axios.post('/reviews/' + id + '/like/')
       .then((res) => {
         dispatch(putLike_(res.data));
       });
@@ -86,7 +86,7 @@ export const unputLike_ = (review) => {
 
 export const unputLike = (id) => {
   return (dispatch) => {
-    return axios.put('/reviews/' + id + '/unlike/')
+    return axios.post('/reviews/' + id + '/unlike/')
       .then((res) => {
         dispatch(unputLike_(res.data));
       });

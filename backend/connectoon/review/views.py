@@ -118,7 +118,7 @@ def review_like(request, id):
     except Review.DoesNotExist:
         return HttpResponse(status=404)
 
-    if request.method == 'PUT':
+    if request.method == 'POST':
         request_user = request.user
         if not request_user.is_authenticated:
             return HttpResponse(status = 401)
@@ -133,7 +133,7 @@ def review_like(request, id):
         return JsonResponse({"like": model_to_dict(like), "like_num": review.likes}, status=200, safe=False)
 
     else:
-        return HttpResponseNotAllowed(['GET, PUT'])
+        return HttpResponseNotAllowed(['POST'])
 
 def review_unlike(request, id):
     try:
@@ -141,7 +141,7 @@ def review_unlike(request, id):
     except Review.DoesNotExist:
         return HttpResponse(status=404)
         
-    if request.method == 'PUT':
+    if request.method == 'POST':
         request_user = request.user
         if not request_user.is_authenticated:
             return HttpResponse(status = 401)
@@ -158,4 +158,4 @@ def review_unlike(request, id):
         return JsonResponse({"like": model_to_dict(like), "like_num": review.likes}, status=200, safe=False)
 
     else:
-        return HttpResponseNotAllowed(['PUT'])
+        return HttpResponseNotAllowed(['POST'])
