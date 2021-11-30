@@ -1,6 +1,8 @@
 export const EDIT_REVIEW = 'EDIT_REVIEW';
 export const DELETE_REVIEW = 'DELETE_REVIEW';
 export const GET_REVIEWS = 'GET_REVIEWS';
+export const POST_LIKE = 'POST_LIKE';
+export const POST_UNLIKE = 'POST_UNLIKE';
 export const TOKEN = 'TOKEN';
 export const LOG_IN = 'LOG_IN';
 export const LOG_OUT = 'LOG_OUT';
