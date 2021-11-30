@@ -52,7 +52,6 @@ class WorkDetail extends Component {
   }
 
   render() {
-    const { reviewNum } = this.state;
     const {
       selectedWork, noSuchSelectedWork, loggedInUser, reviews,
     } = this.props;
