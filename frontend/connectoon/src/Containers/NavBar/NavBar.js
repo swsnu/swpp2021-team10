@@ -28,22 +28,19 @@ class NavBar extends Component {
   }
 
   onClickMyPage() {
-    const { clickUsername } = this.state;
-    this.setState({ clickUsername: !clickUsername });
+    this.setState({ clickUsername: false });
     const { history } = this.props;
     history.push('/mypage');
   }
 
   onClickMyReviews() {
-    const { clickUsername } = this.state;
-    this.setState({ clickUsername: !clickUsername });
+    this.setState({ clickUsername: false });
     const { history } = this.props;
     history.push('/myreviews');
   }
 
   onClickLogout() {
-    const { clickUsername } = this.state;
-    this.setState({ clickUsername: !clickUsername });
+    this.setState({ clickUsername: false });
     const { onLogOut } = this.props;
     onLogOut();
   }
@@ -51,6 +48,7 @@ class NavBar extends Component {
   onClickSearchGlass() {
     const { onPutSearchWord, history } = this.props;
     const { searchWord } = this.state;
+    this.setState({ clickUsername: false });
     onPutSearchWord(searchWord);
     history.push('/search');
   }
@@ -62,12 +60,12 @@ class NavBar extends Component {
     return (
       <div className={className}>
         <div id="connectoon-logo-link">
-          <Link id="connectoon-logo" to="/main">Connectoon</Link>
+          <Link id="connectoon-logo" to="/main" onClick={() => this.setState({ clickUsername: false })}>Connectoon</Link>
         </div>
         <div id="non-logo-links">
-          <Link id="recommendation-tab" to="/recommendation">Recommendation</Link>
-          <Link id="board-tab" to="/board">Board</Link>
-          <Link id="search-tab" to="/search">Search</Link>
+          <Link id="recommendation-tab" to="/recommendation" onClick={() => this.setState({ clickUsername: false })}>Recommendation</Link>
+          <Link id="board-tab" to="/board" onClick={() => this.setState({ clickUsername: false })}>Board</Link>
+          <Link id="search-tab" to="/search" onClick={() => this.setState({ clickUsername: false })}>Search</Link>
           <input id="search-input" type="text" placeholder="title, artist, #tag" onChange={(e) => this.setState({ searchWord: e.target.value })} />
           <button id="search-glass-wrapper" type="button" onClick={() => this.onClickSearchGlass()}>
             <img id="search-glass-icon" src="/images/search_glass_icon.png" alt="search" />
