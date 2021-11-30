@@ -68,7 +68,7 @@ const stubReviews = [
 ];
 
 const stubInitialReviewState = {
-  boardReviews: stubReviews,
+  reviews: stubReviews,
 };
 
 const mockStore = getMockStore(stubInitialReviewState, stubInitialTagState, stubInitialUserState, stubInitialWorkState);

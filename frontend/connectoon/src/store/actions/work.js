@@ -34,22 +34,6 @@ export const getWork = (id) => {
   };
 };
 
-export const getWorkReviews_ = (reviews) => {
-  return {
-    type: actionTypes.GET_WORK_REVIEWS,
-    selectedReviews: reviews,
-  };
-};
-
-export const getWorkReviews = (id) => {
-  return (dispatch) => {
-    return axios.get('/works/' + id + '/reviews/')
-      .then((res) => {
-        dispatch(getWorkReviews_(res.data));
-      });
-  };
-};
-
 export const getRecWorks_ = (works) => {
   return {
     type: actionTypes.GET_REC_WORKS,

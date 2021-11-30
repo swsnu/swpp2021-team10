@@ -61,7 +61,7 @@ class Board extends Component {
 
 const mapStateToProps = (state) => {
   return {
-    boardReviews: state.review.boardReviews,
+    boardReviews: state.review.reviews,
     loggedInUser: state.user.loggedInUser,
   };
 };

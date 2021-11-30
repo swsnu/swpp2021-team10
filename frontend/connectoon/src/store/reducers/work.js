@@ -11,8 +11,6 @@ const initialState = {
     [], [],
   ],
   selectedWork: null,
-  selectedReviews: [
-  ],
   recWorkLists: [
     [],
   ],
@@ -25,8 +23,6 @@ const reducer = (state = initialState, action) => {
       return { ...state, mainWorkLists: action.mainWorkLists };
     case actionTypes.GET_WORK:
       return { ...state, selectedWork: action.selectedWork };
-    case actionTypes.GET_WORK_REVIEWS:
-      return { ...state, selectedReviews: action.selectedReviews };
     case actionTypes.GET_REC_WORKS:
       return { ...state, recWorkLists: action.selectedWorks };
     case actionTypes.GET_SEARCH_WORKS:

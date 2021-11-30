@@ -88,7 +88,7 @@ class WorkTestCase(TestCase):
         self.assertIn('0.0', response.content.decode())
         self.assertIn('5.0', response.content.decode())
 
-        self.assertEqual(2, len(json.loads(response.content.decode())))
+        self.assertEqual(2, len(json.loads(response.content.decode())['reviews']))
 
         self.assertEqual(response.status_code, 200)
 
