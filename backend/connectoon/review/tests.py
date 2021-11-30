@@ -153,9 +153,9 @@ class ReviewTestCase(TestCase):
         client = Client()
         response = client.get('/reviews/10/')
         self.assertEqual(response.status_code, 404)
-        response = client.get('/reviews/10/like/')
+        response = client.post('/reviews/10/like/')
         self.assertEqual(response.status_code, 404)
-        response = client.get('/reviews/10/unlike/')
+        response = client.post('/reviews/10/unlike/')
         self.assertEqual(response.status_code, 404)
 
     def test_review_board(self):
