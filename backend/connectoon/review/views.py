@@ -9,7 +9,7 @@ from django.forms.models import model_to_dict
 from django.contrib.auth import get_user_model
 
 from work.models import Work
-from .models import Review
+from .models import Review, ReviewUserLike
 
 
 def review_id(request, id):  # TODO
@@ -96,9 +96,103 @@ def review_board(request):
         author_dict = {
             "id": author.id, "username": author.username, "email": author.email, # "profile_picture": author.profile_picture
         }
+
+        request_user = request.user
+        if not request_user.is_authenticated:
+            clickedLikeReview = False
+        elif ReviewUserLike.objects.filter(user = request_user, review = review):
+            clickedLikeReview = True
+        else:
+            clickedLikeReview = False
+
         response_dict.append({
             "id": review.id, "title": review.title, "content": review.content, "score": review.score, "likes": review.likes,
-            "work": work_dict, "author": author_dict
+            "work": work_dict, "author": author_dict, "clickedLike": clickedLikeReview
         })
 
     return JsonResponse({"reviews": response_dict}, status = 200, safe=False)
+
+def review_like(request, id):
+    try:
+        review = Review.objects.get(id = id)
+    except Review.DoesNotExist:
+        return HttpResponse(status=404)
+
+    if request.method == 'POST':
+        request_user = request.user
+        if not request_user.is_authenticated:
+            return HttpResponse(status = 401)
+        if ReviewUserLike.objects.filter(user = request_user, review = review):
+            return HttpResponse(status = 403)
+
+        review.likes += 1
+        review.save()
+        like = ReviewUserLike(user=request_user, review=review)
+        like.save()
+
+        user_class = get_user_model()
+        work = review.work
+        work_artist_name = [artist.name for artist in work.artists.all()]
+        
+        work_dict = {
+            "id": work.id, "title": work.title, "thumbnail_picture": work.thumbnail_picture,
+            "platform_id": work.platform_id, "year": work.year, "artists": work_artist_name
+        }
+        
+        author = user_class.objects.get(id=review.author_id)
+        author_dict = {
+            "id": author.id, "username": author.username, "email": author.email, # "profile_picture": author.profile_picture
+        }
+
+        review_val = {
+            "id": review.id, "title": review.title, "content": review.content, "score": review.score, "likes": review.likes,
+            "work": work_dict, "author": author_dict, "clickedLike": True
+        }
+
+        return JsonResponse(review_val, status=200)
+
+    else:
+        return HttpResponseNotAllowed(['POST'])
+
+def review_unlike(request, id):
+    try:
+        review = Review.objects.get(id = id)
+    except Review.DoesNotExist:
+        return HttpResponse(status=404)
+        
+    if request.method == 'POST':
+        request_user = request.user
+        if not request_user.is_authenticated:
+            return HttpResponse(status = 401)
+
+        try:
+            like = ReviewUserLike.objects.get(user = request_user, review = review)
+        except ReviewUserLike.DoesNotExist:
+            return HttpResponse(status=404)
+        like.delete()
+
+        review.likes -= 1
+        review.save()
+        
+        user_class = get_user_model()
+        work = review.work
+        work_artist_name = [artist.name for artist in work.artists.all()]
+        
+        work_dict = {
+            "id": work.id, "title": work.title, "thumbnail_picture": work.thumbnail_picture,
+            "platform_id": work.platform_id, "year": work.year, "artists": work_artist_name
+        }
+        
+        author = user_class.objects.get(id=review.author_id)
+        author_dict = {
+            "id": author.id, "username": author.username, "email": author.email, # "profile_picture": author.profile_picture
+        }
+
+        review_val = {
+            "id": review.id, "title": review.title, "content": review.content, "score": review.score, "likes": review.likes,
+            "work": work_dict, "author": author_dict, "clickedLike": False
+        }
+        return JsonResponse(review_val, status=200)
+
+    else:
+        return HttpResponseNotAllowed(['POST'])
