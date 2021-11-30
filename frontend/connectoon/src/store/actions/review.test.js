@@ -113,7 +113,7 @@ describe('ActionCreators', () => {
   });
 
   it('\'postLike\' should like correctly', (done) => {
-    const stubReview2 = {
+    const stubReview3 = {
       id: 1,
       clickedLike: true,
     };
@@ -122,7 +122,7 @@ describe('ActionCreators', () => {
         return new Promise((resolve, reject) => {
           const result = {
             status: 200,
-            data: stubReview2,
+            data: stubReview3,
           };
           resolve(result);
         });
@@ -136,7 +136,7 @@ describe('ActionCreators', () => {
   });
 
   it('\'postUnlike\' should unlike correctly', (done) => {
-    const stubReview2 = {
+    const stubReview3 = {
       id: 1,
       clickedLike: false,
     };
@@ -145,7 +145,7 @@ describe('ActionCreators', () => {
         return new Promise((resolve, reject) => {
           const result = {
             status: 200,
-            data: stubReview2,
+            data: stubReview3,
           };
           resolve(result);
         });
