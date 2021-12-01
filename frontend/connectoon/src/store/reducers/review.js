@@ -21,8 +21,6 @@ const reducer = (state = initialState, action) => {
         return x.id !== action.targetID;
       });
       return { ...state, reviews: deletedReviews };
-    case actionTypes.GET_BOARD_REVIEWS:
-      return { ...state, boardReviews: action.boardReviews };
     case actionTypes.POST_LIKE:
       const likeReviews = state.reviews.map((x) => {
         if (x.id === action.likeTargetReview.id) {
