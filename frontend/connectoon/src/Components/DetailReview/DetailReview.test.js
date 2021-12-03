@@ -18,13 +18,37 @@ describe('<DetailReview />', () => {
     expect(wrapper.length).toBe(1);
   });
 
-  it('should handle click like', () => {
-    const component = mount(<DetailReview className="detail-review" review={stubReview} editable={false} />);
+  it('should handle click like when logged in', () => {
+    const component = mount(<DetailReview
+      className="detail-review"
+      review={stubReview}
+      editable={false}
+      onClickLikeReview={jest.fn()}
+      onClickUnlikeReview={jest.fn()}
+      clickedLike={false}
+      isLoggedIn={true}
+    />);
     const wrapper = component.find('.detail-review-like-button');
     wrapper.simulate('click');
-    expect(component.state('clickLike')).toBeTruthy();
+    expect(component.state().clickedLike).toBeTruthy();
     wrapper.simulate('click');
-    expect(component.state('clickLike')).toBeFalsy();
+    expect(component.state().clickedLike).toBeFalsy();
+  });
+
+  it('should handle click like when not logged in', () => {
+    const mockClickLike = jest.fn();
+    const component = mount(<DetailReview
+      className="detail-review"
+      review={stubReview}
+      editable={false}
+      onClickLikeReview={mockClickLike}
+      onClickUnlikeReview={jest.fn()}
+      clickedLike={false}
+      isLoggedIn={false}
+    />);
+    const wrapper = component.find('.detail-review-like-button');
+    wrapper.simulate('click');
+    expect(mockClickLike).toHaveBeenCalledTimes(0);
   });
 
   it('should handle click edit', () => {
