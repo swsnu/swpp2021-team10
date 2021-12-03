@@ -78,6 +78,8 @@ describe('<NavBar />', () => {
     wrapper.simulate('click');
     const newNavbarInstance = component.find(NavBar.WrappedComponent).instance();
     expect(newNavbarInstance.state.clickUsername).toBeTruthy();
+    wrapper.simulate('click');
+    expect(newNavbarInstance.state.clickUsername).toBeFalsy();
   });
 
   it('should handle mypage click', () => {
@@ -115,6 +117,42 @@ describe('<NavBar />', () => {
     expect(spyLogOut).toHaveBeenCalledTimes(1);
   });
 
+  it('should handle main page click', () => {
+    const component = mount(navbar);
+    const wrapper = component.find('Link#connectoon-logo');
+    expect(wrapper.prop('to')).toBe('/main');
+    wrapper.simulate('click');
+    const newNavbarInstance = component.find(NavBar.WrappedComponent).instance();
+    expect(newNavbarInstance.state.clickUsername).toBeFalsy();
+  });
+
+  it('should handle recommendation click', () => {
+    const component = mount(navbar);
+    const wrapper = component.find('Link#recommendation-tab');
+    expect(wrapper.prop('to')).toBe('/recommendation');
+    wrapper.simulate('click');
+    const newNavbarInstance = component.find(NavBar.WrappedComponent).instance();
+    expect(newNavbarInstance.state.clickUsername).toBeFalsy();
+  });
+
+  it('should handle board click', () => {
+    const component = mount(navbar);
+    const wrapper = component.find('Link#board-tab');
+    expect(wrapper.prop('to')).toBe('/board');
+    wrapper.simulate('click');
+    const newNavbarInstance = component.find(NavBar.WrappedComponent).instance();
+    expect(newNavbarInstance.state.clickUsername).toBeFalsy();
+  });
+
+  it('should handle search click', () => {
+    const component = mount(navbar);
+    const wrapper = component.find('Link#search-tab');
+    expect(wrapper.prop('to')).toBe('/search');
+    wrapper.simulate('click');
+    const newNavbarInstance = component.find(NavBar.WrappedComponent).instance();
+    expect(newNavbarInstance.state.clickUsername).toBeFalsy();
+  });
+
   it('should handle search glass click with valid input', () => {
     const component = mount(navbar);
     const mockedEvent = {
@@ -128,6 +166,7 @@ describe('<NavBar />', () => {
     expect(newNavbarInstance.state.searchWord).toBe('test');
     wrapper = component.find('#search-glass-wrapper');
     wrapper.simulate('click');
+    expect(newNavbarInstance.state.clickUsername).toBeFalsy();
     expect(spyPutSearchWord).toHaveBeenCalledTimes(1);
     expect(spyHistoryPush).toHaveBeenCalledTimes(1);
     expect(spyHistoryPush).toHaveBeenCalledWith('/search/keyword');
@@ -137,6 +176,8 @@ describe('<NavBar />', () => {
     const component = mount(navbar);
     const wrapper = component.find('#search-glass-wrapper');
     wrapper.simulate('click');
+    const newNavbarInstance = component.find(NavBar.WrappedComponent).instance();
+    expect(newNavbarInstance.state.clickUsername).toBeFalsy();
     expect(spyPutSearchWord).toHaveBeenCalledTimes(1);
     expect(spyHistoryPush).toHaveBeenCalledTimes(1);
     expect(spyHistoryPush).toHaveBeenCalledWith('/search/keyword');
