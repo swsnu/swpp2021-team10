@@ -38,11 +38,12 @@ const dummyReview =
 
 describe('<BoardReview />', () => {
   let component;
-  let spyReviewClick;
-  const spySaveReview = jest.fn(() => { });
-  const spyDeleteReview = jest.fn(() => { });
+  const spyReviewClick = jest.fn();
+  const spySaveReview = jest.fn();
+  const spyDeleteReview = jest.fn();
+  const spyClickLike = jest.fn();
+  const spyClickUnike = jest.fn();
   beforeEach(() => {
-    spyReviewClick = jest.fn();
     component = mount(
       <BoardReview
         key={dummyReview.id}
@@ -52,6 +53,10 @@ describe('<BoardReview />', () => {
         isMyReview={true}
         onClickDeleteReview={spyDeleteReview}
         onClickSaveReview={spySaveReview}
+        onClickLikeReview={spyClickLike}
+        onClickUnlikeReview={spyClickUnike}
+        clickedLike={false}
+        isLoggedIn={true}
       />,
     );
   });
@@ -65,12 +70,33 @@ describe('<BoardReview />', () => {
     expect(wrapper.length).toBeGreaterThan(0);
   });
 
-  it('should handle click like', () => {
+  it('should handle click like and unlike', () => {
     const wrapper = component.find('.review-like-button');
     wrapper.simulate('click');
-    expect(component.state('clickLike')).toBeTruthy();
+    expect(component.state().clickedLike).toBeTruthy();
     wrapper.simulate('click');
-    expect(component.state('clickLike')).toBeFalsy();
+    expect(component.state().clickedLike).toBeFalsy();
+  });
+
+  it('should not handle click like and unlike when not logged in', () => {
+    component = mount(
+      <BoardReview
+        key={dummyReview.id}
+        className="board-review"
+        review={dummyReview}
+        onClickReview={spyReviewClick}
+        isMyReview={true}
+        onClickDeleteReview={spyDeleteReview}
+        onClickSaveReview={spySaveReview}
+        onClickLikeReview={spyClickLike}
+        onClickUnlikeReview={spyClickUnike}
+        clickedLike={false}
+        isLoggedIn={false}
+      />,
+    );
+    const wrapper = component.find('.review-like-button');
+    wrapper.simulate('click');
+    expect(component.state().clickedLike).toBeFalsy();
   });
 
   it('should handle click edit', () => {
@@ -107,14 +133,6 @@ describe('<BoardReview />', () => {
     />);
     const wrapper = component.find('.board-review-button-region');
     expect(wrapper.get(0)).toBeFalsy();
-  });
-
-  it('should handle click like', () => {
-    const wrapper = component.find('.review-like-button');
-    wrapper.simulate('click');
-    expect(component.state('clickLike')).toBeTruthy();
-    wrapper.simulate('click');
-    expect(component.state('clickLike')).toBeFalsy();
   });
 
   it('should handle click edit, not go to work-detail', () => {

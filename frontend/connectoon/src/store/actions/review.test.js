@@ -5,6 +5,10 @@ import store from '../store';
 
 const stubReview1 = { id: 1 };
 const stubReview2 = { id: 2 };
+const stubReview = {
+  id: 0,
+  clickedLike: false,
+};
 
 const stubReviews = {
   reviews: [stubReview1, stubReview2],
@@ -103,6 +107,52 @@ describe('ActionCreators', () => {
     store.dispatch(actionCreators.getMyReviews()).then(() => {
       const newState = store.getState();
       expect(newState.review.reviews).toBe(stubReviews.reviews);
+      expect(spy).toHaveBeenCalledTimes(1);
+      done();
+    });
+  });
+
+  it('\'postLike\' should like correctly', (done) => {
+    const stubReview3 = {
+      id: 1,
+      clickedLike: true,
+    };
+    const spy = jest.spyOn(axios, 'post')
+      .mockImplementation((url, rv) => {
+        return new Promise((resolve, reject) => {
+          const result = {
+            status: 200,
+            data: stubReview3,
+          };
+          resolve(result);
+        });
+      });
+
+    store.dispatch(actionCreators.postLike(0)).then(() => {
+      const newState = store.getState();
+      expect(spy).toHaveBeenCalledTimes(1);
+      done();
+    });
+  });
+
+  it('\'postUnlike\' should unlike correctly', (done) => {
+    const stubReview3 = {
+      id: 1,
+      clickedLike: false,
+    };
+    const spy = jest.spyOn(axios, 'post')
+      .mockImplementation((url, rv) => {
+        return new Promise((resolve, reject) => {
+          const result = {
+            status: 200,
+            data: stubReview3,
+          };
+          resolve(result);
+        });
+      });
+
+    store.dispatch(actionCreators.postUnlike(0)).then(() => {
+      const newState = store.getState();
       expect(spy).toHaveBeenCalledTimes(1);
       done();
     });
