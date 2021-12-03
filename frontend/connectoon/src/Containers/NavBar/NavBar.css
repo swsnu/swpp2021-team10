@@ -106,7 +106,7 @@ a:hover {
 
 #navbar-right-margin {
   position: absolute;
-  left: max(100%, 850px);
+  left: max(100% - 1px, 849px);
   top: 30px;
   width: 1px;
   height: 10px;
