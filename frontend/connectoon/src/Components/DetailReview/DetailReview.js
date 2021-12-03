@@ -4,21 +4,33 @@ import './DetailReview.css';
 class DetailReview extends Component {
   constructor(props) {
     super(props);
-    const { review } = this.props;
+    const { review, clickedLike } = this.props;
     this.state = {
       editMode: false,
-      clickLike: false,
+      clickedLike,
       title: review.title,
       content: review.content,
       score: String(review.score.toFixed(1)),
-      likes: String(review.likes),
+      likes: review.likes,
     };
+    this.onClickLike = this.onClickLike.bind(this);
+    this.onClickUnlike = this.onClickUnlike.bind(this);
   }
 
   onClickLike() {
-    const { clickLike } = this.state;
-    this.setState({ clickLike: !clickLike });
-    // TODO: + or - like number
+    const { onClickLikeReview, isLoggedIn } = this.props;
+    if (isLoggedIn) {
+      onClickLikeReview();
+      const { likes, clickedLike } = this.state;
+      this.setState({ likes: likes + 1, clickedLike: !clickedLike });
+    }
+  }
+
+  onClickUnlike() {
+    const { onClickUnlikeReview } = this.props;
+    onClickUnlikeReview();
+    const { likes, clickedLike } = this.state;
+    this.setState({ likes: likes - 1, clickedLike: !clickedLike });
   }
 
   onClickEdit() {
@@ -47,9 +59,9 @@ class DetailReview extends Component {
   render() {
     const { className, review, editable } = this.props;
     const {
-      editMode, clickLike, title, content, score, likes,
+      editMode, title, content, score, likes, clickedLike,
     } = this.state;
-    const heart = clickLike ? '/images/fullHeart.png' : '/images/emptyHeart.png';
+    const heart = clickedLike ? '/images/fullHeart.png' : '/images/emptyHeart.png';
     const titleElement = editMode ?
       <input
         className="detail-review-title-input"
@@ -76,7 +88,7 @@ class DetailReview extends Component {
       <div>
         <img className="detail-review-score-star-icon" src="/images/ratingStar.png" alt="star" />
         <h5 className="detail-review-score-value">{parseFloat(score).toFixed(1)}</h5>
-        <button className="detail-review-like-button" type="button" onClick={() => this.onClickLike()}>
+        <button className="detail-review-like-button" type="button" onClick={clickedLike ? this.onClickUnlike : this.onClickLike}>
           <img className="detail-review-like-heart-icon" src={heart} alt="like" />
         </button>
         <h5 className="detail-review-like-value">{likes}</h5>
