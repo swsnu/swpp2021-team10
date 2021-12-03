@@ -63,3 +63,35 @@ export const getMyReviews = () => {
       });
   };
 };
+
+export const postLike_ = (review) => {
+  return {
+    type: actionTypes.POST_LIKE,
+    likeTargetReview: review,
+  };
+};
+
+export const postLike = (id) => {
+  return (dispatch) => {
+    return axios.post('/reviews/' + id + '/like/')
+      .then((res) => {
+        dispatch(postLike_(res.data));
+      });
+  };
+};
+
+export const postUnlike_ = (review) => {
+  return {
+    type: actionTypes.POST_UNLIKE,
+    unlikeTargetReview: review,
+  };
+};
+
+export const postUnlike = (id) => {
+  return (dispatch) => {
+    return axios.post('/reviews/' + id + '/unlike/')
+      .then((res) => {
+        dispatch(postUnlike_(res.data));
+      });
+  };
+};

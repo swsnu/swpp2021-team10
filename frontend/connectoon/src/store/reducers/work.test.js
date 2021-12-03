@@ -22,6 +22,7 @@ describe('Work Reducer', () => {
       selectedWorks: [],
       searchedWorks: [[], []],
       selectedWork: null,
+      noSuchSelectedWork: false,
       recWorkLists: [[]],
       works: [],
     });
@@ -38,6 +39,7 @@ describe('Work Reducer', () => {
   it('should get work', () => {
     const stubInitialState = {
       selectedWork: null,
+      noSuchSelectedWork: false,
     };
     const newState = reducer(stubInitialState, {
       type: actionTypes.GET_WORK,
@@ -45,6 +47,20 @@ describe('Work Reducer', () => {
     });
     expect(newState).toEqual({
       selectedWork: stubWork,
+      noSuchSelectedWork: false,
+    });
+  });
+
+  it('should notify if there is no such work', () => {
+    const stubInitialState = {
+      noSuchSelectedWork: false,
+    };
+    const newState = reducer(stubInitialState, {
+      type: actionTypes.WORK_NOT_EXISTING,
+    });
+    expect(newState).toEqual({
+      selectedWork: null,
+      noSuchSelectedWork: true,
     });
   });
 

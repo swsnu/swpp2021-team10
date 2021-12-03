@@ -4,6 +4,8 @@ export {
   getWorkReviews,
   getBoardReviews,
   getMyReviews,
+  postLike,
+  postUnlike,
 } from './review';
 export {
   getSearchTags,
