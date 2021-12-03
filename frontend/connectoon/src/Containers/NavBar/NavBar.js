@@ -52,12 +52,19 @@ class NavBar extends Component {
     const { onPutSearchWord, history } = this.props;
     const { searchWord } = this.state;
     onPutSearchWord(searchWord);
-    history.push('/search');
+    this.setState({ searchWord: '' });
+    history.push('/search/keyword');
+  }
+
+  onKeyPress(e) {
+    if (e.key === 'Enter') {
+      this.onClickSearchGlass();
+    }
   }
 
   render() {
     const { className, loggedInUser } = this.props;
-    const { clickUsername } = this.state;
+    const { clickUsername, searchWord } = this.state;
 
     return (
       <div className={className}>
@@ -68,7 +75,7 @@ class NavBar extends Component {
           <Link id="recommendation-tab" to="/recommendation">Recommendation</Link>
           <Link id="board-tab" to="/board">Board</Link>
           <Link id="search-tab" to="/search">Search</Link>
-          <input id="search-input" type="text" placeholder="title, artist, #tag" onChange={(e) => this.setState({ searchWord: e.target.value })} />
+          <input id="search-input" type="text" placeholder="title, artist, #tag" value={searchWord} onChange={(e) => this.setState({ searchWord: e.target.value })} onKeyPress={(e) => this.onKeyPress(e)} />
           <button id="search-glass-wrapper" type="button" onClick={() => this.onClickSearchGlass()}>
             <img id="search-glass-icon" src="/images/search_glass_icon.png" alt="search" />
           </button>
