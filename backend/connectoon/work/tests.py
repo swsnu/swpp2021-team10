@@ -1,4 +1,5 @@
 from urllib.parse import urlencode
+from django.db.models.expressions import F
 
 from django.test import TestCase, Client
 from django.forms.models import model_to_dict
@@ -91,6 +92,20 @@ class WorkTestCase(TestCase):
         self.assertEqual(2, len(json.loads(response.content.decode())['reviews']))
 
         self.assertEqual(response.status_code, 200)
+
+        response = client.get('/works/1/reviews/')
+        self.assertEqual(False, json.loads(response.content.decode())['reviews'][0]['clickedLike'])
+
+        csrftoken = client.get('/token/').cookies['csrftoken'].value  # Get csrf token from cookie
+        response = client.post('/users/login/',
+                               json.dumps({'email': 'dummy@user.com', 'password': '1234'}),
+                               content_type='application/json', HTTP_X_CSRFTOKEN=csrftoken)
+
+        response = client.post('/reviews/1/like/')
+
+        response = client.get('/works/1/reviews/')
+        self.assertEqual(True, json.loads(response.content.decode())['reviews'][0]['clickedLike'])
+       
 
     def test_post_work_id_review(self):
         client = Client()
