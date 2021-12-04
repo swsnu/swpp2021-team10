@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { batch, connect } from 'react-redux';
+import { connect } from 'react-redux';
 import * as actionCreators from '../../store/actions/index';
 
 import './Board.css';
@@ -11,8 +11,8 @@ class Board extends Component {
     this.props.onGetBoardReviews();
   }
 
-  onClickReview = (workId) => {
-    this.props.history.push('/works/' + String(workId));
+  onClickReview(workId) {
+    this.props.history.push(`/works/${workId}`);
   }
 
   onClickSaveReview(id, title, content, score) {
@@ -26,32 +26,25 @@ class Board extends Component {
       });
   }
 
-  onClickLikeReview(id) {
-    this.props.onPostLike(id);
-  }
-
-  onClickUnlikeReview(id) {
-    this.props.onPostUnlike(id);
-  }
-
   render() {
     const { boardReviews, loggedInUser } = this.props;
 
     const reviewLists = boardReviews?.map((review) => {
       return (
         <BoardReview
-          key={String(review.id)}
+          key={review.id}
           className="board-review"
           review={review}
           onClickReview={(workId) => this.onClickReview(workId)}
           isMyReview={loggedInUser && loggedInUser.id === review.author.id}
           onClickSaveReview={(title, content, score) => this.onClickSaveReview(review.id, title, content, score)}
           onClickDeleteReview={() => this.onClickDeleteReview(review.id)}
-          onClickLikeReview={() => this.onClickLikeReview(review.id)}
-          onClickUnlikeReview={() => this.onClickUnlikeReview(review.id)}
+          onClickLikeReview={() => this.props.onPostLike(review.id)}
+          onClickUnlikeReview={() => this.props.onPostUnlike(review.id)}
           clickedLike={review.clickedLike}
           isLoggedIn={!!loggedInUser}
-        />);
+        />
+      );
     });
 
     return (
