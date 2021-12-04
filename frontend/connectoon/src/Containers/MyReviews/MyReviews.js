@@ -9,6 +9,10 @@ import BoardReview from '../../Components/BoardReview/BoardReview';
 class MyReviews extends Component {
   componentDidMount() {
     this.props.onGetMyReviews();
+    const { loggedInUser } = this.props;
+    if (!loggedInUser) {
+      this.props.history.push('/login');
+    }
   }
 
   onClickReview(workId) {
