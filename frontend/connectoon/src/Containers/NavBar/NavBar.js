@@ -66,20 +66,24 @@ class NavBar extends Component {
 
     return (
       <div className={className}>
-        <Link id="connectoon-logo" to="/main" onClick={() => this.setState({ clickUsername: false })}>Connectoon</Link>
-        <Link id="recommendation-tab" to="/recommendation" onClick={() => this.setState({ clickUsername: false })}>Recommendation</Link>
-        <Link id="board-tab" to="/board" onClick={() => this.setState({ clickUsername: false })}>Board</Link>
-        <Link id="search-tab" to="/search" onClick={() => this.setState({ clickUsername: false })}>Search</Link>
-        <input id="search-input" type="text" placeholder="title, artist, #tag" value={searchWord} onChange={(e) => this.setState({ searchWord: e.target.value })} onKeyPress={(e) => this.onKeyPress(e)} />
-        <button id="search-glass-wrapper" type="button" onClick={() => this.onClickSearchGlass()}>
-          <img id="search-glass-icon" src="/images/search_glass_icon.png" alt="search" />
-        </button>
-        {!loggedInUser && <button id="login-button" className="nav-bar-buttons" type="button" onClick={() => this.onClickLogin()}>LogIn</button>}
-        {loggedInUser && <button id="username-button" className="nav-bar-buttons" type="button" onClick={() => this.onClickUsername()}>{loggedInUser.username}</button>}
-        {loggedInUser && clickUsername && <button id="mypage-button" className="nav-bar-buttons" type="button" onClick={() => this.onClickMyPage()}>MyPage</button>}
-        {loggedInUser && clickUsername && <button id="myreviews-button" className="nav-bar-buttons" type="button" onClick={() => this.onClickMyReviews()}>MyReviews</button>}
-        {loggedInUser && clickUsername && <button id="logout-button" className="nav-bar-buttons" type="button" onClick={() => this.onClickLogout()}>LogOut</button>}
-        <div id="navbar-right-margin" />
+        <div className="relative-parent">
+          <div className="overflow-hidden-parent">
+            <Link id="connectoon-logo" to="/main" onClick={() => this.setState({ clickUsername: false })}>Connectoon</Link>
+            <Link id="recommendation-tab" to="/recommendation" onClick={() => this.setState({ clickUsername: false })}>Recommendation</Link>
+            <Link id="board-tab" to="/board" onClick={() => this.setState({ clickUsername: false })}>Board</Link>
+            <Link id="search-tab" to="/search" onClick={() => this.setState({ clickUsername: false })}>Search</Link>
+            <input id="search-input" type="text" placeholder="title, artist, #tag" value={searchWord} onChange={(e) => this.setState({ searchWord: e.target.value })} onKeyPress={(e) => this.onKeyPress(e)} />
+            <button id="search-glass-wrapper" type="button" onClick={() => this.onClickSearchGlass()}>
+              <img id="search-glass-icon" src="/images/search_glass_icon.png" alt="search" />
+            </button>
+            {!loggedInUser && <button id="login-button" className="nav-bar-buttons" type="button" onClick={() => this.onClickLogin()}>LogIn</button>}
+            {loggedInUser && <button id="username-button" className="nav-bar-buttons" type="button" onClick={() => this.onClickUsername()}>{loggedInUser.username}</button>}
+            {loggedInUser && clickUsername && <button id="mypage-button" className="nav-bar-buttons" type="button" onClick={() => this.onClickMyPage()}>MyPage</button>}
+            {loggedInUser && clickUsername && <button id="myreviews-button" className="nav-bar-buttons" type="button" onClick={() => this.onClickMyReviews()}>MyReviews</button>}
+            {loggedInUser && clickUsername && <button id="logout-button" className="nav-bar-buttons" type="button" onClick={() => this.onClickLogout()}>LogOut</button>}
+            <div id="navbar-right-margin" />
+          </div>
+        </div>
       </div>
     );
   }
