@@ -8,6 +8,8 @@ from django.test import TestCase, Client
 
 from tag.models import Tag
 from user.models import UserTagFav
+from work.models import Work
+from review.models import Review
 
 user_class = get_user_model()
 
@@ -294,10 +296,61 @@ class UserTestCase(TestCase):
         self.assertEqual(response.status_code, 405)
 
     def test_user_me_review(self):
+        user_class = get_user_model()
+        author = user_class.objects.create_user(
+            email='dummy@user.com', password='1234', username='dummy1')
+        author2 = user_class.objects.create_user(
+            email='dummy2@user.com', password='1234', username='dummy2')
+        Work.objects.create(
+            title='DummyTitle', year=2019, description="HI", 
+            link="https://www.naver.com/",completion=True, platform_id=1, review_num = 2, score_sum = 5.0, score_avg = 2.5
+        )
+        Work.objects.create(
+            title='DummyTitle2', year=2020, description="HI2", 
+            link="https://www.naver.com/",completion=False, platform_id=3, review_num = 0, score_sum = 0.0, score_avg = 0.0
+        )
+        Review.objects.create(
+            work=Work.objects.first(), score=0.0, title="DUM", content="DUM_CONTENT", author=author
+        )
+        Review.objects.create(
+            work=Work.objects.first(), score=0.0, title="DUM1", content="DUM_CONTENT1", author=author
+        )
+        Review.objects.create(
+            work=Work.objects.first(), score=5.0, title="DUMMY2", content="DUMMY_CONTENT2", author=author2
+        )
         client = Client()
         response = client.get('/users/me/reviews/')
 
-        self.assertEqual(response.status_code, 501)
+        self.assertEqual(response.status_code, 200)
+
+
+        response = client.post('/users/me/reviews/', {})
+        self.assertEqual(response.status_code, 405)
+        response = client.put('/users/me/reviews/', {})
+        self.assertEqual(response.status_code, 405)
+        response = client.delete('/users/me/reviews/')
+        self.assertEqual(response.status_code, 405)
+
+        csrftoken = client.get('/token/').cookies['csrftoken'].value  # Get csrf token from cookie
+        response = client.post('/users/login/',
+                               json.dumps({'email': 'dummy@user.com', 'password': '1234'}),
+                               content_type='application/json', HTTP_X_CSRFTOKEN=csrftoken)
+
+        response = client.post('/reviews/1/like/')
+
+
+        response = client.get('/users/me/reviews/')
+        response_json = json.loads(response.content.decode())['reviews']
+
+
+        for review in response_json:
+            print(review)
+            self.assertEqual(review['author']['id'], author.id)
+            if review['id'] == 1:
+                self.assertEqual(review['clickedLike'], True)
+            else:
+                self.assertEqual(review['clickedLike'], False)
+
 
 
 class UsersManagersTests(TestCase):

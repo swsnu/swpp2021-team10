@@ -4,6 +4,7 @@ from django.views.decorators.csrf import ensure_csrf_cookie
 from django.contrib.auth import get_user_model, authenticate, login as auth_login, logout as auth_logout
 from django.http import HttpResponse, HttpResponseBadRequest, HttpResponseNotAllowed, HttpResponseForbidden, \
     JsonResponse, QueryDict
+from django.views.decorators.http import require_GET
 
 import json
 from json.decoder import JSONDecodeError
@@ -12,6 +13,7 @@ from django.views.decorators.http import require_POST
 
 from tag.models import Tag
 from user.models import UserTagFav
+from review.models import Review, ReviewUserLike
 
 
 @ensure_csrf_cookie
@@ -239,6 +241,37 @@ def user_me(request):
 
 
 
+@require_GET
+def user_me_review(request): 
+    request_user = request.user
 
-def user_me_review(request):  # TODO
-    return HttpResponse(status=501)
+    my_reviews = Review.objects.filter(author__id = request_user.id)
+    user_class = get_user_model()
+    response_dict = []
+
+    for review in my_reviews:
+        work = review.work
+        work_artist_name = [artist.name for artist in work.artists.all()]
+        
+        work_dict = {
+            "id": work.id, "title": work.title, "thumbnail_picture": work.thumbnail_picture,
+            "platform_id": work.platform_id, "year": work.year, "artists": work_artist_name
+        }
+        
+        author = user_class.objects.get(id=review.author_id)
+        author_dict = {
+            "id": author.id, "username": author.username, "email": author.email, # "profile_picture": author.profile_picture
+        }
+
+        if ReviewUserLike.objects.filter(user = request_user, review = review):
+            clickedLikeReview = True
+        else:
+            clickedLikeReview = False
+
+        response_dict.append({
+            "id": review.id, "title": review.title, "content": review.content, "score": review.score, "likes": review.likes,
+            "work": work_dict, "author": author_dict, "clickedLike": clickedLikeReview
+        })
+
+    return JsonResponse({"reviews": response_dict}, status = 200, safe=False)
+
