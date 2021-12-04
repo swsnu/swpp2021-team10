@@ -21,6 +21,22 @@ const reducer = (state = initialState, action) => {
         return x.id !== action.targetID;
       });
       return { ...state, reviews: deletedReviews };
+    case actionTypes.POST_LIKE:
+      const likeReviews = state.reviews.map((x) => {
+        if (x.id === action.likeTargetReview.id) {
+          return action.likeTargetReview;
+        }
+        return x;
+      });
+      return { ...state, reviews: likeReviews };
+    case actionTypes.POST_UNLIKE:
+      const unlikeReviews = state.reviews.map((x) => {
+        if (x.id === action.unlikeTargetReview.id) {
+          return action.unlikeTargetReview;
+        }
+        return x;
+      });
+      return { ...state, reviews: unlikeReviews };
     default:
       break;
   }

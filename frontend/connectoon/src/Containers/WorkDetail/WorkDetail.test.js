@@ -74,12 +74,41 @@ describe('<WorkDetail />', () => {
     jest.clearAllMocks();
   });
 
-  it('should not render WorkInfo when there is no selectedWork', () => {
+  it("should render 'No Such Work!' when there is no such work", () => {
     const stubInitialUserState = {
       loggedInUser: null,
     };
     const stubInitialWorkState = {
       selectedWork: null,
+      noSuchSelectedWork: true,
+    };
+    const stubInitialReviewState = {
+      reviews: [],
+    };
+    const mockStore = getMockStore(stubInitialReviewState, stubInitialTagState, stubInitialUserState, stubInitialWorkState);
+    const workDetail = (
+      <Provider store={mockStore}>
+        <ConnectedRouter history={history}>
+          <Switch>
+            <Route path="/" exact component={WorkDetail} />
+          </Switch>
+        </ConnectedRouter>
+      </Provider>
+    );
+    const component = mount(workDetail);
+    const wrapper = component.find('h2');
+    expect(wrapper.text()).toBe('No Such Work!');
+    expect(spyGetWork).toHaveBeenCalledTimes(1);
+    expect(spyGetWorkReviews).toHaveBeenCalledTimes(1);
+  });
+
+  it('should render nothing before selectedWork is initialized', () => {
+    const stubInitialUserState = {
+      loggedInUser: null,
+    };
+    const stubInitialWorkState = {
+      selectedWork: null,
+      noSuchSelectedWork: false,
     };
     const stubInitialReviewState = {
       reviews: [],
@@ -107,6 +136,7 @@ describe('<WorkDetail />', () => {
     };
     const stubInitialWorkState = {
       selectedWork: stubWork,
+      noSuchSelectedWork: false,
     };
     const stubInitialReviewState = {
       reviews: [],
@@ -133,6 +163,7 @@ describe('<WorkDetail />', () => {
     };
     const stubInitialWorkState = {
       selectedWork: stubWork,
+      noSuchSelectedWork: false,
     };
     const stubInitialReviewState = {
       reviews: [],
@@ -151,8 +182,8 @@ describe('<WorkDetail />', () => {
     const wrapper = component.find('.spy-confirm-button');
     wrapper.simulate('click');
     expect(spyPostReview).toHaveBeenCalledTimes(1);
-    expect(spyGetWork).toHaveBeenCalledTimes(1);
-    expect(spyGetWorkReviews).toHaveBeenCalledTimes(1);
+    // expect(spyGetWork).toHaveBeenCalledTimes(1);
+    // expect(spyGetWorkReviews).toHaveBeenCalledTimes(1);
   });
 
   it('should handle click delete', () => {
@@ -161,6 +192,7 @@ describe('<WorkDetail />', () => {
     };
     const stubInitialWorkState = {
       selectedWork: stubWork,
+      noSuchSelectedWork: false,
     };
     const stubInitialReviewState = {
       reviews: [
@@ -181,16 +213,17 @@ describe('<WorkDetail />', () => {
     const wrapper = component.find('.spy-delete-button');
     wrapper.simulate('click');
     expect(spyDeleteReview).toHaveBeenCalledTimes(1);
-    expect(spyGetWork).toHaveBeenCalledTimes(1);
-    expect(spyGetWorkReviews).toHaveBeenCalledTimes(1);
+    // expect(spyGetWork).toHaveBeenCalledTimes(1);
+    // expect(spyGetWorkReviews).toHaveBeenCalledTimes(1);
   });
 
-  it('should handle click delete', () => {
+  it('should handle click save', () => {
     const stubInitialUserState = {
       loggedInUser: stubLoggedInUser,
     };
     const stubInitialWorkState = {
       selectedWork: stubWork,
+      noSuchSelectedWork: false,
     };
     const stubInitialReviewState = {
       reviews: [
@@ -211,8 +244,8 @@ describe('<WorkDetail />', () => {
     const wrapper = component.find('.spy-save-button');
     wrapper.simulate('click');
     expect(spyEditReview).toHaveBeenCalledTimes(1);
-    expect(spyGetWork).toHaveBeenCalledTimes(1);
-    expect(spyGetWorkReviews).toHaveBeenCalledTimes(1);
+    // expect(spyGetWork).toHaveBeenCalledTimes(1);
+    // expect(spyGetWorkReviews).toHaveBeenCalledTimes(1);
   });
 
   it("should render my and others' reviews", () => {
@@ -221,6 +254,7 @@ describe('<WorkDetail />', () => {
     };
     const stubInitialWorkState = {
       selectedWork: stubWork,
+      noSuchSelectedWork: false,
     };
     const stubInitialReviewState = {
       reviews: [
@@ -251,6 +285,7 @@ describe('<WorkDetail />', () => {
     };
     const stubInitialWorkState = {
       selectedWork: stubWork,
+      noSuchSelectedWork: false,
     };
     const stubInitialReviewState = {
       reviews: [
@@ -275,40 +310,13 @@ describe('<WorkDetail />', () => {
     expect(wrapper.text()).toBe('Reviews(2)');
   });
 
-  it('should render 0 score when work is not received', () => {
-    const stubInitialUserState = {
-      loggedInUser: stubLoggedInUser,
-    };
-    const stubInitialWorkState = {
-      selectedWork: null,
-    };
-    const stubInitialReviewState = {
-      reviews: [
-        { id: 1, author: { id: 1 } },
-        { id: 2, author: { id: 2 } },
-      ],
-    };
-    const mockStore = getMockStore(stubInitialReviewState, stubInitialTagState, stubInitialUserState, stubInitialWorkState);
-    const workDetail = (
-      <Provider store={mockStore}>
-        <ConnectedRouter history={history}>
-          <Switch>
-            <Route path="/" exact component={WorkDetail} />
-          </Switch>
-        </ConnectedRouter>
-      </Provider>
-    );
-    const component = mount(workDetail);
-    const wrapper = component.find('#work-average-score');
-    expect(wrapper.text()).toBe('0');
-  });
-
   it('should handle clicking tag', () => {
     const stubInitialUserState = {
       loggedInUser: stubLoggedInUser,
     };
     const stubInitialWorkState = {
       selectedWork: stubWork,
+      noSuchSelectedWork: false,
     };
     const stubInitialReviewState = {
       reviews: [

@@ -16,6 +16,7 @@ class Search extends Component {
     const {
       onGetWorks,
       onGetTags,
+      onPutSearchWord,
     } = this.props;
     onGetTags('');
     let initTitle;

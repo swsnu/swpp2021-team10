@@ -25,11 +25,22 @@ export const getWork_ = (work) => {
   };
 };
 
+export const noSuchWork_ = () => {
+  return {
+    type: actionTypes.WORK_NOT_EXISTING,
+  };
+};
+
 export const getWork = (id) => {
   return (dispatch) => {
     return axios.get('/works/' + id)
       .then((res) => {
         dispatch(getWork_(res.data));
+      })
+      .catch((rej) => {
+        if (rej.response.status === 404) {
+          dispatch(noSuchWork_());
+        }
       });
   };
 };

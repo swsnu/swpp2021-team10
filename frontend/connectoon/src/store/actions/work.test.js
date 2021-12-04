@@ -58,33 +58,35 @@ describe('ActionCreators', () => {
         });
       });
 
-    store.dispatch(actionCreators.getWork()).then(() => {
+    store.dispatch(actionCreators.getWork(1)).then(() => {
       const newState = store.getState();
       expect(newState.work.selectedWork).toBe(stubWork);
+      expect(newState.work.noSuchSelectedWork).toBeFalsy();
       expect(spy).toHaveBeenCalledTimes(1);
       done();
     });
   });
 
-  // it('\'getMainWorks\' should fetch works correctly', (done) => {
-  //   const stubWorks = [stubWork];
-  //   const spy = jest.spyOn(axios, 'get')
-  //     .mockImplementation((url) => {
-  //       return new Promise((resolve, reject) => {
-  //         const result = {
-  //           status: 200,
-  //           data: stubWorks,
-  //         };
-  //         resolve(result);
-  //       });
-  //     });
+  it('\'getWork\' should notify work not existing correctly', (done) => {
+    const spy = jest.spyOn(axios, 'get')
+      .mockImplementation((url) => {
+        return new Promise((resolve, reject) => {
+          const result = {
+            response: {
+              status: 404,
+            },
+          };
+          reject(result);
+        });
+      });
 
-  //   store.dispatch(actionCreators.getMainWorks()).then(() => {
-  //     const newState = store.getState();
-  //     expect(spy).toHaveBeenCalledTimes(1);
-  //     done();
-  //   });
-  // });
+    store.dispatch(actionCreators.getWork(1)).then(() => {
+      const newState = store.getState();
+      expect(newState.work.noSuchSelectedWork).toBeTruthy();
+      expect(spy).toHaveBeenCalledTimes(1);
+      done();
+    });
+  });
 
   it('\'getRecWorks\' should fetch works correctly', (done) => {
     const stubWorks = [[stubWork]];

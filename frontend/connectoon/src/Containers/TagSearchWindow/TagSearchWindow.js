@@ -101,6 +101,7 @@ class TagSearchWindow extends Component {
 
 TagSearchWindow.defaultProps = {
   storedTags: [],
+  className: '',
   defaultTag: PropTypes.arrayOf(PropTypes.any),
   onGetTags: func,
   onAddTag: func,

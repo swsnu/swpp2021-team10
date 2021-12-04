@@ -11,6 +11,7 @@ const initialState = {
     [], [],
   ],
   selectedWork: null,
+  noSuchSelectedWork: false,
   recWorkLists: [
     [],
   ],
@@ -21,7 +22,9 @@ const reducer = (state = initialState, action) => {
     case actionTypes.GET_MAIN_WORKS:
       return { ...state, mainWorkLists: action.mainWorkLists };
     case actionTypes.GET_WORK:
-      return { ...state, selectedWork: action.selectedWork };
+      return { ...state, selectedWork: action.selectedWork, noSuchSelectedWork: false };
+    case actionTypes.WORK_NOT_EXISTING:
+      return { ...state, selectedWork: null, noSuchSelectedWork: true };
     case actionTypes.GET_REC_WORKS:
       return { ...state, recWorkLists: action.selectedWorks };
     case actionTypes.GET_SEARCH_WORKS:
