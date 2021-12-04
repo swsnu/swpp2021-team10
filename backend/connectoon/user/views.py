@@ -127,7 +127,28 @@ def user_login(request):
         # Check Available
         if user is not None:
             auth_login(request, user)
-            response_dict = {'id': user.id, 'username': user.username, 'email': user.email}
+
+            user_tags = user.user_tag.all()
+
+            return_tag_list = []
+            for user_tag in user_tags:
+                tag = user_tag.tag
+                related_list = []
+                temptag = [tag for tag in Tag.objects.get(name=tag.name).related.all().values()]
+                for tt in temptag:
+                    related_list.append(tt['id'])
+                return_tag_list.append(
+                    {'key': tag.id, 'name': tag.name, 'related': related_list, 'prior': tag.prior})
+
+            response_dict = {
+                'id': user.id,
+                'username': user.username,
+                'email': user.email,
+                'tags': return_tag_list,
+                'profile_picture': request.build_absolute_uri(
+                    user.profile_picture.url) if user.profile_picture else ''
+            }
+
             return JsonResponse(response_dict, status=200)
         else:
             return HttpResponse(status=401)
@@ -152,14 +173,23 @@ def user_me(request):
     if request.method == 'GET':
         if request_user.is_authenticated:
 
-            user_tag = request_user.user_tag.all()
-            tag_list = [{'id': user_tag.tag.id, 'name': user_tag.tag.name } for user_tag in user_tag]
+            user_tags = request_user.user_tag.all()
+
+            return_tag_list = []
+            for user_tag in user_tags:
+                tag = user_tag.tag
+                related_list = []
+                temptag = [reltag for reltag in tag.related.all().values()]
+                for tt in temptag:
+                    related_list.append(tt['id'])
+                return_tag_list.append(
+                    {'key': tag.id, 'name': tag.name, 'related': related_list, 'prior': tag.prior})
 
             response_dict = {
                 'id': request_user.id,
                 'username': request_user.username,
                 'email': request_user.email,
-                'tags': tag_list,
+                'tags': return_tag_list,
                 'profile_picture': request.build_absolute_uri(request_user.profile_picture.url) if request_user.profile_picture else ''
             }
             return JsonResponse(response_dict, status=200)
