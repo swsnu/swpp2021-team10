@@ -125,13 +125,12 @@ describe('User Reducer', () => {
     };
     const newState = reducer(stubInitialState, {
       type: actionTypes.EDIT_MYUSER,
-      loggedInUser: stubUser,
+      loggedInUser: null,
     });
     expect(newState).toEqual({
       users: [stubUser],
       selectedUser: null,
       loggedInUser: null,
-      myreviews: [],
     });
   });
 
