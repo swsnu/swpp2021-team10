@@ -143,7 +143,7 @@ describe('User Reducer', () => {
     expect(newState).toEqual({
       users: [stubUser],
       selectedUser: null,
-      loggedInUser: stubUser,
+      loggedInUser: null,
       myreviews: [],
     });
   });
