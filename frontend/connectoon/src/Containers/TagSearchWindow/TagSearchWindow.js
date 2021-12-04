@@ -54,7 +54,7 @@ class TagSearchWindow extends Component {
         if (selectedTags.length === 0) {
           boolVal = x.prior;
         } else {
-          boolVal = selectedTagNames.indexOf(x.name) === -1 && selectedTags[selectedTags.length - 1].related.indexOf(x.key) !== -1;
+          boolVal = selectedTagNames.indexOf(x.name) === -1 && selectedTags[selectedTags.length - 1].related !== undefined && selectedTags[selectedTags.length - 1].related.indexOf(x.key) !== -1;
         }
       } else {
         boolVal = selectedTagNames.indexOf(x.name) === -1 && x.name.indexOf(genre) !== -1;

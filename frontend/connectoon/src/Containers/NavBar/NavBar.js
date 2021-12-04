@@ -50,12 +50,19 @@ class NavBar extends Component {
     const { searchWord } = this.state;
     this.setState({ clickUsername: false });
     onPutSearchWord(searchWord);
-    history.push('/search');
+    this.setState({ searchWord: '' });
+    history.push('/search/keyword');
+  }
+
+  onKeyPress(e) {
+    if (e.key === 'Enter') {
+      this.onClickSearchGlass();
+    }
   }
 
   render() {
     const { className, loggedInUser } = this.props;
-    const { clickUsername } = this.state;
+    const { clickUsername, searchWord } = this.state;
 
     return (
       <div className={className}>
@@ -65,7 +72,7 @@ class NavBar extends Component {
             <Link id="recommendation-tab" to="/recommendation" onClick={() => this.setState({ clickUsername: false })}>Recommendation</Link>
             <Link id="board-tab" to="/board" onClick={() => this.setState({ clickUsername: false })}>Board</Link>
             <Link id="search-tab" to="/search" onClick={() => this.setState({ clickUsername: false })}>Search</Link>
-            <input id="search-input" type="text" placeholder="title, artist, #tag" onChange={(e) => this.setState({ searchWord: e.target.value })} />
+            <input id="search-input" type="text" placeholder="title, artist, #tag" value={searchWord} onChange={(e) => this.setState({ searchWord: e.target.value })} onKeyPress={(e) => this.onKeyPress(e)} />
             <button id="search-glass-wrapper" type="button" onClick={() => this.onClickSearchGlass()}>
               <img id="search-glass-icon" src="/images/search_glass_icon.png" alt="search" />
             </button>

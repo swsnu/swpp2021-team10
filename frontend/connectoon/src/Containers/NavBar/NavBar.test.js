@@ -169,7 +169,7 @@ describe('<NavBar />', () => {
     expect(newNavbarInstance.state.clickUsername).toBeFalsy();
     expect(spyPutSearchWord).toHaveBeenCalledTimes(1);
     expect(spyHistoryPush).toHaveBeenCalledTimes(1);
-    expect(spyHistoryPush).toHaveBeenCalledWith('/search');
+    expect(spyHistoryPush).toHaveBeenCalledWith('/search/keyword');
   });
 
   it('should handle search glass click with empty input', () => {
@@ -180,6 +180,16 @@ describe('<NavBar />', () => {
     expect(newNavbarInstance.state.clickUsername).toBeFalsy();
     expect(spyPutSearchWord).toHaveBeenCalledTimes(1);
     expect(spyHistoryPush).toHaveBeenCalledTimes(1);
-    expect(spyHistoryPush).toHaveBeenCalledWith('/search');
+    expect(spyHistoryPush).toHaveBeenCalledWith('/search/keyword');
+  });
+
+  it('should handle Enter keyboard input', () => {
+    const component = mount(navbar);
+    const wrapper = component.find('input');
+    wrapper.simulate('keypress', { key: 'A' });
+    wrapper.simulate('keypress', { key: 'Enter' });
+    expect(spyPutSearchWord).toHaveBeenCalledTimes(1);
+    expect(spyHistoryPush).toHaveBeenCalledTimes(1);
+    expect(spyHistoryPush).toHaveBeenCalledWith('/search/keyword');
   });
 });
