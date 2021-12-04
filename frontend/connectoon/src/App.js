@@ -36,8 +36,8 @@ function App() {
               <Route path="/main" exact component={Main} />
               <Route path="/recommendation" exact component={Recommendation} />
               <Route path="/board" exact component={Board} />
-              <Redirect from="/search/keyword" to="/search" />
-              <Route path="/search/:tag" exact component={Search} />
+              <Redirect from="/search/:keyword/$" to="/search/:keyword" />
+              <Route path="/search/:keyword" exact component={Search} />
               <Route path="/search" exact component={Search} />
               <Route path="/mypage" exact component={MyPage} />
               <Route path="/myreviews" exact component={MyReviews} />

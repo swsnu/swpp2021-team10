@@ -66,13 +66,6 @@ export const getSearchWorks = (keyword, keytag) => {
   };
 };
 
-export const putSearchWord = (word) => {
-  return {
-    type: actionTypes.PUT_SEARCH_WORD,
-    searchWord: word,
-  };
-};
-
 export const postWorkReview = (id, reviewData) => {
   return (dispatch) => {
     return axios.post('/works/' + String(id) + '/reviews/', reviewData)

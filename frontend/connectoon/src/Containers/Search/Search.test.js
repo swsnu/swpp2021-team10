@@ -68,7 +68,6 @@ describe('<Search />', () => {
   let search;
   let spyGetSearchWorks;
   let spyGetSearchTags;
-  let spyPutSearchWord;
   beforeEach(() => {
     search = (
       <Provider store={mockStore}>
@@ -82,8 +81,6 @@ describe('<Search />', () => {
     spyGetSearchWorks = jest.spyOn(workActionCreators, 'getSearchWorks')
       .mockImplementation(() => { return (dispatch) => {}; });
     spyGetSearchTags = jest.spyOn(tagActionCreators, 'getSearchTags')
-      .mockImplementation(() => { return (dispatch) => {}; });
-    spyPutSearchWord = jest.spyOn(workActionCreators, 'putSearchWord')
       .mockImplementation(() => { return (dispatch) => {}; });
   });
 
@@ -118,7 +115,7 @@ describe('<Search />', () => {
     component.find('input').at(1).simulate('change', mockedEvent);
   });
 
-  it('should handle branch in render function', () => {
+  it('should handle tag params', () => {
     const stubInitialTagStateTest = {
       tags: [],
     };
@@ -127,7 +124,24 @@ describe('<Search />', () => {
       <Provider store={mockStoreTest}>
         <MemoryRouter initialEntries={['/search/$test']}>
           <Switch>
-            <Route path="/search/:tag" exact render={() => <Search className="search" />} />
+            <Route path="/search/:keyword" exact render={() => <Search className="search" />} />
+          </Switch>
+        </MemoryRouter>
+      </Provider>
+    );
+    const component = mount(searchTest);
+  });
+
+  it('should handle searchword params', () => {
+    const stubInitialTagStateTest = {
+      tags: [],
+    };
+    const mockStoreTest = getMockStore(stubInitialReviewState, stubInitialTagStateTest, stubInitialUserState, stubInitialWorkState);
+    const searchTest = (
+      <Provider store={mockStoreTest}>
+        <MemoryRouter initialEntries={['/search/test']}>
+          <Switch>
+            <Route path="/search/:keyword" exact render={() => <Search className="search" />} />
           </Switch>
         </MemoryRouter>
       </Provider>
