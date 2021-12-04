@@ -61,7 +61,7 @@ def work_id_review(request, id):
                 "work": work_dict, "author": author_dict
             })
         
-        return JsonResponse(response_dict, safe = False)
+        return JsonResponse({ "reviews": response_dict }, status=200, safe = False)
 
 
     elif request.method == 'POST':
@@ -145,7 +145,7 @@ def work_recommend(request):  # TODO
                         tag_dic[tag.id] = 1
             
             sorted_tag_list = list(sorted(tag_dic.items(), key=operator.itemgetter(0), reverse=True))[:3]
-            tag_list = [Tag.objects.get(id=tag[0]) for tag in sorted_tag_list[0:1]]
+            tag_list = [Tag.objects.get(id=tag[0]) for tag in sorted_tag_list]
 
             review_based_work = list(map(lambda work: {'title': work['title'], 'thumbnail_picture': work['thumbnail_picture'],
             'description': work['description'], 'year': work['year'], 'link': work['link'],

@@ -2,7 +2,7 @@ import React from 'react';
 import { mount } from 'enzyme';
 import { Provider } from 'react-redux';
 import { ConnectedRouter } from 'connected-react-router';
-import { Route, Switch } from 'react-router-dom';
+import { Route, Switch, MemoryRouter } from 'react-router-dom';
 
 import { getMockStore } from '../../test-utils/mocks';
 import { history } from '../../store/store';
@@ -68,6 +68,7 @@ describe('<Search />', () => {
   let search;
   let spyGetSearchWorks;
   let spyGetSearchTags;
+  let spyPutSearchWord;
   beforeEach(() => {
     search = (
       <Provider store={mockStore}>
@@ -81,6 +82,8 @@ describe('<Search />', () => {
     spyGetSearchWorks = jest.spyOn(workActionCreators, 'getSearchWorks')
       .mockImplementation(() => { return (dispatch) => {}; });
     spyGetSearchTags = jest.spyOn(tagActionCreators, 'getSearchTags')
+      .mockImplementation(() => { return (dispatch) => {}; });
+    spyPutSearchWord = jest.spyOn(workActionCreators, 'putSearchWord')
       .mockImplementation(() => { return (dispatch) => {}; });
   });
 
@@ -122,14 +125,14 @@ describe('<Search />', () => {
     const mockStoreTest = getMockStore(stubInitialReviewState, stubInitialTagStateTest, stubInitialUserState, stubInitialWorkState);
     const searchTest = (
       <Provider store={mockStoreTest}>
-        <ConnectedRouter history={history}>
+        <MemoryRouter initialEntries={['/search/$test']}>
           <Switch>
-            <Route path="/" exact render={() => <Search className="search" />} />
+            <Route path="/search/:tag" exact render={() => <Search className="search" />} />
           </Switch>
-        </ConnectedRouter>
+        </MemoryRouter>
       </Provider>
     );
-    mount(searchTest);
+    const component = mount(searchTest);
   });
 
   it('should handle clicking work object', () => {

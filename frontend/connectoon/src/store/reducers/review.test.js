@@ -3,73 +3,79 @@ import React from 'react';
 import reducer from './review';
 import * as actionTypes from '../actions/actionTypes';
 
-const stubReview = { id: 1, title: 'test', content: 'test' };
+const stubReview1 = {
+  id: 1, title: 'test', content: 'test', clickedLike: false,
+};
+const stubReview2 = {
+  id: 2, title: 'test', content: 'test', clickedLike: true,
+};
+const stubInitialState = {
+  reviews: [stubReview1, stubReview2],
+};
 
 describe('Review Reducer', () => {
   it('should return default state', () => {
     const newState = reducer(undefined, {}); // initialize
     expect(newState).toEqual({
       reviews: [],
-      selectedReview: null,
-      boardReviews: [],
     });
   });
 
   it('should edit review', () => {
-    const stubReview2 = { id: 2, title: 'test', content: 'test' };
-    const stubInitialState = {
-      reviews: [stubReview, stubReview2],
-      selectedReview: null,
-    };
+    const stubReview1_ = { id: 1, title: 'edited', content: 'edited' };
     const newState = reducer(stubInitialState, {
       type: actionTypes.EDIT_REVIEW,
-      targetReview: stubReview,
-      targetID: stubReview.id,
+      targetReview: stubReview1_,
     });
     expect(newState).toEqual({
-      reviews: [stubReview, stubReview2],
-      selectedReview: null,
+      reviews: [stubReview1_, stubReview2],
     });
   });
 
   it('should delete review', () => {
-    const stubInitialState = {
-      reviews: [stubReview],
-      selectedReview: null,
-    };
     const newState = reducer(stubInitialState, {
       type: actionTypes.DELETE_REVIEW,
-      targetID: stubReview.id,
+      targetID: stubReview1.id,
     });
     expect(newState).toEqual({
-      reviews: [],
-      selectedReview: null,
+      reviews: [stubReview2],
     });
   });
 
-  it('should get review', () => {
-    const stubSelectedReview = { id: 1, title: 'title', content: 'content' };
+  it('should get reviews', () => {
+    const stubReviews = [stubReview1, stubReview2];
     const newState = reducer(undefined, {
-      type: actionTypes.GET_REVIEW,
-      selectedReview: stubSelectedReview,
+      type: actionTypes.GET_REVIEWS,
+      reviews: stubReviews,
     });
     expect(newState).toEqual({
-      reviews: [],
-      selectedReview: stubSelectedReview,
-      boardReviews: [],
+      reviews: stubReviews,
     });
   });
 
-  it('should get reviews for board', () => {
-    const stubBoardReviews = [{ id: 1, title: 'title', content: 'content' }, { id: 1, title: 'title', content: 'content' }];
-    const newState = reducer(undefined, {
-      type: actionTypes.GET_BOARD_REVIEWS,
-      boardReviews: stubBoardReviews,
+  it('should post like', () => {
+    const stubReview1_ = {
+      id: 1, title: 'test', content: 'test', clickedLike: true,
+    };
+    const newState = reducer(stubInitialState, {
+      type: actionTypes.POST_LIKE,
+      likeTargetReview: stubReview1_,
     });
     expect(newState).toEqual({
-      reviews: [],
-      selectedReview: null,
-      boardReviews: stubBoardReviews,
+      reviews: [stubReview1_, stubReview2],
+    });
+  });
+
+  it('should post unlike', () => {
+    const stubReview2_ = {
+      id: 2, title: 'test', content: 'test', clickedLike: false,
+    };
+    const newState = reducer(stubInitialState, {
+      type: actionTypes.POST_UNLIKE,
+      unlikeTargetReview: stubReview2_,
+    });
+    expect(newState).toEqual({
+      reviews: [stubReview1, stubReview2_],
     });
   });
 });

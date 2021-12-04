@@ -5,17 +5,18 @@ import './BoardReview.css';
 class BoardReview extends Component {
   constructor(props) {
     super(props);
-    const { review } = this.props;
+    const { review, clickedLike } = this.props;
     this.state = {
       editMode: false,
-      clickLike: false,
       title: review.title,
       content: review.content,
       score: review.score,
       likes: review.likes,
+      clickedLike,
     };
 
     this.onClickLike = this.onClickLike.bind(this);
+    this.onClickUnlike = this.onClickUnlike.bind(this);
     this.onClickEdit = this.onClickEdit.bind(this);
     this.onClickBack = this.onClickBack.bind(this);
     this.onClickSave = this.onClickSave.bind(this);
@@ -23,9 +24,19 @@ class BoardReview extends Component {
   }
 
   onClickLike() {
-    const { clickLike } = this.state;
-    this.setState({ clickLike: !clickLike });
-    // TODO: + or - like number
+    const { onClickLikeReview, isLoggedIn } = this.props;
+    if (isLoggedIn) {
+      onClickLikeReview();
+      const { likes, clickedLike } = this.state;
+      this.setState({ likes: likes + 1, clickedLike: !clickedLike });
+    }
+  }
+
+  onClickUnlike() {
+    const { onClickUnlikeReview } = this.props;
+    onClickUnlikeReview();
+    const { likes, clickedLike } = this.state;
+    this.setState({ likes: likes - 1, clickedLike: !clickedLike });
   }
 
   onClickEdit() {
@@ -39,7 +50,7 @@ class BoardReview extends Component {
     });
   }
 
-  onClickReview = (workId) => {
+  onClickThisReview = (workId) => {
     const { onClickReview } = this.props;
     onClickReview(workId);
   }
@@ -61,9 +72,9 @@ class BoardReview extends Component {
       className, review, isMyReview,
     } = this.props;
     const {
-      editMode, clickLike, title, content, score, likes,
+      editMode, title, content, score, clickedLike, likes,
     } = this.state;
-    const heart = clickLike ? '/images/fullHeart.png' : '/images/emptyHeart.png';
+    const heart = clickedLike ? '/images/fullHeart.png' : '/images/emptyHeart.png';
     const platformMapper = ['/images/naver_logo.png', '/images/kakao_logo.png', '/images/lezhin_logo.png'];
     const reviewTitle = editMode ?
       <div onClick={(e) => e.stopPropagation()}>
@@ -121,7 +132,7 @@ class BoardReview extends Component {
     );
 
     return (
-      <tr className={className} onClick={() => this.onClickReview(review.work.id)}>
+      <tr className={className} onClick={() => this.onClickThisReview(review.work.id)}>
         <td className="board-review thumbnail">
           <WorkThumbnail className="work-thumbnail" src={review.work.thumbnail_picture} platform={platformMapper[review.work.platform_id]} />
         </td>
@@ -132,10 +143,10 @@ class BoardReview extends Component {
               {reviewScore}
 
               <div className="review-likes">
-                <button className="review-like-button" type="button" onClick={this.onClickLike}>
+                <button className="review-like-button" type="button" onClick={clickedLike ? this.onClickUnlike : this.onClickLike}>
                   <img className="review-like-heart-icon" src={heart} />
                 </button>
-                <h5 className="review-value like">{review.likes}</h5>
+                <h5 className="review-value like">{likes}</h5>
               </div>
             </div>
           </div>

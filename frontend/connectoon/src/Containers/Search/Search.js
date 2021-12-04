@@ -17,6 +17,7 @@ class Search extends Component {
       searchWord,
       onGetWorks,
       onGetTags,
+      onPutSearchWord,
     } = this.props;
     onGetTags('');
     if (this.props.match.params.tag === undefined) {
@@ -32,6 +33,7 @@ class Search extends Component {
       };
       onGetWorks(searchWord, this.props.match.params.tag);
     }
+    onPutSearchWord('');
   }
 
   onAddTag = (name) => {
@@ -112,6 +114,7 @@ const mapDispatchToProps = (dispatch) => {
   return {
     onGetWorks: (keyword, keytag) => dispatch(actionCreators.getSearchWorks(keyword, keytag)),
     onGetTags: (keyword) => dispatch(actionCreators.getSearchTags(keyword)),
+    onPutSearchWord: (keyword) => dispatch(actionCreators.putSearchWord(keyword)),
   };
 };
 

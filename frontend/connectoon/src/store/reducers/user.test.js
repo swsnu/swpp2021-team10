@@ -13,7 +13,7 @@ describe('User Reducer', () => {
   it('should return default state', () => {
     const newState = reducer(undefined, {}); // initialize
     expect(newState).toEqual({
-      users: [], selectedUser: null, loggedInUser: null, myreviews: [],
+      users: [], selectedUser: null, loggedInUser: null,
     });
   });
 
@@ -22,7 +22,6 @@ describe('User Reducer', () => {
       users: [stubUser],
       selectedUser: null,
       loggedInUser: null,
-      myreviews: [],
     };
     const newState = reducer(stubInitialState, {
       type: actionTypes.TOKEN,
@@ -31,7 +30,6 @@ describe('User Reducer', () => {
       users: [stubUser],
       selectedUser: null,
       loggedInUser: null,
-      myreviews: [],
     });
   });
 
@@ -40,7 +38,6 @@ describe('User Reducer', () => {
       users: [stubUser],
       selectedUser: null,
       loggedInUser: null,
-      myreviews: [],
     };
     const newState = reducer(stubInitialState, {
       type: actionTypes.LOG_IN,
@@ -50,7 +47,6 @@ describe('User Reducer', () => {
       users: [stubUser],
       selectedUser: null,
       loggedInUser: stubUser,
-      myreviews: [],
     });
   });
 
@@ -59,7 +55,6 @@ describe('User Reducer', () => {
       users: [stubUser],
       selectedUser: null,
       loggedInUser: stubUser,
-      myreviews: [],
     };
     const newState = reducer(stubInitialState, {
       type: actionTypes.LOG_OUT,
@@ -68,7 +63,6 @@ describe('User Reducer', () => {
       users: [stubUser],
       selectedUser: null,
       loggedInUser: null,
-      myreviews: [],
     });
   });
 
@@ -77,7 +71,6 @@ describe('User Reducer', () => {
       users: [stubUser],
       selectedUser: null,
       loggedInUser: null,
-      myreviews: [],
     };
     const newState = reducer(stubInitialState, {
       type: actionTypes.REGISTER,
@@ -87,7 +80,6 @@ describe('User Reducer', () => {
       users: [stubUser],
       selectedUser: stubUser,
       loggedInUser: null,
-      myreviews: [],
     });
   });
 
@@ -96,7 +88,6 @@ describe('User Reducer', () => {
       users: [stubUser],
       selectedUser: null,
       loggedInUser: null,
-      myreviews: [],
     };
     const newState = reducer(stubInitialState, {
       type: actionTypes.GET_USER,
@@ -106,7 +97,6 @@ describe('User Reducer', () => {
       users: [stubUser],
       selectedUser: stubUser,
       loggedInUser: null,
-      myreviews: [],
     });
   });
 
@@ -115,7 +105,6 @@ describe('User Reducer', () => {
       users: [stubUser],
       selectedUser: null,
       loggedInUser: null,
-      myreviews: [],
     };
     const newState = reducer(stubInitialState, {
       type: actionTypes.GET_MYUSER,
@@ -125,7 +114,6 @@ describe('User Reducer', () => {
       users: [stubUser],
       selectedUser: null,
       loggedInUser: stubUser,
-      myreviews: [],
     });
   });
 
@@ -134,7 +122,6 @@ describe('User Reducer', () => {
       users: [stubUser],
       selectedUser: null,
       loggedInUser: null,
-      myreviews: [],
     };
     const newState = reducer(stubInitialState, {
       type: actionTypes.EDIT_MYUSER,
