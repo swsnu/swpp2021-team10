@@ -17,6 +17,8 @@ jest.mock('../../Components/BoardReview/BoardReview', () => {
           <div className="spyReview" onClick={() => props.onClickReview(props.review.work.id)} />
           <button type="button" className="spy-delete-button" onClick={() => props.onClickDeleteReview()} />
           <button type="button" className="spy-save-button" onClick={() => props.onClickSaveReview()} />
+          <button type="button" className="spy-like-button" onClick={() => props.onClickLikeReview()} />
+          <button type="button" className="spy-unlike-button" onClick={() => props.onClickUnlikeReview()} />
         </td>
       </tr>
     );
@@ -64,11 +66,12 @@ const stubReviews = [
     likes: 10,
     title: 'Dummy Review Title',
     content: 'Dummy Content\nLong\nLong\nLogn\nLong\nFinish\n',
+    clickedLike: false,
   },
 ];
 
 const stubInitialReviewState = {
-  boardReviews: stubReviews,
+  reviews: stubReviews,
 };
 
 const mockStore = getMockStore(stubInitialReviewState, stubInitialTagState, stubInitialUserState, stubInitialWorkState);
@@ -78,6 +81,8 @@ describe('<Board />', () => {
   let spyGetBoardReviews;
   let spyEditReview;
   let spyDeleteReview;
+  let spyLikeReview;
+  let spyUnlikeReview;
   beforeEach(() => {
     board = (
       <Provider store={mockStore}>
@@ -94,6 +99,10 @@ describe('<Board />', () => {
     spyEditReview = jest.spyOn(reviewActionCreator, 'editReview')
       .mockImplementation((id, reviewData) => { return (dispatch) => { return new Promise((resolve, reject) => resolve()); }; });
     spyDeleteReview = jest.spyOn(reviewActionCreator, 'deleteReview')
+      .mockImplementation((id) => { return (dispatch) => { return new Promise((resolve, reject) => resolve()); }; });
+    spyLikeReview = jest.spyOn(reviewActionCreator, 'postLike')
+      .mockImplementation((id) => { return (dispatch) => { return new Promise((resolve, reject) => resolve()); }; });
+    spyUnlikeReview = jest.spyOn(reviewActionCreator, 'postUnlike')
       .mockImplementation((id) => { return (dispatch) => { return new Promise((resolve, reject) => resolve()); }; });
   });
 
@@ -130,5 +139,19 @@ describe('<Board />', () => {
     const wrapper = component.find('.spy-delete-button');
     wrapper.simulate('click');
     expect(spyDeleteReview).toHaveBeenCalledTimes(1);
+  });
+
+  it('should handle click like', () => {
+    const component = mount(board);
+    const wrapper = component.find('.spy-like-button');
+    wrapper.simulate('click');
+    expect(spyLikeReview).toHaveBeenCalledTimes(1);
+  });
+
+  it('should handle click like', () => {
+    const component = mount(board);
+    const wrapper = component.find('.spy-unlike-button');
+    wrapper.simulate('click');
+    expect(spyUnlikeReview).toHaveBeenCalledTimes(1);
   });
 });

@@ -88,7 +88,7 @@ class WorkTestCase(TestCase):
         self.assertIn('0.0', response.content.decode())
         self.assertIn('5.0', response.content.decode())
 
-        self.assertEqual(2, len(json.loads(response.content.decode())))
+        self.assertEqual(2, len(json.loads(response.content.decode())['reviews']))
 
         self.assertEqual(response.status_code, 200)
 
@@ -216,6 +216,7 @@ class WorkTestCase(TestCase):
     def test_work_search(self):
         client = Client(enforce_csrf_checks=True)
         response = client.get('/works/search/?q=&tags=')
+        response = client.get('/works/search/?q=Du&tags=')
         response = client.get('/works/search/?q=Du&tags=$Dummy')
         self.assertEqual(response.status_code, 200)
 

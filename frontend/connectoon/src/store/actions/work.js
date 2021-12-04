@@ -25,27 +25,22 @@ export const getWork_ = (work) => {
   };
 };
 
+export const noSuchWork_ = () => {
+  return {
+    type: actionTypes.WORK_NOT_EXISTING,
+  };
+};
+
 export const getWork = (id) => {
   return (dispatch) => {
     return axios.get('/works/' + id)
       .then((res) => {
         dispatch(getWork_(res.data));
-      });
-  };
-};
-
-export const getWorkReviews_ = (reviews) => {
-  return {
-    type: actionTypes.GET_WORK_REVIEWS,
-    selectedReviews: reviews,
-  };
-};
-
-export const getWorkReviews = (id) => {
-  return (dispatch) => {
-    return axios.get('/works/' + id + '/reviews/')
-      .then((res) => {
-        dispatch(getWorkReviews_(res.data));
+      })
+      .catch((rej) => {
+        if (rej.response.status === 404) {
+          dispatch(noSuchWork_());
+        }
       });
   };
 };

@@ -4,9 +4,23 @@
   position: fixed;
   left: 0px;
   top: 0px;
-  background-color: #fdfdfd;
-  border: 1px solid black;
   z-index: 10;
+}
+
+.relative-parent {
+  width: 100%;
+  height: 70px;
+  position: relative;
+  z-index: 10;
+}
+
+.overflow-hidden-parent {
+  width: 100%;
+  height: 70px;
+  background-color: #fdfdfd;
+  border-bottom: 1px solid black;
+  z-index: 10;
+  overflow-y: hidden;
 }
 
 a {
@@ -18,53 +32,39 @@ a:hover {
   text-decoration: underline;
 }
 
-#connectoon-logo-link {
-  display: inline-block;
-  margin: 15px 3% 15px 13%;
-  width: 14%;
-  height: 40px;
-}
-
 #connectoon-logo {
-  position: fixed;
-  left: 13%;
+  position: absolute;
+  left: max(calc(10px + (100% - 760px) * 0.25), 20px);
   top: 15px;
   font-size: 32px;
 }
 
-#non-logo-links {
-  display: inline-block;
-  margin: 20px 0% 20px 0%;
-  width: 40%;
-  height: 30px;
-}
-
 #recommendation-tab {
-  position: fixed;
-  left: 30%;
+  position: absolute;
+  left: max(calc(158px + (100% - 760px) * 0.40), 200px);
   top: 30px;
   font-size: 18px;
 }
 
 #board-tab {
-  position: fixed;
-  left: 43%;
+  position: absolute;
+  left: max(calc(312.2px + (100% - 760px) * 0.46), 355px);
   top: 30px;
   font-size: 18px;
 }
 
 #search-tab {
-  position: fixed;
-  left: 50%;
+  position: absolute;
+  left: max(calc(371.4px + (100% - 760px) * 0.52), 415px);
   top: 30px;
   font-size: 18px;
 }
 
 #search-input {
-  position: fixed;
-  left: 57%;
+  position: absolute;
+  left: max(calc(437px + (100% - 760px) * 0.60), 485px);
   top: 25px;
-  width: 11%;
+  width: 160px;
   height: 20px;
   z-index: 100;
   background-color: transparent;
@@ -72,17 +72,14 @@ a:hover {
 }
 
 #search-glass-icon {
-  position: fixed;
-  left: calc(70% - 15px);
-  top: 30px;
   width: 15px;
   height: 15px;
   z-index: 20;
 }
 
 #search-glass-wrapper {
-  position: fixed;
-  left: calc(70% - 15px);
+  position: absolute;
+  left: max(calc(607px + (100% - 760px) * 0.60), 655px);
   top: 30px;
   width: 15px;
   height: 15px;
@@ -95,40 +92,36 @@ a:hover {
   cursor: grab;
 }
 
-#user-account-button {
-  display: inline-block;
-  margin: 15px 15% 15px 5%;
-  width: 10%;
-  height: 40px;
-}
-
 .nav-bar-buttons {
-  width: 10%;
+  width: 150px;
   height: 40px;
   background-color: #fefefe;
   border: 1px solid black;
+  position: absolute;
+  left: max(calc(600px + (100% - 760px) * 0.75), 680px);
+  z-index: 10;
 }
 
 #login-button, #username-button {
-  position: fixed;
-  left: 75%;
   top: 15px;
 }
 
 #mypage-button {
-  position: fixed;
-  left: 75%;
   top: 54px;
 }
 
 #myreviews-button {
-  position: fixed;
-  left: 75%;
   top: 93px;
 }
 
 #logout-button {
-  position: fixed;
-  left: 75%;
   top: 132px;
+}
+
+#navbar-right-margin {
+  position: absolute;
+  left: max(100% - 1px, 849px);
+  top: 30px;
+  width: 1px;
+  height: 10px;
 }

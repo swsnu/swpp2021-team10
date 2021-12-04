@@ -1,8 +1,11 @@
 export {
-  getReview,
   editReview,
   deleteReview,
+  getWorkReviews,
   getBoardReviews,
+  getMyReviews,
+  postLike,
+  postUnlike,
 } from './review';
 export {
   getSearchTags,
@@ -15,14 +18,12 @@ export {
   getUser,
   getMyUser,
   editMyUser,
-  getMyReviews,
   dupCheckEmail,
   dupCheckUsername,
 } from './user';
 export {
   getMainWorks,
   getWork,
-  getWorkReviews,
   getRecWorks,
   getSearchWorks,
   putSearchWord,

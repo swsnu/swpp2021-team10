@@ -5,8 +5,6 @@ const initialState = {
   ],
   selectedUser: null,
   loggedInUser: null,
-  myreviews: [
-  ],
 };
 
 const reducer = (state = initialState, action) => {
