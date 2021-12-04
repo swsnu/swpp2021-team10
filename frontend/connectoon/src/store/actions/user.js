@@ -115,10 +115,10 @@ export const getMyUser = () => {
   };
 };
 
-export const editMyUser_ = (user) => {
+export const editMyUser_ = () => {
   return {
     type: actionTypes.EDIT_MYUSER,
-    loggedInUser: user,
+    loggedInUser: null,
   };
 };
 
@@ -140,7 +140,7 @@ export const editMyUser = (userData) => {
 
     return axios.put('/users/me/', form)
       .then((res) => {
-        dispatch(editMyUser_(res.data));
+        dispatch(editMyUser_());
         dispatch(logOut_());
         dispatch(push('/main'));
       });
