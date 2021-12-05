@@ -101,6 +101,7 @@ class TagSearchWindow extends Component {
 
 TagSearchWindow.defaultProps = {
   storedTags: [],
+  className: '',
   defaultTag: PropTypes.arrayOf(PropTypes.any),
   onGetTags: func,
   onAddTag: func,
@@ -108,7 +109,7 @@ TagSearchWindow.defaultProps = {
 };
 
 TagSearchWindow.propTypes = {
-  className: PropTypes.string.isRequired,
+  className: PropTypes.string,
   storedTags: PropTypes.arrayOf(PropTypes.any),
   defaultTag: PropTypes.arrayOf(PropTypes.any),
   onGetTags: PropTypes.func,

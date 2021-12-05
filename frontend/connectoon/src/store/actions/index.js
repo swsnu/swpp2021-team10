@@ -26,6 +26,5 @@ export {
   getWork,
   getRecWorks,
   getSearchWorks,
-  putSearchWord,
   postWorkReview,
 } from './work';

@@ -18,7 +18,6 @@ describe('Work Reducer', () => {
     const newState = reducer(undefined, {}); // initialize
     expect(newState).toEqual({
       mainWorkLists: [],
-      searchWord: '',
       selectedWorks: [],
       searchedWorks: [[], []],
       selectedWork: null,
@@ -87,19 +86,6 @@ describe('Work Reducer', () => {
     });
     expect(newState).toEqual({
       searchedWorks: [[stubWork], [stubWork, stubWork]],
-    });
-  });
-
-  it('should put search keyword', () => {
-    const stubInitialState = {
-      searchWord: '',
-    };
-    const newState = reducer(stubInitialState, {
-      type: actionTypes.PUT_SEARCH_WORD,
-      searchWord: 'test',
-    });
-    expect(newState).toEqual({
-      searchWord: 'test',
     });
   });
 });
