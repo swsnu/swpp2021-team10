@@ -16,18 +16,21 @@ Including another URLconf
 from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import include, path
+from django.conf.urls import url
 
 from connectoon import settings
 from user import views
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
-    path('works/', include('work.urls')),
-    path('reviews/', include('review.urls')),
-    path('tags/', include('tag.urls')),
-    path('users/', include('user.urls')),
-    path('artists/', include('artist.urls')),
-    path('token/', views.token, name='token'),
+    url(r'^api/v1/', include([
+        path('admin/', admin.site.urls),
+        path('works/', include('work.urls')),
+        path('reviews/', include('review.urls')),
+        path('tags/', include('tag.urls')),
+        path('users/', include('user.urls')),
+        path('artists/', include('artist.urls')),
+        path('token/', views.token, name='token'),
+    ]))
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
