@@ -23,6 +23,8 @@ class DetailReview extends Component {
       onClickLikeReview();
       const { likes, clickedLike } = this.state;
       this.setState({ likes: likes + 1, clickedLike: !clickedLike });
+    } else {
+      alert('Please login to give likes');
     }
   }
 
