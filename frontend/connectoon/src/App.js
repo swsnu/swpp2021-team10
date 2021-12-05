@@ -21,6 +21,7 @@ import MyReviews from './Containers/MyReviews/MyReviews';
 import WorkDetail from './Containers/WorkDetail/WorkDetail';
 import Login from './Containers/Login/Login';
 import Register from './Containers/Register/Register';
+import AccountSettings from './Containers/AccountSettings/AccountSettings';
 
 const persistor = persistStore(store);
 
@@ -40,6 +41,7 @@ function App() {
               <Route path="/search/:keyword" exact component={Search} />
               <Route path="/search" exact component={Search} />
               <Route path="/mypage" exact component={MyPage} />
+              <Route path="/mypage/account_settings" exact component={AccountSettings} />
               <Route path="/myreviews" exact component={MyReviews} />
               <Route path="/works/:id" exact component={WorkDetail} />
               <Route path="/login" exact component={Login} />

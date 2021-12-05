@@ -22,7 +22,9 @@ const reducer = (state = initialState, action) => {
     case actionTypes.GET_MYUSER:
       return { ...state, loggedInUser: action.loggedInUser };
     case actionTypes.EDIT_MYUSER:
-      return { ...state, loggedInUser: action.loggedInUser };
+      return { ...state, loggedInUser: null };
+    case actionTypes.GET_MYREVIEWS:
+      return { ...state, myreviews: action.myreviews };
     default:
       break;
   }
