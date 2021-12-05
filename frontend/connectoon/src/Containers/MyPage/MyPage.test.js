@@ -165,7 +165,7 @@ describe('<MyPage />', () => {
     expect(spyHistoryPush).toHaveBeenCalledWith('/search/$test1');
   });
 
-  it('should go to search when click tag', () => {
+  it('should go to work detail when click reviewed work', () => {
     const spyHistoryPush = jest.spyOn(history, 'push')
       .mockImplementation((path) => { });
     const component = mount(myPage);
@@ -174,7 +174,7 @@ describe('<MyPage />', () => {
     expect(spyHistoryPush).toHaveBeenCalledWith('/works/1');
   });
 
-  it('should redirect to main when logged in', () => {
+  it('should redirect to main when not logged in', () => {
     const stubInitialUserStateNew = {
       loggedInUser: null,
     };
