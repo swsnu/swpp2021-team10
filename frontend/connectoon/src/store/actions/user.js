@@ -118,7 +118,6 @@ export const getMyUser = () => {
 export const editMyUser_ = () => {
   return {
     type: actionTypes.EDIT_MYUSER,
-    loggedInUser: null,
   };
 };
 
@@ -141,7 +140,6 @@ export const editMyUser = (userData) => {
     return axios.put('/users/me/', form)
       .then((res) => {
         dispatch(editMyUser_());
-        dispatch(logOut_());
         dispatch(push('/main'));
       });
   };
