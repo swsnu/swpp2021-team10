@@ -47,8 +47,6 @@ def work_id_review(request, id):
         response_dict = []
 
         request_user = request.user
-        if not request_user.is_authenticated:
-            clickedLikeReview = False
 
         for review in reviews:
             work = Work.objects.get(id=review.work_id)
@@ -62,10 +60,9 @@ def work_id_review(request, id):
                 "id": author.id, "username": author.username, "email": author.email, # "profile_picture": author.profile_picture
             }
 
+            clickedLikeReview = False
             if request_user.is_authenticated and ReviewUserLike.objects.filter(user = request_user, review = review):
                 clickedLikeReview = True
-            else:
-                clickedLikeReview = False
             
             response_dict.append({
                 "id": review.id, "title": review.title, "content": review.content, "score": review.score, "likes": review.likes,
