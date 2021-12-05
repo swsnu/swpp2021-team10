@@ -1,20 +1,87 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import * as actionCreators from '../../store/actions/index';
+
+import './MyReviews.css';
+
+import BoardReview from '../../Components/BoardReview/BoardReview';
 
 class MyReviews extends Component {
-  constructor(props) {
-    super(props);
-    this.state = { dummyState: true };
+  componentDidMount() {
+    this.props.onGetMyReviews();
+    const { loggedInUser } = this.props;
+    if (!loggedInUser) {
+      this.props.history.push('/login');
+    }
+  }
+
+  onClickReview(workId) {
+    this.props.history.push(`/works/${workId}`);
+  }
+
+  onClickSaveReview(id, title, content, score) {
+    this.props.onEditReview(id, { title, content, score });
+  }
+
+  onClickDeleteReview(id) {
+    this.props.onDeleteReview(id)
+      .then(() => {
+        this.props.onGetBoardReviews();
+      });
   }
 
   render() {
-    const { dummyState } = this.state;
+    const { myReviews, loggedInUser } = this.props;
+
+    const reviewLists = myReviews?.map((review) => {
+      return (
+        <BoardReview
+          key={review.id}
+          className="myreview"
+          review={review}
+          onClickReview={(workId) => this.onClickReview(workId)}
+          isMyReview={loggedInUser && loggedInUser.id === review.author.id}
+          onClickSaveReview={(title, content, score) => this.onClickSaveReview(review.id, title, content, score)}
+          onClickDeleteReview={() => this.onClickDeleteReview(review.id)}
+          onClickLikeReview={() => this.props.onPostLike(review.id)}
+          onClickUnlikeReview={() => this.props.onPostUnlike(review.id)}
+          clickedLike={review.clickedLike}
+          isLoggedIn={!!loggedInUser}
+        />
+      );
+    });
+
     return (
-      <div className="myreviews">
-        {dummyState && 'This is MyReviews'}
-      </div>
+      <table className="myreview-table">
+        <thead className="myreview-header">
+          <tr className="myreview-header-row">
+            <th className="myreview-header work">Work</th>
+            <th className="myreview-header review">Review</th>
+          </tr>
+        </thead>
+        <tbody>
+          {reviewLists}
+        </tbody>
+      </table>
     );
   }
 }
 
-export default MyReviews;
+const mapStateToProps = (state) => {
+  return {
+    myReviews: state.review.reviews,
+    loggedInUser: state.user.loggedInUser,
+  };
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    onGetMyReviews: () => dispatch(actionCreators.getMyReviews()),
+    onEditReview: (id, reviewData) => dispatch(actionCreators.editReview(id, reviewData)),
+    onDeleteReview: (id) => dispatch(actionCreators.deleteReview(id)),
+    onPostLike: (id) => dispatch(actionCreators.postLike(id)),
+    onPostUnlike: (id) => dispatch(actionCreators.postUnlike(id)),
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(MyReviews);
