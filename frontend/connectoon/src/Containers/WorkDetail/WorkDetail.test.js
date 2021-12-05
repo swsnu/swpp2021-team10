@@ -26,6 +26,8 @@ jest.mock('../../Components/DetailReview/DetailReview', () => {
       <div className="spyDetailReview">
         <button type="button" className="spy-delete-button" onClick={() => props.onClickDeleteReview()} />
         <button type="button" className="spy-save-button" onClick={() => props.onClickSaveReview()} />
+        <button type="button" className="spy-like-button" onClick={() => props.onClickLikeReview()} />
+        <button type="button" className="spy-unlike-button" onClick={() => props.onClickUnlikeReview()} />
       </div>
     );
   });
@@ -57,6 +59,8 @@ describe('<WorkDetail />', () => {
   let spyGetWorkReviews;
   let spyEditReview;
   let spyDeleteReview;
+  let spyLikeReview;
+  let spyUnlikeReview;
   beforeEach(() => {
     spyGetWork = jest.spyOn(workActionCreator, 'getWork')
       .mockImplementation((id) => { return (dispatch) => {}; });
@@ -67,6 +71,10 @@ describe('<WorkDetail />', () => {
     spyEditReview = jest.spyOn(reviewActionCreator, 'editReview')
       .mockImplementation((id, reviewData) => { return (dispatch) => { return new Promise((resolve, reject) => resolve()); }; });
     spyDeleteReview = jest.spyOn(reviewActionCreator, 'deleteReview')
+      .mockImplementation((id) => { return (dispatch) => { return new Promise((resolve, reject) => resolve()); }; });
+    spyLikeReview = jest.spyOn(reviewActionCreator, 'postLike')
+      .mockImplementation((id) => { return (dispatch) => { return new Promise((resolve, reject) => resolve()); }; });
+    spyUnlikeReview = jest.spyOn(reviewActionCreator, 'postUnlike')
       .mockImplementation((id) => { return (dispatch) => { return new Promise((resolve, reject) => resolve()); }; });
   });
 
@@ -341,5 +349,80 @@ describe('<WorkDetail />', () => {
     wrapper.simulate('click');
     expect(spyHistoryPush).toHaveBeenCalledTimes(1);
     expect(spyHistoryPush).toHaveBeenCalledWith('/search/$TAG1');
+  });
+
+  it('should handle click like with my review', () => {
+    const stubInitialUserState = {
+      loggedInUser: stubLoggedInUser,
+    };
+    const stubInitialWorkState = {
+      selectedWork: stubWork,
+      noSuchSelectedWork: false,
+    };
+    const stubInitialReviewState = {
+      reviews: [
+        { id: 1, author: { id: 1 } },
+        { id: 2, author: { id: 2 } },
+      ],
+    };
+    const mockStore = getMockStore(stubInitialReviewState, stubInitialTagState, stubInitialUserState, stubInitialWorkState);
+    const workDetail = (
+      <Provider store={mockStore}>
+        <ConnectedRouter history={history}>
+          <Switch>
+            <Route path="/" exact component={WorkDetail} />
+          </Switch>
+        </ConnectedRouter>
+      </Provider>
+    );
+    const component = mount(workDetail);
+    console.log(component.debug());
+    let wrapper = component.find('.spy-like-button').first();
+    wrapper.simulate('click');
+    expect(spyLikeReview).toHaveBeenCalledTimes(1);
+    wrapper = component.find('.spy-unlike-button').first();
+    wrapper.simulate('click');
+    expect(spyUnlikeReview).toHaveBeenCalledTimes(1);
+
+    wrapper = component.find('.spy-like-button').at(1);
+    wrapper.simulate('click');
+    expect(spyLikeReview).toHaveBeenCalledTimes(2);
+    wrapper = component.find('.spy-unlike-button').at(1);
+    wrapper.simulate('click');
+    expect(spyUnlikeReview).toHaveBeenCalledTimes(2);
+  });
+
+  it('should handle click like without my review', () => {
+    const stubInitialUserState = {
+      loggedInUser: stubLoggedInUser,
+    };
+    const stubInitialWorkState = {
+      selectedWork: stubWork,
+      noSuchSelectedWork: false,
+    };
+    const stubInitialReviewState = {
+      reviews: [
+        { id: 1, author: { id: 2 } },
+        { id: 2, author: { id: 3 } },
+      ],
+    };
+    const mockStore = getMockStore(stubInitialReviewState, stubInitialTagState, stubInitialUserState, stubInitialWorkState);
+    const workDetail = (
+      <Provider store={mockStore}>
+        <ConnectedRouter history={history}>
+          <Switch>
+            <Route path="/" exact component={WorkDetail} />
+          </Switch>
+        </ConnectedRouter>
+      </Provider>
+    );
+    const component = mount(workDetail);
+    console.log(component.debug());
+    let wrapper = component.find('.spy-like-button').first();
+    wrapper.simulate('click');
+    expect(spyLikeReview).toHaveBeenCalledTimes(1);
+    wrapper = component.find('.spy-unlike-button').first();
+    wrapper.simulate('click');
+    expect(spyUnlikeReview).toHaveBeenCalledTimes(1);
   });
 });

@@ -51,6 +51,14 @@ class WorkDetail extends Component {
     this.props.history.push('/search/$' + tagName);
   }
 
+  onClickLikeReview(id) {
+    this.props.onPostLike(id);
+  }
+
+  onClickUnlikeReview(id) {
+    this.props.onPostUnlike(id);
+  }
+
   render() {
     const {
       selectedWork, noSuchSelectedWork, loggedInUser, reviews,
@@ -102,18 +110,42 @@ class WorkDetail extends Component {
           editable
           onClickSaveReview={(title, content, score) => this.onClickSaveReview(myReview[0].id, title, content, score)}
           onClickDeleteReview={() => this.onClickDeleteReview(myReview[0].id)}
+          onClickLikeReview={() => this.onClickLikeReview(myReview[0].id)}
+          onClickUnlikeReview={() => this.onClickUnlikeReview(myReview[0].id)}
+          clickedLike={myReview[0].clickedLike}
+          isLoggedIn={true}
         />
       </div>) :
       <WriteReview className="work-write-review" loggedInUser={loggedInUser} onClickReviewConfirm={this.onClickReviewConfirm} />;
     const othersDetailReviews = withMyReview ?
-      othersReviews.map((review) => <DetailReview key={review.id} className="detail-review" review={review} editable={false} />) :
+      othersReviews.map((review) => (
+        <DetailReview
+          key={review.id}
+          className="detail-review"
+          review={review}
+          onClickLikeReview={() => this.onClickLikeReview(review.id)}
+          onClickUnlikeReview={() => this.onClickUnlikeReview(review.id)}
+          clickedLike={review.clickedLike}
+          editable={false}
+          isLoggedIn={!!loggedInUser}
+        />)) :
       <div>
         <div className="others-review-region">
           <h3 id="work-reviews-header">Review{(reviews.length > 1) && 's'}({reviews.length})</h3>
           <img id="work-score-star-icon" src="/images/ratingStar.png" alt="rating" />
           <h4 id="work-average-score">{selectedWork.score_avg.toFixed(2)}</h4>
         </div>
-        {othersReviews.map((review) => <DetailReview key={review.id} className="detail-review" review={review} editable={false} />)}
+        {othersReviews.map((review) => (
+          <DetailReview
+            key={review.id}
+            className="detail-review"
+            review={review}
+            onClickLikeReview={() => this.onClickLikeReview(review.id)}
+            onClickUnlikeReview={() => this.onClickUnlikeReview(review.id)}
+            clickedLike={review.clickedLike}
+            editable={false}
+            isLoggedIn={!!loggedInUser}
+          />))}
       </div>;
 
     return (
@@ -144,6 +176,8 @@ const mapDispatchToProps = (dispatch) => {
     onGetWorkReviews: (id) => dispatch(actionCreators.getWorkReviews(id)),
     onEditReview: (id, reviewData) => dispatch(actionCreators.editReview(id, reviewData)),
     onDeleteReview: (id) => dispatch(actionCreators.deleteReview(id)),
+    onPostLike: (id) => dispatch(actionCreators.postLike(id)),
+    onPostUnlike: (id) => dispatch(actionCreators.postUnlike(id)),
   };
 };
 

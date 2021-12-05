@@ -7,7 +7,7 @@ from json.decoder import JSONDecodeError
 from django.forms.models import model_to_dict
 
 from work.models import Work
-from review.models import Review
+from review.models import Review, ReviewUserLike
 from tag.models import Tag
 from user.models import UserTagFav
 from django.contrib.auth import get_user_model
@@ -45,6 +45,9 @@ def work_id_review(request, id):
     if request.method == 'GET':
         reviews = Review.objects.filter(work = id)
         response_dict = []
+
+        request_user = request.user
+
         for review in reviews:
             work = Work.objects.get(id=review.work_id)
             work_artist_name = [artist.name for artist in work.artists.all()]
@@ -56,9 +59,14 @@ def work_id_review(request, id):
             author_dict = {
                 "id": author.id, "username": author.username, "email": author.email, # "profile_picture": author.profile_picture
             }
+
+            clickedLikeReview = False
+            if request_user.is_authenticated and ReviewUserLike.objects.filter(user = request_user, review = review):
+                clickedLikeReview = True
+            
             response_dict.append({
                 "id": review.id, "title": review.title, "content": review.content, "score": review.score, "likes": review.likes,
-                "work": work_dict, "author": author_dict
+                "work": work_dict, "author": author_dict, "clickedLike": clickedLikeReview
             })
         
         return JsonResponse({ "reviews": response_dict }, status=200, safe = False)
