@@ -154,4 +154,23 @@ describe('<MyReviews />', () => {
     wrapper.simulate('click');
     expect(spyUnlikeReview).toHaveBeenCalledTimes(1);
   });
+
+  it('should handle redirect', () => {
+    const newmockStore = getMockStore(stubInitialReviewState, stubInitialTagState, { loggedInUser: false }, stubInitialWorkState);
+    const myNewReviews = (
+      <Provider store={newmockStore}>
+        <ConnectedRouter history={history}>
+          <Switch>
+            {/* eslint-disable-next-line */}
+            <Route path="/" exact render={(props) => <MyReviews {...props} />} />
+          </Switch>
+        </ConnectedRouter>
+      </Provider>
+    );
+    const spyHistoryPush = jest.spyOn(history, 'push')
+      .mockImplementation((path) => { });
+    const component = mount(myNewReviews);
+    expect(spyHistoryPush).toHaveBeenCalledTimes(1);
+    expect(spyHistoryPush).toHaveBeenCalledWith('/login');
+  });
 });
