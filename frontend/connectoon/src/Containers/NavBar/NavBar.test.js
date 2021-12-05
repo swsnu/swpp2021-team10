@@ -30,7 +30,6 @@ const loggedInMockStore = getMockStore(stubInitialReviewState, stubInitialTagSta
 
 describe('<NavBar />', () => {
   let navbar;
-  let spyPutSearchWord;
   let spyHistoryPush;
   let spyLogOut;
   beforeEach(() => {
@@ -43,8 +42,6 @@ describe('<NavBar />', () => {
         </ConnectedRouter>
       </Provider>
     );
-    spyPutSearchWord = jest.spyOn(workActionCreators, 'putSearchWord')
-      .mockImplementation(() => { return (dispatch) => {}; });
     spyHistoryPush = jest.spyOn(history, 'push')
       .mockImplementation((path) => {});
     spyLogOut = jest.spyOn(userActionCreators, 'logOut')
@@ -167,9 +164,8 @@ describe('<NavBar />', () => {
     wrapper = component.find('#search-glass-wrapper');
     wrapper.simulate('click');
     expect(newNavbarInstance.state.clickUsername).toBeFalsy();
-    expect(spyPutSearchWord).toHaveBeenCalledTimes(1);
     expect(spyHistoryPush).toHaveBeenCalledTimes(1);
-    expect(spyHistoryPush).toHaveBeenCalledWith('/search/keyword');
+    expect(spyHistoryPush).toHaveBeenCalledWith('/search/test/$');
   });
 
   it('should handle search glass click with empty input', () => {
@@ -178,9 +174,8 @@ describe('<NavBar />', () => {
     wrapper.simulate('click');
     const newNavbarInstance = component.find(NavBar.WrappedComponent).instance();
     expect(newNavbarInstance.state.clickUsername).toBeFalsy();
-    expect(spyPutSearchWord).toHaveBeenCalledTimes(1);
     expect(spyHistoryPush).toHaveBeenCalledTimes(1);
-    expect(spyHistoryPush).toHaveBeenCalledWith('/search/keyword');
+    expect(spyHistoryPush).toHaveBeenCalledWith('/search//$');
   });
 
   it('should handle Enter keyboard input', () => {
@@ -188,8 +183,7 @@ describe('<NavBar />', () => {
     const wrapper = component.find('input');
     wrapper.simulate('keypress', { key: 'A' });
     wrapper.simulate('keypress', { key: 'Enter' });
-    expect(spyPutSearchWord).toHaveBeenCalledTimes(1);
     expect(spyHistoryPush).toHaveBeenCalledTimes(1);
-    expect(spyHistoryPush).toHaveBeenCalledWith('/search/keyword');
+    expect(spyHistoryPush).toHaveBeenCalledWith('/search//$');
   });
 });

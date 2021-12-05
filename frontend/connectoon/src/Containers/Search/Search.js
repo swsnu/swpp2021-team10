@@ -14,26 +14,27 @@ class Search extends Component {
   constructor(props) {
     super(props);
     const {
-      searchWord,
       onGetWorks,
       onGetTags,
-      onPutSearchWord,
     } = this.props;
     onGetTags('');
-    if (this.props.match.params.tag === undefined) {
-      this.state = {
-        title: searchWord,
-        genre: '',
-      };
-      onGetWorks(searchWord, '');
+    let initTitle;
+    let initGenre;
+    if (this.props.match.params.keyword === undefined) {
+      initTitle = '';
+      initGenre = '';
+    } else if (this.props.match.params.keyword.indexOf('$') !== -1) {
+      initTitle = '';
+      initGenre = this.props.match.params.keyword;
     } else {
-      this.state = {
-        title: searchWord,
-        genre: this.props.match.params.tag,
-      };
-      onGetWorks(searchWord, this.props.match.params.tag);
+      initTitle = this.props.match.params.keyword;
+      initGenre = '';
     }
-    onPutSearchWord('');
+    this.state = {
+      title: initTitle,
+      genre: initGenre,
+    };
+    onGetWorks(initTitle, initGenre);
   }
 
   onAddTag = (name) => {
@@ -91,21 +92,18 @@ Search.defaultProps = {
   onGetWorks: func,
   storedWorks: PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.any)),
   storedTags: [],
-  searchWord: PropTypes.string,
 };
 
 Search.propTypes = {
   onGetWorks: PropTypes.func,
   storedWorks: PropTypes.arrayOf(PropTypes.any),
   storedTags: PropTypes.arrayOf(PropTypes.any),
-  searchWord: PropTypes.string,
 };
 
 const mapStateToProps = (state) => {
   return {
     storedWorks: state.work.searchedWorks,
     storedTags: state.tag.tags,
-    searchWord: state.work.searchWord,
     searchTagName: state.work.searchTagName,
   };
 };
@@ -114,7 +112,6 @@ const mapDispatchToProps = (dispatch) => {
   return {
     onGetWorks: (keyword, keytag) => dispatch(actionCreators.getSearchWorks(keyword, keytag)),
     onGetTags: (keyword) => dispatch(actionCreators.getSearchTags(keyword)),
-    onPutSearchWord: (keyword) => dispatch(actionCreators.putSearchWord(keyword)),
   };
 };
 

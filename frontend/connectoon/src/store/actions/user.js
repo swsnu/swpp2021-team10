@@ -64,8 +64,6 @@ export const register = (registerData) => {
       email, username, password, image, tags,
     } = registerData;
 
-    console.log(tags);
-
     const form = new FormData();
     form.append('email', email);
     form.append('username', username);
@@ -117,18 +115,32 @@ export const getMyUser = () => {
   };
 };
 
-export const editMyUser_ = (user) => {
+export const editMyUser_ = () => {
   return {
     type: actionTypes.EDIT_MYUSER,
-    loggedInUser: user,
   };
 };
 
-export const editMyUser = (user) => {
+export const editMyUser = (userData) => {
   return (dispatch) => {
-    return axios.put('/users/me/', user)
+    const {
+      username, password, image, tags,
+    } = userData;
+
+    const form = new FormData();
+    form.append('username', username);
+    form.append('password', password);
+    if (image) form.append('profile_picture', image);
+    if (tags) {
+      tags.forEach((tag) => {
+        form.append('tags', tag);
+      });
+    }
+
+    return axios.put('/users/me/', form)
       .then((res) => {
-        dispatch(editMyUser_(res.data));
+        dispatch(editMyUser_());
+        dispatch(push('/main'));
       });
   };
 };

@@ -121,16 +121,34 @@ describe('User Reducer', () => {
     const stubInitialState = {
       users: [stubUser],
       selectedUser: null,
-      loggedInUser: null,
+      loggedInUser: stubUser,
     };
     const newState = reducer(stubInitialState, {
       type: actionTypes.EDIT_MYUSER,
-      loggedInUser: stubUser,
     });
     expect(newState).toEqual({
       users: [stubUser],
       selectedUser: null,
-      loggedInUser: stubUser,
+      loggedInUser: null,
+    });
+  });
+
+  it('should get my reviews', () => {
+    const stubInitialState = {
+      users: [stubUser],
+      selectedUser: null,
+      loggedInUser: null,
+      myreviews: [],
+    };
+    const newState = reducer(stubInitialState, {
+      type: actionTypes.GET_MYREVIEWS,
+      myreviews: [],
+    });
+    expect(newState).toEqual({
+      users: [stubUser],
+      selectedUser: null,
+      loggedInUser: null,
+      myreviews: [],
     });
   });
 });

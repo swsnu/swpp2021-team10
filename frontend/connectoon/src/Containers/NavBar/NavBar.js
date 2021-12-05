@@ -46,12 +46,11 @@ class NavBar extends Component {
   }
 
   onClickSearchGlass() {
-    const { onPutSearchWord, history } = this.props;
+    const { history } = this.props;
     const { searchWord } = this.state;
     this.setState({ clickUsername: false });
-    onPutSearchWord(searchWord);
+    history.push('/search/' + searchWord + '/$');
     this.setState({ searchWord: '' });
-    history.push('/search/keyword');
   }
 
   onKeyPress(e) {
@@ -97,7 +96,6 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    onPutSearchWord: (keyword) => dispatch(actionCreators.putSearchWord(keyword)),
     onLogOut: () => dispatch(actionCreators.logOut()),
   };
 };

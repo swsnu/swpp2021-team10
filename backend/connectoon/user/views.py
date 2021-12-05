@@ -4,6 +4,7 @@ from django.views.decorators.csrf import ensure_csrf_cookie
 from django.contrib.auth import get_user_model, authenticate, login as auth_login, logout as auth_logout
 from django.http import HttpResponse, HttpResponseBadRequest, HttpResponseNotAllowed, HttpResponseForbidden, \
     JsonResponse, QueryDict
+from django.views.decorators.http import require_GET
 
 import json
 from json.decoder import JSONDecodeError
@@ -12,6 +13,7 @@ from django.views.decorators.http import require_POST
 
 from tag.models import Tag
 from user.models import UserTagFav
+from review.models import Review, ReviewUserLike
 
 
 @ensure_csrf_cookie
@@ -127,7 +129,28 @@ def user_login(request):
         # Check Available
         if user is not None:
             auth_login(request, user)
-            response_dict = {'id': user.id, 'username': user.username, 'email': user.email}
+
+            user_tags = user.user_tag.all()
+
+            return_tag_list = []
+            for user_tag in user_tags:
+                tag = user_tag.tag
+                related_list = []
+                temptag = [tag for tag in Tag.objects.get(name=tag.name).related.all().values()]
+                for tt in temptag:
+                    related_list.append(tt['id'])
+                return_tag_list.append(
+                    {'key': tag.id, 'name': tag.name, 'related': related_list, 'prior': tag.prior})
+
+            response_dict = {
+                'id': user.id,
+                'username': user.username,
+                'email': user.email,
+                'tags': return_tag_list,
+                'profile_picture': request.build_absolute_uri(
+                    user.profile_picture.url) if user.profile_picture else ''
+            }
+
             return JsonResponse(response_dict, status=200)
         else:
             return HttpResponse(status=401)
@@ -152,14 +175,23 @@ def user_me(request):
     if request.method == 'GET':
         if request_user.is_authenticated:
 
-            user_tag = request_user.user_tag.all()
-            tag_list = [{'id': user_tag.tag.id, 'name': user_tag.tag.name } for user_tag in user_tag]
+            user_tags = request_user.user_tag.all()
+
+            return_tag_list = []
+            for user_tag in user_tags:
+                tag = user_tag.tag
+                related_list = []
+                temptag = [reltag for reltag in tag.related.all().values()]
+                for tt in temptag:
+                    related_list.append(tt['id'])
+                return_tag_list.append(
+                    {'key': tag.id, 'name': tag.name, 'related': related_list, 'prior': tag.prior})
 
             response_dict = {
                 'id': request_user.id,
                 'username': request_user.username,
                 'email': request_user.email,
-                'tags': tag_list,
+                'tags': return_tag_list,
                 'profile_picture': request.build_absolute_uri(request_user.profile_picture.url) if request_user.profile_picture else ''
             }
             return JsonResponse(response_dict, status=200)
@@ -239,6 +271,37 @@ def user_me(request):
 
 
 
+@require_GET
+def user_me_review(request): 
+    request_user = request.user
 
-def user_me_review(request):  # TODO
-    return HttpResponse(status=501)
+    my_reviews = Review.objects.filter(author__id = request_user.id)
+    user_class = get_user_model()
+    response_dict = []
+
+    for review in my_reviews:
+        work = review.work
+        work_artist_name = [artist.name for artist in work.artists.all()]
+        
+        work_dict = {
+            "id": work.id, "title": work.title, "thumbnail_picture": work.thumbnail_picture,
+            "platform_id": work.platform_id, "year": work.year, "artists": work_artist_name
+        }
+        
+        author = user_class.objects.get(id=review.author_id)
+        author_dict = {
+            "id": author.id, "username": author.username, "email": author.email, # "profile_picture": author.profile_picture
+        }
+
+        if ReviewUserLike.objects.filter(user = request_user, review = review):
+            clickedLikeReview = True
+        else:
+            clickedLikeReview = False
+
+        response_dict.append({
+            "id": review.id, "title": review.title, "content": review.content, "score": review.score, "likes": review.likes,
+            "work": work_dict, "author": author_dict, "clickedLike": clickedLikeReview
+        })
+
+    return JsonResponse({"reviews": response_dict}, status = 200, safe=False)
+
