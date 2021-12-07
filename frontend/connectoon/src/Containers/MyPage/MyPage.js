@@ -38,7 +38,7 @@ class MyPage extends Component {
 
     const genreTags = () => {
       return loggedInUser.tags.map((tag) => {
-        return <GenreTag deletable={false} tagName={tag.name} selected={true} onClickTag={() => this.onClickTag(tag.name)} />;
+        return <GenreTag key={'setting-genre-tag-' + tag.name} deletable={false} tagName={tag.name} selected={true} onClickTag={() => this.onClickTag(tag.name)} />;
       });
     };
 

@@ -376,7 +376,6 @@ describe('<WorkDetail />', () => {
       </Provider>
     );
     const component = mount(workDetail);
-    console.log(component.debug());
     let wrapper = component.find('.spy-like-button').first();
     wrapper.simulate('click');
     expect(spyLikeReview).toHaveBeenCalledTimes(1);
@@ -417,7 +416,6 @@ describe('<WorkDetail />', () => {
       </Provider>
     );
     const component = mount(workDetail);
-    console.log(component.debug());
     let wrapper = component.find('.spy-like-button').first();
     wrapper.simulate('click');
     expect(spyLikeReview).toHaveBeenCalledTimes(1);
