@@ -42,7 +42,7 @@ class WorkTestCase(TestCase):
 
     def test_work_id(self):
         client = Client()
-        response = client.get('/works/1/')
+        response = client.get('/api/v1/works/1/')
         self.assertEqual(response.status_code, 200)
 
         self.assertIn("DummyTitle", response.content.decode())
@@ -52,35 +52,35 @@ class WorkTestCase(TestCase):
 
     def test_work_id_not_exist(self):
         client = Client()
-        response = client.get('/works/10/')
+        response = client.get('/api/v1/works/10/')
         self.assertEqual(response.status_code, 404)
         
     def test_article_wrong_api(self):
         client = Client()
-        response = client.delete('/works/1/')
+        response = client.delete('/api/v1/works/1/')
 
         self.assertEqual(response.status_code, 405)
         self.assertIn("GET", response.headers['Allow'])
 
-        response = client.post('/works/1/', {})
+        response = client.post('/api/v1/works/1/', {})
 
         self.assertEqual(response.status_code, 405)
         self.assertIn("GET", response.headers['Allow'])
 
 
-        response = client.put('/works/1/', {})
+        response = client.put('/api/v1/works/1/', {})
 
         self.assertEqual(response.status_code, 405)
         self.assertIn("GET", response.headers['Allow'])
 
     def test_work_id_review_not_exist(self):
         client = Client()
-        response = client.get('/works/10/reviews/')
+        response = client.get('/api/v1/works/10/reviews/')
         self.assertEqual(response.status_code, 404)
 
     def test_get_work_id_review(self):
         client = Client()
-        response = client.get('/works/1/reviews/')
+        response = client.get('/api/v1/works/1/reviews/')
 
         self.assertIn('DUM', response.content.decode())
         self.assertIn('DUM_CONTENT', response.content.decode())
@@ -93,17 +93,17 @@ class WorkTestCase(TestCase):
 
         self.assertEqual(response.status_code, 200)
 
-        response = client.get('/works/1/reviews/')
+        response = client.get('/api/v1/works/1/reviews/')
         self.assertEqual(False, json.loads(response.content.decode())['reviews'][0]['clickedLike'])
 
-        csrftoken = client.get('/token/').cookies['csrftoken'].value  # Get csrf token from cookie
-        response = client.post('/users/login/',
+        csrftoken = client.get('/api/v1/token/').cookies['csrftoken'].value  # Get csrf token from cookie
+        response = client.post('/api/v1/users/login/',
                                json.dumps({'email': 'dummy@user.com', 'password': '1234'}),
                                content_type='application/json', HTTP_X_CSRFTOKEN=csrftoken)
 
-        response = client.post('/reviews/1/like/')
+        response = client.post('/api/v1/reviews/1/like/')
 
-        response = client.get('/works/1/reviews/')
+        response = client.get('/api/v1/works/1/reviews/')
         self.assertEqual(True, json.loads(response.content.decode())['reviews'][0]['clickedLike'])
        
 
@@ -111,15 +111,15 @@ class WorkTestCase(TestCase):
         client = Client()
         #client.login(email='dummy@user.com', password='1234', username='dummy')
         
-        csrftoken = client.get('/token/').cookies['csrftoken'].value  # Get csrf token from cookie
-        response = client.post('/users/login/',
+        csrftoken = client.get('/api/v1/token/').cookies['csrftoken'].value  # Get csrf token from cookie
+        response = client.post('/api/v1/users/login/',
                                json.dumps({'email': 'dummy@user.com', 'password': '1234'}),
                                content_type='application/json', HTTP_X_CSRFTOKEN=csrftoken)
 
 
         review = Review(score=3.0, title="DUM", content="DUM_CONTENT")
         review_json = model_to_dict(review)
-        response = client.post('/works/1/reviews/', review_json, content_type='application/json')
+        response = client.post('/api/v1/works/1/reviews/', review_json, content_type='application/json')
 
         self.assertEqual(response.status_code, 201)
         self.assertIn("DUM", response.content.decode())
@@ -131,7 +131,7 @@ class WorkTestCase(TestCase):
         
         review = Review(score=3.0, title="DUM", content="DUM_CONTENT")
         review_json = model_to_dict(review)
-        response = client.post('/works/1/reviews/', review_json, content_type='application/json')
+        response = client.post('/api/v1/works/1/reviews/', review_json, content_type='application/json')
 
         self.assertEqual(response.status_code, 401)
     
@@ -139,39 +139,39 @@ class WorkTestCase(TestCase):
         client = Client()
         #client.login(email='dummy@user.com', password='1234', username='dummy')
 
-        csrftoken = client.get('/token/').cookies['csrftoken'].value  # Get csrf token from cookie
-        response = client.post('/users/login/',
+        csrftoken = client.get('/api/v1/token/').cookies['csrftoken'].value  # Get csrf token from cookie
+        response = client.post('/api/v1/users/login/',
                                json.dumps({'email': 'dummy@user.com', 'password': '1234'}),
                                content_type='application/json', HTTP_X_CSRFTOKEN=csrftoken)
 
 
         review = {"score1": 3.0, "title":"DUM", "content":"DUM_CONTENT"}
-        response = client.post('/works/1/reviews/', review, content_type='application/json')
+        response = client.post('/api/v1/works/1/reviews/', review, content_type='application/json')
 
         self.assertEqual(response.status_code, 400)
     
     def test_work_id_review_wrong_api(self):
         client = Client()
-        response = client.delete('/works/1/reviews/')
+        response = client.delete('/api/v1/works/1/reviews/')
 
         self.assertEqual(response.status_code, 405)
         self.assertIn("GET, POST", response.headers['Allow'])
 
         review = Review(score=3.0, title="DUM", content="DUM_CONTENT")
         review_json = model_to_dict(review)
-        response = client.put('/works/1/reviews/', review_json, content_type='application/json')
+        response = client.put('/api/v1/works/1/reviews/', review_json, content_type='application/json')
 
         self.assertEqual(response.status_code, 405)
         self.assertIn("GET, POST", response.headers['Allow'])
 
     def test_get_work_main_status(self):
         client = Client()
-        response = client.get('/works/main/')
+        response = client.get('/api/v1/works/main/')
         self.assertEqual(response.status_code, 200)
         
     def test_get_work_main_most_reviewed(self):
         client = Client()
-        response = client.get('/works/main/')
+        response = client.get('/api/v1/works/main/')
 
         response_json = json.loads(response.content.decode())
         self.assertEquals(response_json['worklists'][0]['title'], "Most reviewed works")
@@ -183,7 +183,7 @@ class WorkTestCase(TestCase):
         
     def test_get_work_main_highest_rated(self):
         client = Client()
-        response = client.get('/works/main/')
+        response = client.get('/api/v1/works/main/')
 
         response_json = json.loads(response.content.decode())
     
@@ -198,45 +198,45 @@ class WorkTestCase(TestCase):
     def test_get_work_wrong_api(self):
         client = Client()
 
-        response = client.delete('/works/main/')
+        response = client.delete('/api/v1/works/main/')
         self.assertEqual(response.status_code, 405)
         self.assertIn("GET", response.headers['Allow'])
 
-        response = client.post('/works/main/', {})
+        response = client.post('/api/v1/works/main/', {})
         self.assertEqual(response.status_code, 405)
         self.assertIn("GET", response.headers['Allow'])
 
-        response = client.put('/works/main/', {})
+        response = client.put('/api/v1/works/main/', {})
         self.assertEqual(response.status_code, 405)
         self.assertIn("GET", response.headers['Allow'])
 
     def test_work_recommend(self):
         client = Client()
-        response = client.get('/works/recommend/')
+        response = client.get('/api/v1/works/recommend/')
         self.assertEqual(response.status_code, 401)
 
         Work.objects.first().tags.add(Tag.objects.first())
 
-        csrftoken = client.get('/token/').cookies['csrftoken'].value  # Get csrf token from cookie
-        response = client.post('/users/login/',
+        csrftoken = client.get('/api/v1/token/').cookies['csrftoken'].value  # Get csrf token from cookie
+        response = client.post('/api/v1/users/login/',
                                json.dumps({'email': 'dummy@user.com', 'password': '1234'}),
                                content_type='application/json', HTTP_X_CSRFTOKEN=csrftoken)
-        response = client.get('/works/recommend/')
+        response = client.get('/api/v1/works/recommend/')
         self.assertEqual(response.status_code, 200)
 
-        csrftoken = client.get('/token/').cookies['csrftoken'].value  # Get csrf token from cookie
-        response = client.post('/works/recommend/', HTTP_X_CSRFTOKEN=csrftoken)
+        csrftoken = client.get('/api/v1/token/').cookies['csrftoken'].value  # Get csrf token from cookie
+        response = client.post('/api/v1/works/recommend/', HTTP_X_CSRFTOKEN=csrftoken)
         self.assertEqual(response.status_code, 405)
 
     def test_work_search(self):
         client = Client(enforce_csrf_checks=True)
-        response = client.get('/works/search/?q=&tags=')
-        response = client.get('/works/search/?q=Du&tags=')
-        response = client.get('/works/search/?q=Du&tags=$Dummy')
+        response = client.get('/api/v1/works/search/?q=&tags=')
+        response = client.get('/api/v1/works/search/?q=Du&tags=')
+        response = client.get('/api/v1/works/search/?q=Du&tags=$Dummy')
         self.assertEqual(response.status_code, 200)
 
-        response = client.get('/token/')
+        response = client.get('/api/v1/token/')
         csrftoken = response.cookies['csrftoken'].value
 
-        response = client.post('/works/search/', HTTP_X_CSRFTOKEN=csrftoken)
+        response = client.post('/api/v1/works/search/', HTTP_X_CSRFTOKEN=csrftoken)
         self.assertEqual(response.status_code, 405)

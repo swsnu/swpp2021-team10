@@ -17,21 +17,21 @@ user_class = get_user_model()
 class TokenTestCase(TestCase):
     def test_csrf(self):
         client = Client(enforce_csrf_checks=True)
-        response = client.delete('/users/')
+        response = client.delete('/api/v1/users/')
         self.assertEqual(response.status_code, 403)  # Request without csrf token returns 403 response
 
-        response = client.get('/token/')
+        response = client.get('/api/v1/token/')
         csrftoken = response.cookies['csrftoken'].value  # Get csrf token from cookie
 
-        response = client.delete('/users/', HTTP_X_CSRFTOKEN=csrftoken)
+        response = client.delete('/api/v1/users/', HTTP_X_CSRFTOKEN=csrftoken)
         self.assertEqual(response.status_code, 405)
 
     def test_csrf_not_allowed(self):
         client = Client(enforce_csrf_checks=True)
-        response = client.get('/token/')
+        response = client.get('/api/v1/token/')
         csrftoken = response.cookies['csrftoken'].value  # Get csrf token from cookie
 
-        response = client.post('/token/', HTTP_X_CSRFTOKEN=csrftoken)
+        response = client.post('/api/v1/token/', HTTP_X_CSRFTOKEN=csrftoken)
         self.assertEqual(response.status_code, 405)
 
 
@@ -55,10 +55,10 @@ class UserTestCase(TestCase):
 
     def test_user_register(self):
         client = Client(enforce_csrf_checks=True)
-        response = client.get('/token/')
+        response = client.get('/api/v1/token/')
         csrftoken = response.cookies['csrftoken'].value  # Get csrf token from cookie
 
-        response = client.post('/users/',
+        response = client.post('/api/v1/users/',
                                urlencode({'email': 'test2@snu.ac.kr', 'username': 'test2', 'password': 'qwe123',
                                           'tags': ['tag1', 'tag2']}, True),
                                content_type='application/x-www-form-urlencoded', HTTP_X_CSRFTOKEN=csrftoken)
@@ -67,7 +67,7 @@ class UserTestCase(TestCase):
         self.assertEqual(UserTagFav.objects.count(), 3)
 
         # Check duplicated username not create
-        response = client.post('/users/',
+        response = client.post('/api/v1/users/',
                                urlencode({'email': 'test4@snu.ac.kr', 'username': 'test2', 'password': 'qwe123',
                                            'tags': ['tag1', 'tag2']}, True),
                                content_type='application/x-www-form-urlencoded', HTTP_X_CSRFTOKEN=csrftoken)
@@ -76,7 +76,7 @@ class UserTestCase(TestCase):
         self.assertEqual(UserTagFav.objects.count(), 3)
 
         # Check without image
-        response = client.post('/users/',
+        response = client.post('/api/v1/users/',
                                urlencode({'email': 'test3@snu.ac.kr', 'username': 'test3', 'password': 'qwe123',
                                            'tags': []}, True),
                                content_type='application/x-www-form-urlencoded', HTTP_X_CSRFTOKEN=csrftoken)
@@ -85,7 +85,7 @@ class UserTestCase(TestCase):
         self.assertEqual(UserTagFav.objects.count(), 3)
 
         # Check with image
-        # response = client.post('/users/',
+        # response = client.post('/api/v1/users/',
         #                        urlencode({'email': 'test4@snu.ac.kr', 'username': 'test4', 'password': 'qwe123',
         #                                   'tags': [], 'profile_picture': self.generate_photo_file()}, True),
         #                        content_type='application/x-www-form-urlencoded', HTTP_X_CSRFTOKEN=csrftoken)
@@ -93,13 +93,13 @@ class UserTestCase(TestCase):
         # self.assertEqual(User.objects.count(), 4)
         # self.assertEqual(UserTagFav.objects.count(), 3)
 
-        response = client.post('/users/',
+        response = client.post('/api/v1/users/',
                                urlencode({'emal': 'test2@snu.ac.kr', 'usename': 'test2', 'password': 'qwe123',
                                            'tgs': ['tag1', 'tag2']}, True),
                                content_type='application/x-www-form-urlencoded', HTTP_X_CSRFTOKEN=csrftoken)
         self.assertEqual(response.status_code, 400)
 
-        response = client.post('/users/',
+        response = client.post('/api/v1/users/',
                                urlencode({'email': 'test2@snu.ac.kr', 'username': 'test2', 'password': 'qwe123',
                                            'tags': ['tag1', 'tag5']}, True),
                                content_type='application/x-www-form-urlencoded', HTTP_X_CSRFTOKEN=csrftoken)
@@ -107,106 +107,106 @@ class UserTestCase(TestCase):
 
     def test_user_dup(self):
         client = Client(enforce_csrf_checks=True)
-        response = client.get('/token/')
+        response = client.get('/api/v1/token/')
         csrftoken = response.cookies['csrftoken'].value  # Get csrf token from cookie
 
         # Check duplicated email
-        response = client.post('/users/dup/email/',
+        response = client.post('/api/v1/users/dup/email/',
                                json.dumps({'email': 'test1@snu.ac.kr'}),
                                content_type='application/json', HTTP_X_CSRFTOKEN=csrftoken)
         self.assertEqual(response.status_code, 400)
 
-        response = client.post('/users/dup/email/',
+        response = client.post('/api/v1/users/dup/email/',
                                json.dumps({'emal': 'test2@snu.ac.kr'}),
                                content_type='application/json', HTTP_X_CSRFTOKEN=csrftoken)
         self.assertEqual(response.status_code, 400)
 
-        response = client.post('/users/dup/email/',
+        response = client.post('/api/v1/users/dup/email/',
                                json.dumps({'email': 'test4@snu.ac.kr'}),
                                content_type='application/json', HTTP_X_CSRFTOKEN=csrftoken)
         self.assertEqual(response.status_code, 204)
 
-        response = client.get('/users/dup/email/', HTTP_X_CSRFTOKEN=csrftoken)
+        response = client.get('/api/v1/users/dup/email/', HTTP_X_CSRFTOKEN=csrftoken)
         self.assertEqual(response.status_code, 405)
 
         # Check duplicated username
-        response = client.post('/users/dup/username/',
+        response = client.post('/api/v1/users/dup/username/',
                                json.dumps({'username': 'test1'}),
                                content_type='application/json', HTTP_X_CSRFTOKEN=csrftoken)
         self.assertEqual(response.status_code, 400)
 
-        response = client.post('/users/dup/username/',
+        response = client.post('/api/v1/users/dup/username/',
                                json.dumps({'userame': 'test1'}),
                                content_type='application/json', HTTP_X_CSRFTOKEN=csrftoken)
         self.assertEqual(response.status_code, 400)
 
-        response = client.post('/users/dup/username/',
+        response = client.post('/api/v1/users/dup/username/',
                                json.dumps({'username': 'test4'}),
                                content_type='application/json', HTTP_X_CSRFTOKEN=csrftoken)
         self.assertEqual(response.status_code, 204)
 
-        response = client.get('/users/dup/username/', HTTP_X_CSRFTOKEN=csrftoken)
+        response = client.get('/api/v1/users/dup/username/', HTTP_X_CSRFTOKEN=csrftoken)
         self.assertEqual(response.status_code, 405)
 
     def test_user_login(self):
         client = Client(enforce_csrf_checks=True)
 
         # Check KeyError
-        csrftoken = client.get('/token/').cookies['csrftoken'].value  # Get csrf token from cookie
-        response = client.post('/users/login/',
+        csrftoken = client.get('/api/v1/token/').cookies['csrftoken'].value  # Get csrf token from cookie
+        response = client.post('/api/v1/users/login/',
                                json.dumps({'emal': 'test1@snu.ac.kr', 'password': 'qwe123'}),
                                content_type='application/json', HTTP_X_CSRFTOKEN=csrftoken)
         self.assertEqual(response.status_code, 400)
 
         # Check email wrong
-        csrftoken = client.get('/token/').cookies['csrftoken'].value  # Get csrf token from cookie
-        response = client.post('/users/login/',
+        csrftoken = client.get('/api/v1/token/').cookies['csrftoken'].value  # Get csrf token from cookie
+        response = client.post('/api/v1/users/login/',
                                json.dumps({'email': 'tes1@snu.ac.kr', 'password': 'qwe123'}),
                                content_type='application/json', HTTP_X_CSRFTOKEN=csrftoken)
         self.assertEqual(response.status_code, 401)
 
         # Check password wrong
-        csrftoken = client.get('/token/').cookies['csrftoken'].value  # Get csrf token from cookie
-        response = client.post('/users/login/',
+        csrftoken = client.get('/api/v1/token/').cookies['csrftoken'].value  # Get csrf token from cookie
+        response = client.post('/api/v1/users/login/',
                                json.dumps({'email': 'test1@snu.ac.kr', 'password': 'qe123'}),
                                content_type='application/json', HTTP_X_CSRFTOKEN=csrftoken)
         self.assertEqual(response.status_code, 401)
 
         # Check Successful Login
-        csrftoken = client.get('/token/').cookies['csrftoken'].value  # Get csrf token from cookie
-        response = client.post('/users/login/',
+        csrftoken = client.get('/api/v1/token/').cookies['csrftoken'].value  # Get csrf token from cookie
+        response = client.post('/api/v1/users/login/',
                                json.dumps({'email': 'test1@snu.ac.kr', 'password': 'qwe123'}),
                                content_type='application/json', HTTP_X_CSRFTOKEN=csrftoken)
         self.assertEqual(response.status_code, 200)
 
         # Check Not Allowed
-        csrftoken = client.get('/token/').cookies['csrftoken'].value  # Get csrf token from cookie
-        response = client.get('/users/login/', HTTP_X_CSRFTOKEN=csrftoken)
+        csrftoken = client.get('/api/v1/token/').cookies['csrftoken'].value  # Get csrf token from cookie
+        response = client.get('/api/v1/users/login/', HTTP_X_CSRFTOKEN=csrftoken)
         self.assertEqual(response.status_code, 405)
 
     def test_user_logout(self):
          client = Client(enforce_csrf_checks=True)
 
          # Check Successful Login & Logout
-         csrftoken = client.get('/token/').cookies['csrftoken'].value  # Get csrf token from cookie
-         response = client.post('/users/login/',
+         csrftoken = client.get('/api/v1/token/').cookies['csrftoken'].value  # Get csrf token from cookie
+         response = client.post('/api/v1/users/login/',
                                 json.dumps({'email': 'test1@snu.ac.kr', 'password': 'qwe123'}),
                                 content_type='application/json', HTTP_X_CSRFTOKEN=csrftoken)
-         response = client.get('/users/logout/')
+         response = client.get('/api/v1/users/logout/')
          self.assertEqual(response.status_code, 200)
 
          # Check Not Allowed
-         response = client.get('/users/logout/')
+         response = client.get('/api/v1/users/logout/')
          self.assertEqual(response.status_code, 401)
 
          # Check Not Allowed
-         csrftoken = client.get('/token/').cookies['csrftoken'].value  # Get csrf token from cookie
-         response = client.post('/users/logout/', HTTP_X_CSRFTOKEN=csrftoken)
+         csrftoken = client.get('/api/v1/token/').cookies['csrftoken'].value  # Get csrf token from cookie
+         response = client.post('/api/v1/users/logout/', HTTP_X_CSRFTOKEN=csrftoken)
          self.assertEqual(response.status_code, 405)
 
     def test_user_id(self):
         client = Client()
-        response = client.get('/users/1/')
+        response = client.get('/api/v1/users/1/')
 
         self.assertEqual(response.status_code, 501)
 
@@ -214,85 +214,85 @@ class UserTestCase(TestCase):
         client = Client(enforce_csrf_checks=True)
 
         # Check Not Logged in
-        csrftoken = client.get('/token/').cookies['csrftoken'].value  # Get csrf token from cookie
-        response = client.get('/users/me/', HTTP_X_CSRFTOKEN=csrftoken)
+        csrftoken = client.get('/api/v1/token/').cookies['csrftoken'].value  # Get csrf token from cookie
+        response = client.get('/api/v1/users/me/', HTTP_X_CSRFTOKEN=csrftoken)
         self.assertEqual(response.status_code, 401)
 
         # Login
-        csrftoken = client.get('/token/').cookies['csrftoken'].value  # Get csrf token from cookie
-        response = client.post('/users/login/',
+        csrftoken = client.get('/api/v1/token/').cookies['csrftoken'].value  # Get csrf token from cookie
+        response = client.post('/api/v1/users/login/',
                                json.dumps({'email': 'test1@snu.ac.kr', 'password': 'qwe123'}),
                                content_type='application/json', HTTP_X_CSRFTOKEN=csrftoken)
         self.assertEqual(response.status_code, 200)
 
         # Check Successful User me
-        csrftoken = client.get('/token/').cookies['csrftoken'].value  # Get csrf token from cookie
-        response = client.get('/users/me/', HTTP_X_CSRFTOKEN=csrftoken)
+        csrftoken = client.get('/api/v1/token/').cookies['csrftoken'].value  # Get csrf token from cookie
+        response = client.get('/api/v1/users/me/', HTTP_X_CSRFTOKEN=csrftoken)
         self.assertEqual(response.status_code, 200)
 
         # Check Not Allowed
-        csrftoken = client.get('/token/').cookies['csrftoken'].value  # Get csrf token from cookie
-        response = client.post('/users/me/', HTTP_X_CSRFTOKEN=csrftoken)
+        csrftoken = client.get('/api/v1/token/').cookies['csrftoken'].value  # Get csrf token from cookie
+        response = client.post('/api/v1/users/me/', HTTP_X_CSRFTOKEN=csrftoken)
         self.assertEqual(response.status_code, 405)
 
     def test_user_me_put(self):
         client = Client()
 
         # Check Not Logged in
-        response = client.put('/users/me/')
+        response = client.put('/api/v1/users/me/')
         self.assertEqual(response.status_code, 401)
 
         # Login
-        response = client.post('/users/login/',
+        response = client.post('/api/v1/users/login/',
                                json.dumps({'email': 'test1@snu.ac.kr', 'password': 'qwe123'}),
                                content_type='application/json')
         self.assertEqual(response.status_code, 200)
 
         # Check only username change
-        response = client.put('/users/me/',
+        response = client.put('/api/v1/users/me/',
                                urlencode({'username': 'test2', 'tags': ['tag1']}, True),
                                content_type='application/x-www-form-urlencoded')
         self.assertEqual(response.status_code, 200)
 
         # Check only tag change
-        response = client.put('/users/me/',
+        response = client.put('/api/v1/users/me/',
                               urlencode({'tags': ['tag1', 'tag2']}, True),
                               content_type='application/x-www-form-urlencoded')
         self.assertEqual(response.status_code, 200)
         self.assertEqual(UserTagFav.objects.count(), 2)
 
-        response = client.put('/users/me/',
+        response = client.put('/api/v1/users/me/',
                               urlencode({'tags': []}, True),
                               content_type='application/x-www-form-urlencoded')
         self.assertEqual(response.status_code, 200)
         self.assertEqual(UserTagFav.objects.count(), 0)
 
         # Check tag not appropriate
-        response = client.put('/users/me/',
+        response = client.put('/api/v1/users/me/',
                               urlencode({'tags': ['tag1', 'tag5']}, True),
                               content_type='application/x-www-form-urlencoded')
         self.assertEqual(response.status_code, 400)
 
         # Check change password
-        response = client.put('/users/me/',
+        response = client.put('/api/v1/users/me/',
                               urlencode({'password': 'qwe1234', 'tags': ['tag1', 'tag2']}, True),
                               content_type='application/x-www-form-urlencoded')
         self.assertEqual(response.status_code, 200)
 
         # Fail Login
-        response = client.post('/users/login/',
+        response = client.post('/api/v1/users/login/',
                                json.dumps({'email': 'test1@snu.ac.kr', 'password': 'qwe123'}),
                                content_type='application/json')
         self.assertEqual(response.status_code, 401)
 
         # Success Login
-        response = client.post('/users/login/',
+        response = client.post('/api/v1/users/login/',
                                json.dumps({'email': 'test1@snu.ac.kr', 'password': 'qwe1234'}),
                                content_type='application/json')
         self.assertEqual(response.status_code, 200)
 
         # Check Not Allowed
-        response = client.post('/users/me/')
+        response = client.post('/api/v1/users/me/')
         self.assertEqual(response.status_code, 405)
 
     def test_user_me_review(self):
@@ -319,32 +319,31 @@ class UserTestCase(TestCase):
             work=Work.objects.first(), score=5.0, title="DUMMY2", content="DUMMY_CONTENT2", author=author2
         )
         client = Client()
-        response = client.get('/users/me/reviews/')
+        response = client.get('/api/v1/users/me/reviews/')
 
         self.assertEqual(response.status_code, 200)
 
 
-        response = client.post('/users/me/reviews/', {})
+        response = client.post('/api/v1/users/me/reviews/', {})
         self.assertEqual(response.status_code, 405)
-        response = client.put('/users/me/reviews/', {})
+        response = client.put('/api/v1/users/me/reviews/', {})
         self.assertEqual(response.status_code, 405)
-        response = client.delete('/users/me/reviews/')
+        response = client.delete('/api/v1/users/me/reviews/')
         self.assertEqual(response.status_code, 405)
 
-        csrftoken = client.get('/token/').cookies['csrftoken'].value  # Get csrf token from cookie
-        response = client.post('/users/login/',
+        csrftoken = client.get('/api/v1/token/').cookies['csrftoken'].value  # Get csrf token from cookie
+        response = client.post('/api/v1/users/login/',
                                json.dumps({'email': 'dummy@user.com', 'password': '1234'}),
                                content_type='application/json', HTTP_X_CSRFTOKEN=csrftoken)
 
-        response = client.post('/reviews/1/like/')
+        response = client.post('/api/v1/reviews/1/like/')
 
 
-        response = client.get('/users/me/reviews/')
+        response = client.get('/api/v1/users/me/reviews/')
         response_json = json.loads(response.content.decode())['reviews']
 
 
         for review in response_json:
-            print(review)
             self.assertEqual(review['author']['id'], author.id)
             if review['id'] == 1:
                 self.assertEqual(review['clickedLike'], True)
