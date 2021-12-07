@@ -12,7 +12,7 @@ class ArtistTestCase(TestCase):
     def test_csrf_token(self):
         client = Client(enforce_csrf_checks=True)
 
-        response = client.get('/token/')
+        response = client.get('/api/v1/token/')
         csrftoken = response.cookies['csrftoken'].value  # Get csrf token from cookie
 
 # Create your tests here.

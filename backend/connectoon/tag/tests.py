@@ -13,13 +13,13 @@ class TagTestCase(TestCase):
     def test_tag_search(self):
         client = Client(enforce_csrf_checks=True)
 
-        response = client.get('/token/')
+        response = client.get('/api/v1/token/')
         csrftoken = response.cookies['csrftoken'].value
 
-        response = client.delete('/tags/search/', HTTP_X_CSRFTOKEN=csrftoken)
+        response = client.delete('/api/v1/tags/search/', HTTP_X_CSRFTOKEN=csrftoken)
         self.assertEqual(response.status_code, 405)
 
         Tag.objects.first().related.add(Tag.objects.get(name="fantasy"))
 
-        response = client.get('/tags/search/?q=hor')
+        response = client.get('/api/v1/tags/search/?q=hor')
         self.assertEqual(response.status_code, 200)
