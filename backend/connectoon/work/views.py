@@ -15,6 +15,8 @@ from django.views.decorators.csrf import csrf_exempt
 
 from django.db.models import Q
 
+import make_profile
+
 def work_id(request, id):
     try:
         work = Work.objects.get(id = id)
@@ -92,6 +94,9 @@ def work_id_review(request, id):
         work.score_sum = work.score_sum + float(score)
         work.score_avg = work.score_sum / work.review_num
         work.save()
+
+        if request_user.profile_picture:
+            make_profile.make_image(request_user.profile_picture.url, work.thumbnail_picture)
 
         review_json = model_to_dict(review)
         return JsonResponse(review_json, status=201) 

@@ -11,6 +11,8 @@ from django.contrib.auth import get_user_model
 from work.models import Work
 from .models import Review, ReviewUserLike
 
+import make_profile
+
 
 def review_id(request, id):  # TODO
     try:
@@ -49,6 +51,9 @@ def review_id(request, id):  # TODO
         work.score_sum = work.score_sum - prev_review_score + float(score)
         work.score_avg = work.score_sum / work.review_num
         work.save()
+
+        if request_user.profile_picture:
+            make_profile.make_image(request_user.profile_picture.url, work.thumbnail_picture)
 
         review_json = model_to_dict(review)
 
