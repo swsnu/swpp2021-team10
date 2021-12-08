@@ -1,0 +1,30 @@
+.login-page { 
+    position: absolute; 
+    left: 50%;
+    transform: translateX(-50%); 
+    background-color: #fefefe;
+    border: 1px solid black;
+    top: 30%;
+    padding: 50px;
+}
+
+#login-email-input {
+    width: 200px;
+    margin-bottom: 10px;
+}
+
+#login-password-input {
+    width: 200px;
+    margin-bottom: 10px;
+}
+
+.login-button-div {
+    width: 210px;
+    display: flex;
+}
+
+#login-register-link {
+    text-align: right;
+    flex-grow: 1;
+}
+
