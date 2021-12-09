@@ -48,7 +48,7 @@ class TagSearchWindow extends Component {
 
     const selectedTagNames = selectedTags?.map((x) => x.name);
 
-    const foundList = storedTags.filter((x) => {
+    const foundList = storedTags?.filter((x) => {
       let boolVal = false;
       if (genre.length === 0) {
         if (selectedTags.length === 0) {
