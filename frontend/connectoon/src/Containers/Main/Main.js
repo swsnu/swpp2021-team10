@@ -34,7 +34,7 @@ class Main extends Component {
   render() {
     const { subjectRows, worksInRow } = this.state;
     const { mainWorkLists } = this.props;
-    const workLists = mainWorkLists.map((mainWorkList, idx) => {
+    const workLists = mainWorkLists?.map((mainWorkList, idx) => {
       return (
         <WorkList
           key={mainWorkList.title + String(idx)}
