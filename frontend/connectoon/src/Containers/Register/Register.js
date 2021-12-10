@@ -108,31 +108,35 @@ class Register extends Component {
         <label id="upload-image-label" htmlFor="input-profile-image">
           Upload Profile Image
         </label>
-        <label id="register-email">
-          <div id="email-label-text">email</div>
-          <input id="register-email-input" type="text" value={this.state.email} onChange={(event) => { this.setState({ email: event.target.value, emailDupCheck: false }); }} />
-          <button id="register-dupchk-email-button" onClick={() => this.checkEmailDup()} type="button">check email duplication</button>
-          { this.state.emailDupCheck && <img id="register-dupchk-email-img" src="/images/check.png" alt="dupchk-email" width="20px" /> }
-        </label>
-        <label id="register-username">
-          <div id="username-label-text">username</div>
-          <input id="register-username-input" type="text" value={this.state.username} onChange={(event) => { this.setState({ username: event.target.value, usernameDupCheck: false }); }} />
-          <button id="register-dupchk-username-button" onClick={() => this.checkUsernameDup()} type="button">check username duplication</button>
-          { this.state.usernameDupCheck && <img id="register-dupchk-username-img" src="/images/check.png" alt="dupchk-username" width="20px" /> }
-        </label>
-        <label id="register-password">
-          <div id="password-label-text">password</div>
-          <input id="register-password-input" type="password" value={this.state.password} onChange={(event) => { this.setState({ password: event.target.value }); }} />
-        </label>
-        <label id="register-password-check">
-          <div id="password-check-label-text">password check</div>
-          <input id="register-password-check-input" type="password" value={this.state.passwordCheck} onChange={(event) => { this.setState({ passwordCheck: event.target.value }); }} />
-          { this.checkPasswordAccord() && <img id="register-password-accord-img" src="/images/check.png" alt="password-accord" /> }
-        </label>
-        <h4 id="register-favorite-genres">
-          Favorite Genres
-        </h4>
-        <TagSearchWindow id="search-genre-search-window" onAddTag={this.onAddTag} onDeleteTag={this.onDeleteTag} defaultTag={[]} />
+        <div id="register-userdata-holder">
+          <label id="register-email">
+            <div id="register-email-label-text">email</div>
+            <input id="register-email-input" type="text" value={this.state.email} onChange={(event) => { this.setState({ email: event.target.value, emailDupCheck: false }); }} />
+            <button id="register-dupchk-email-button" onClick={() => this.checkEmailDup()} type="button">check email duplication</button>
+            { this.state.emailDupCheck && <img id="register-dupchk-email-img" src="/images/check.png" alt="dupchk-email" width="20px" /> }
+          </label>
+          <label id="register-username">
+            <div id="register-username-label-text">username</div>
+            <input id="register-username-input" type="text" value={this.state.username} onChange={(event) => { this.setState({ username: event.target.value, usernameDupCheck: false }); }} />
+            <button id="register-dupchk-username-button" onClick={() => this.checkUsernameDup()} type="button">check username duplication</button>
+            { this.state.usernameDupCheck && <img id="register-dupchk-username-img" src="/images/check.png" alt="dupchk-username" width="20px" /> }
+          </label>
+          <label id="register-password">
+            <div id="register-password-label-text">password</div>
+            <input id="register-password-input" type="password" value={this.state.password} onChange={(event) => { this.setState({ password: event.target.value }); }} />
+          </label>
+          <label id="register-password-check">
+            <div id="register-password-check-label-text">password check</div>
+            <input id="register-password-check-input" type="password" value={this.state.passwordCheck} onChange={(event) => { this.setState({ passwordCheck: event.target.value }); }} />
+            { this.checkPasswordAccord() && <img id="register-password-accord-img" src="/images/check.png" alt="password-accord" /> }
+          </label>
+        </div>
+        <div id="register-fav-genre-holder">
+          <h4 id="register-favorite-genres">
+            Favorite Genres
+          </h4>
+          <TagSearchWindow id="search-genre-search-window" onAddTag={this.onAddTag} onDeleteTag={this.onDeleteTag} defaultTag={[]} />
+        </div>
         <br />
         <button id="register-submit-button" onClick={() => this.submitRegisterData()} type="button" disabled={!(this.state.emailDupCheck && this.state.usernameDupCheck && this.checkPasswordAccord())}>submit</button>
       </div>

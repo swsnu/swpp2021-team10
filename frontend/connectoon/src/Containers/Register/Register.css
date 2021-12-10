@@ -1,24 +1,264 @@
+.register-page { 
+  position: absolute; 
+  left: 50%;
+  transform: translateX(-50%); 
+  background-color: #fefefe;
+  width: 70rem;
+}
+
 #input-profile-image {
   display: none;
 }
 
 #profile-image-holder {
-  max-width: 250px;
-  min-height: 250px;
+  position: absolute; 
+  left: 25%;
+  transform: translateX(-50%); 
+  top: 3rem;
+  width: 15rem;
+  height: 15rem;
   flex-wrap: wrap;
 
   border: 2px solid;
   border-color: black;
-  margin: 10px;
-  padding: 10px;
+  background-color: #fff;
+
+  box-shadow: 1px 1px 5px grey;
 }
+
+#register-profile-img {
+  width: 15rem;
+  height: 15rem;
+}
+
 
 #upload-image-label {
-  border: 2px solid black;
-  padding-left: 5px;
-  padding-right: 5px;
+  position: absolute; 
+  left: 25%;
+  transform: translateX(-50%);
+  top: 18rem;
+  display: inline-block;
+  padding: 1em 2em;
+  border-radius: 0;
+  color: black;
+  margin-top: 2rem;
+  font-size: 0.678rem;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  text-decoration: none;
+  background: linear-gradient(to right, rgba(178, 135, 111, 0) 25%, rgba(0, 0, 0, 1) 75%);
+  background-position: 1% 50%;
+  background-size: 400% 300%;
+  border: 1px solid black;
+  transition: 700ms cubic-bezier(0.165, 0.84, 0.44, 1);
+}
+#upload-image-label:hover {
+transition: 400ms cubic-bezier(0.165, 0.84, 0.44, 1);
+}
+#upload-image-label:hover {
+color: white;
+color: #fff;
+background-position: 99% 50%;
 }
 
-#register-email {
-  margin-top: 10px;
+#register-userdata-holder {
+  position: absolute; 
+  left: 60%;
+  transform: translateX(-50%); 
+}
+
+#register-email-label-text {
+  margin-top: 3rem;
+  margin-bottom: 0.5rem;
+  font-size: 0.678rem;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  text-decoration: none;
+}
+
+#register-email-input {
+  width: 200px;
+  margin-bottom: 0.5em;
+  padding: 1em;
+  font-size: 0.750rem;
+  letter-spacing: 2px;
+}
+
+#register-dupchk-email-button {
+  position: absolute; 
+  display: inline-block;
+  padding: 0.7em 1.5em;
+  margin-left: 2em;
+  border-radius: 0;
+  color: black;
+  font-size: 0.66rem;
+  letter-spacing: 1px;
+  white-space: nowrap;
+  text-transform: uppercase;
+  text-decoration: none;
+  background: linear-gradient(to right, rgba(178, 135, 111, 0) 25%, rgba(0, 0, 0, 1) 75%);
+  background-position: 1% 50%;
+  background-size: 400% 300%;
+  border: 1px solid black;
+  transition: 700ms cubic-bezier(0.165, 0.84, 0.44, 1);
+}
+#register-dupchk-email-button:hover {
+transition: 400ms cubic-bezier(0.165, 0.84, 0.44, 1);
+}
+#register-dupchk-email-button:hover {
+color: white;
+color: #fff;
+background-position: 99% 50%;
+}
+
+#register-dupchk-email-button {
+  transform: translateY(21%);
+}
+
+#register-dupchk-email-img {
+  width: 25px;
+  height: 25px;
+  position: absolute; 
+  left: 0%;
+  transform: translate(-130%, 35%);
+}
+
+#register-username-label-text {
+  margin-top: 1rem;
+  margin-bottom: 0.5rem;
+  font-size: 0.678rem;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  text-decoration: none;
+}
+
+#register-username-input {
+  width: 200px;
+  margin-bottom: 0.5em;
+  padding: 1em;
+  font-size: 0.750rem;
+  letter-spacing: 2px;
+}
+
+#register-dupchk-username-button {
+  position: absolute; 
+  display: inline-block;
+  padding: 0.7em 1.5em;
+  margin-left: 2em;
+  border-radius: 0;
+  color: black;
+  font-size: 0.66rem;
+  letter-spacing: 1px;
+  white-space: nowrap;
+  text-transform: uppercase;
+  text-decoration: none;
+  background: linear-gradient(to right, rgba(178, 135, 111, 0) 25%, rgba(0, 0, 0, 1) 75%);
+  background-position: 1% 50%;
+  background-size: 400% 300%;
+  border: 1px solid black;
+  transition: 700ms cubic-bezier(0.165, 0.84, 0.44, 1);
+}
+#register-dupchk-username-button:hover {
+transition: 400ms cubic-bezier(0.165, 0.84, 0.44, 1);
+}
+#register-dupchk-username-button:hover {
+color: white;
+color: #fff;
+background-position: 99% 50%;
+}
+
+#register-dupchk-username-button {
+  transform: translateY(21%);
+}
+
+#register-dupchk-username-img {
+  width: 25px;
+  height: 25px;
+  position: absolute; 
+  left: 0%;
+  transform: translate(-130%, 35%);
+}
+
+#register-password-label-text {
+  margin-top: 1rem;
+  margin-bottom: 0.5rem;
+  font-size: 0.678rem;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  text-decoration: none;
+}
+
+#register-password-input {
+  width: 200px;
+  margin-bottom: 0.5em;
+  padding: 1em;
+  font-size: 0.750rem;
+  letter-spacing: 2px;
+}
+
+#register-password-check-label-text {
+  margin-top: 1rem;
+  margin-bottom: 0.5rem;
+  font-size: 0.678rem;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  text-decoration: none;
+}
+
+#register-password-check-input {
+  width: 200px;
+  margin-bottom: 0.5em;
+  padding: 1em;
+  font-size: 0.750rem;
+  letter-spacing: 2px;
+}
+
+#register-password-accord-img {
+  width: 25px;
+  height: 25px;
+  position: absolute; 
+  left: 0%;
+  transform: translate(-130%, 35%);
+}
+
+#register-fav-genre-holder {
+  position: absolute; 
+  left: 50%;
+  transform: translate(-50%);
+  margin-top: 25rem;
+}
+
+#register-submit-button {
+  position: absolute; 
+  left: 50%;
+  top: 35rem;
+  transform: translate(-50%);
+  display: inline-block;
+  padding: 1em 2em;
+  border-radius: 0;
+  color: black;
+  margin-bottom: 2rem;
+  font-size: 0.999rem;
+  font-weight: bold;
+  letter-spacing: 2px;
+  white-space: nowrap;
+  text-transform: uppercase;
+  text-decoration: none;
+  background: linear-gradient(to right, rgba(178, 135, 111, 0) 25%, rgba(0, 0, 0, 1) 75%);
+  background-position: 1% 50%;
+  background-size: 400% 300%;
+  border: 1px solid black;
+  transition: 700ms cubic-bezier(0.165, 0.84, 0.44, 1);
+}
+#register-submit-button:hover {
+transition: 400ms cubic-bezier(0.165, 0.84, 0.44, 1);
+}
+#register-submit-button:hover {
+color: white;
+color: #fff;
+background-position: 99% 50%;
+}
+
+#register-submit-button {
+  border: 1px solid black;
 }
