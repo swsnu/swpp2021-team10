@@ -102,7 +102,7 @@ class Register extends Component {
     return (
       <div className="register-page">
         <div id="profile-image-holder">
-          {this.state.selectedImage && <img id="register-profile-img" width="250px" src={URL.createObjectURL(this.state.selectedImage)} />}
+          {this.state.selectedImage && <img id="register-profile-img" src={URL.createObjectURL(this.state.selectedImage)} />}
         </div>
         <input type="file" id="input-profile-image" accept=".jpg, .png, .jpeg" name="profile-image" onChange={(event) => { this.setState({ selectedImage: event.target.files[0] }); }} />
         <label id="upload-image-label" htmlFor="input-profile-image">
