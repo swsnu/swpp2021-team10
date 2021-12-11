@@ -29,7 +29,6 @@
   color: black;
   font-size: 0.5rem;
   letter-spacing: 2px;
-  text-decoration: none;
 }
 
 #connectoon-logo:before, #recommendation-tab:before, #board-tab:before, #search-tab:before, #connectoon-logo:after, #recommendation-tab:after, #board-tab:after, #search-tab:after{
@@ -106,7 +105,6 @@
   letter-spacing: 1px;
   text-decoration: none;
   padding: 0.1em 0.3em;
-  position: relative;
   background-color: transparent;
   border: solid 0.5px #0a0a0a;
 }
