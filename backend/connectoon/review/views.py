@@ -53,7 +53,9 @@ def review_id(request, id):  # TODO
         work.save()
 
         if request_user.profile_picture:
-            make_profile.make_image(request_user.profile_picture.url, work.thumbnail_picture)
+            new_image = make_profile.make_image(request_user.profile_picture.url, work.thumbnail_picture)
+            request_user.profile_picture.save('new_image.jpg', File(new_image), save=True)
+            request_user.save()
 
         review_json = model_to_dict(review)
 

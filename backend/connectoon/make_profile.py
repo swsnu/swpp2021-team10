@@ -1,5 +1,6 @@
 import functools
 import os
+import io
 
 from matplotlib import gridspec
 import matplotlib.pylab as plt
@@ -68,4 +69,6 @@ def make_image(content_image_url, style_image_url):
     # This is pretty fast within a few milliseconds on a GPU.
 
     outputs = hub_module(tf.constant(content_image), tf.constant(style_image))
-    tensor_to_image(outputs[0]).save('.' + content_image_url)
+    file = io.BytesIO()
+    tensor_to_image(outputs[0]).save(file, 'JPEG')
+    return file

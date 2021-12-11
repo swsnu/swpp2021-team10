@@ -5,6 +5,7 @@ import operator
 from django.http.response import HttpResponseBadRequest, JsonResponse
 from json.decoder import JSONDecodeError
 from django.forms.models import model_to_dict
+from django.core.files import File
 
 from work.models import Work
 from review.models import Review, ReviewUserLike
@@ -96,7 +97,9 @@ def work_id_review(request, id):
         work.save()
 
         if request_user.profile_picture:
-            make_profile.make_image(request_user.profile_picture.url, work.thumbnail_picture)
+            new_image = make_profile.make_image(request_user.profile_picture.url, work.thumbnail_picture)
+            request_user.profile_picture.save('new_image.jpg', File(new_image), save=True)
+            request_user.save()
 
         review_json = model_to_dict(review)
         return JsonResponse(review_json, status=201) 
@@ -136,7 +139,7 @@ def work_recommend(request):  # TODO
     request_user = request.user
     if request.method == 'GET':
         if request_user.is_authenticated:
-            tag_list = [Tag.objects.get(id=tag['id']) for tag in request_user.user_tag.all().values()]
+            tag_list = [Tag.objects.get(id=tag['tag_id']) for tag in request_user.user_tag.all().values()]
             
             tag_based_work = list(map(lambda work: {'title': work['title'], 'thumbnail_picture': work['thumbnail_picture'],
             'description': work['description'], 'year': work['year'], 'link': work['link'],
