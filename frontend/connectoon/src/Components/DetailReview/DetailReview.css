@@ -1,5 +1,4 @@
 .detail-review {
-  border-bottom: 1px solid black;
   margin: 10px 20px 10px 20px;
 }
 
@@ -99,8 +98,9 @@
 }
 
 .detail-review-content {
-  border: 1px solid gray;
-  padding: 2px 2px 2px 2px;
+  background-color: #eee;
+  border-radius: 5px;
+  padding: 5px 5px 5px 5px;
   width: 760px;
   font-size: 16px;
   margin: 2px 20px 2px 20px;
@@ -113,7 +113,7 @@
 }
 
 .detail-review-content-input {
-  padding: 2px 2px 2px 2px;
+  padding: 5px 5px 5px 5px;
   width: 760px;
   font-size: 16px;
   margin: 0 20px 0 20px;
@@ -122,37 +122,32 @@
 }
 
 .detail-review-edit-delete-region {
-  width: 120px;
-  height: 34px;
-  margin: 0;
+  width: 80px;
+  height: 70px;
+  margin: 0 20px 0 20px;
 }
 
 .detail-review-save-back-region {
-  width: 120px;
-  height: 34px;
-  margin: 0;
+  width: 80px;
+  height: 70px;
+  margin: 0 20px 0 20px;
 }
 
-.detail-edit-button {
+.detail-edit-button, .detail-delete-button, .detail-save-button, .detail-back-button {
   padding: 0;
-  width: 52px;
+  width: 80px;
+  height: 30px;
   margin: 2px 2px 2px 2px;
+  border: none;
+  background-color: #666;
+  transition: background-color 0.7s ease;
+  color: white;
+  border-radius: 5px;
 }
 
-.detail-delete-button {
-  padding: 0;
-  width: 52px;
-  margin: 2px 2px 2px 2px;
+.detail-edit-button:hover, .detail-delete-button:hover, .detail-save-button:hover, .detail-back-button:hover {
+  cursor: pointer;
+  background-color: black;
+  transition: 0.4s ease;
 }
 
-.detail-save-button {
-  padding: 0;
-  width: 52px;
-  margin: 2px 2px 2px 2px;
-}
-
-.detail-back-button {
-  padding: 0;
-  width: 52px;
-  margin: 2px 2px 2px 2px;
-}

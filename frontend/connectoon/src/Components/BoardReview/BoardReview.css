@@ -1,99 +1,183 @@
+.board-review {
+	width: 1000px;
+	background-color: rgb(248, 248, 248);
+	margin-bottom: 8px;
+}
+
 .board-review.thumbnail {
-    width: 200px;
-    flex: 1;
+	width: 200px;
+	padding: 0;
 }
 
 .board-review.detail {
-    flex: 4;
-    vertical-align: baseline;
-    padding: 8px;
-}
-.board-review-header{
-    display: flex;
-    justify-content: space-between;
+	vertical-align: baseline;
+	padding: 8px;
 }
 
-.review-score-likes-wrapper{
-    align-items: center;
-    display: flex;
-    gap: 8px;
+.work-title {
+	display: inline-block;
+	margin: 5px 5px 5px 5px;
+	vertical-align: top;
+	width: 550px;
+	text-align: left;
+	height: 22px;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
 }
 
-.review-score{
-    align-items: center;
-    display: flex;
+.review-score-likes-wrapper {
+	display: inline-block;
+	width: 140px;
+	height: 22px;
+	padding: 0;
+	margin: 10px 0 10px 0;
 }
 
-.review-score-star-icon{
-    height: 20px;
-    width: 20px;
+.review-score {
+	display: inline-block;
+	height: 22px;
+	padding: 0;
+	margin: 0 50px 0 0;
 }
 
-
-.review-likes{
-    align-items: center;
-    display: flex;
+.review-score-star-icon {
+	height: 20px;
+	width: 20px;
+	margin: 1px 0 1px 0;
 }
 
-.review-like-button{
-    height: 25px;
-    width: 25px;
-    background-color: transparent;
-    padding: 3px 0;
-    border: transparent;
-    cursor: pointer;
-    text-align: center;
+.review-likes {
+	display: inline-block;
+	height: 22px;
+	padding: 0;
+	margin: 0;
 }
 
-.review-like-heart-icon{
-    height: 20px;
-    width: 20px;
+.review-like-button {
+	height: 22px;
+	width: 25px;
+	background-color: transparent;
+	padding: 1px 0;
+	border: transparent;
+	cursor: pointer;
+	text-align: center;
 }
 
-.review-value{
-    margin: 0;
+.review-like-heart-icon {
+	height: 20px;
+	width: 20px;
 }
 
-.profile-title-button-wrapper{
-    display: flex;
-    justify-content: space-between;
+.review-value {
+	display: inline-block;
+	height: 16px;
+	margin: 3px 0 3px 0;
+	vertical-align: top;
 }
 
-.profile-title-wrapper{
-    display: flex;
-    align-items: center;
-    gap: 8px;
+.profile-title-wrapper {
+	height: 28px;
+	width: 760px;
+	display: inline-block;
+	padding: 0;
+	margin: 3px 0 3px 0;
 }
 
-.user-profile-image{
-    height: 20px;
-    width: 20px;
-    
+.user-profile-image {
+	height: 20px;
+	width: 20px;
+	margin: 7px 10px 7px 0;
 }
 
-.review-content{
-    white-space: pre-wrap;
-    display: -webkit-box;
-    -webkit-line-clamp: 6;
-    -webkit-box-orient: vertical;  
-    overflow: hidden;
+.author-name {
+	display: inline-block;
+	width: 80px;
+	height: 18px;
+	margin: 7px 10px 7px 0;
+	vertical-align: top;
+	text-align: left;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
 }
 
-.board-review-button-region{
-    display: flex;
-    align-items: center;
-
+.review-title {
+	display: inline-block;
+	margin: 7px 10px 7px 0;
+	vertical-align: top;
+	width: 440px;
+	text-align: left;
+	height: 18px;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
 }
 
-.review-title{
-    margin:0 ;
+.review-title-input-wrapper {
+	display: inline-block;
+	height: 24px;
+	padding: 0;
+	margin: 5px 0 5px 0;
+	vertical-align: top;
 }
 
-.review-title-input{
-  width:200px;
+.review-title-input {
+	margin: 0 10px 0 1px;
+	vertical-align: top;
+	width: 430px;
+	text-align: left;
+	height: 18px;
+	vertical-align: top;
 }
 
-.review-content-input{
-  width:80%;
-  height:100px;
+.board-review-button-region {
+	display: inline-block;
+	height: 34px;
+	padding: 0;
+	margin: 0;
+	width: 170px;
+	vertical-align: top;
+}
+
+.board-edit-button, .board-delete-button, .board-save-button, .board-back-button {
+	display: inline-block;
+	padding: 0;
+	width: 80px;
+	height: 30px;
+	margin: 2px 2px 2px 2px;
+	border: none;
+	background-color: #666;
+	transition: background-color 0.7s ease;
+  color: white;
+  border-radius: 5px;
+}
+
+.board-edit-button:hover, .board-delete-button:hover, .board-save-button:hover, .board-back-button:hover {
+	cursor: pointer;
+  background-color: black;
+  transition: 0.4s ease;
+}
+
+.review-content {
+	white-space: pre-wrap;
+	display: -webkit-box;
+	-webkit-line-clamp: 5;
+	-webkit-box-orient: vertical;  
+	overflow: hidden;
+
+	background-color: #eee;
+	border-radius: 5px;
+	padding: 5px 5px 5px 5px;
+	width: 730px;
+	font-size: 16px;
+	margin: 2px 20px 2px 2px;
+}
+
+.review-content-input {
+	height: 90px;
+	padding: 5px 5px 5px 5px;
+	width: 730px;
+	font-size: 16px;
+	margin: 0 20px 0 2px;
 }

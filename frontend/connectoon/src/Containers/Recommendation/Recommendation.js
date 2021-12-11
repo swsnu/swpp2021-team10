@@ -22,6 +22,11 @@ class Recommendation extends Component {
   }
 
   render() {
+    if (!this.props.loggedInUser) {
+      return <div className="recommendation-page">
+        <h3>Please Login!</h3>
+      </div>;
+    }
     const { recWorkLists } = this.props;
     if (recWorkLists.length < 2) {
       return null;
@@ -50,6 +55,7 @@ Recommendation.propTypes = {
 
 const mapStateToProps = (state) => {
   return {
+    loggedInUser: state.user.loggedInUser,
     recWorkLists: state.work.recWorkLists,
   };
 };

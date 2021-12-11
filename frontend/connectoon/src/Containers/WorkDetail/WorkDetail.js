@@ -94,9 +94,9 @@ class WorkDetail extends Component {
       return review.author.id === loggedInUser.id;
     }) : [];
     const withMyReview = myReview.length === 1;
-    const othersReviews = loggedInUser ? reviews.filter((review) => {
+    const othersReviews = loggedInUser ? [...reviews].reverse().filter((review) => {
       return review.author.id !== loggedInUser.id;
-    }) : reviews;
+    }) : [...reviews].reverse();
 
     const myDetailReview = withMyReview ? (
       <div className="my-review-region">

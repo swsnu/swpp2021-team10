@@ -48,17 +48,22 @@ class Board extends Component {
     });
 
     return (
-      <table className="board-table">
-        <thead className="board-header">
-          <tr className="board-header-row">
-            <th className="board-header work">Work</th>
-            <th className="board-header review">Review</th>
-          </tr>
-        </thead>
-        <tbody>
-          {reviewLists}
-        </tbody>
-      </table>
+      <div className="board">
+        <h1 className="board-page-title">
+          Review board
+        </h1>
+        <table className="board-table">
+          <thead className="board-header">
+            <tr className="board-header-row">
+              <th className="board-header work">Work</th>
+              <th className="board-header review">Review</th>
+            </tr>
+          </thead>
+          <tbody>
+            {reviewLists}
+          </tbody>
+        </table>
+      </div>
     );
   }
 }

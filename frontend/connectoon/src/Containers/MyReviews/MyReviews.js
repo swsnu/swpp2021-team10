@@ -52,17 +52,22 @@ class MyReviews extends Component {
     });
 
     return (
-      <table className="myreview-table">
-        <thead className="myreview-header">
-          <tr className="myreview-header-row">
-            <th className="myreview-header work">Work</th>
-            <th className="myreview-header review">Review</th>
-          </tr>
-        </thead>
-        <tbody>
-          {reviewLists}
-        </tbody>
-      </table>
+      <div className="myreview">
+        <h1 className="myreview-page-title">
+          My Reviews
+        </h1>
+        <table className="myreview-table">
+          <thead className="myreview-header">
+            <tr className="myreview-header-row">
+              <th className="myreview-header work">Work</th>
+              <th className="myreview-header review">Review</th>
+            </tr>
+          </thead>
+          <tbody>
+            {reviewLists}
+          </tbody>
+        </table>
+      </div>
     );
   }
 }
