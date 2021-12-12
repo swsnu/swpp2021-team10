@@ -42,7 +42,7 @@ describe('<BoardReview />', () => {
   const spySaveReview = jest.fn();
   const spyDeleteReview = jest.fn();
   const spyClickLike = jest.fn();
-  const spyClickUnike = jest.fn();
+  const spyClickUnlike = jest.fn();
   beforeEach(() => {
     component = mount(
       <BoardReview
@@ -54,7 +54,7 @@ describe('<BoardReview />', () => {
         onClickDeleteReview={spyDeleteReview}
         onClickSaveReview={spySaveReview}
         onClickLikeReview={spyClickLike}
-        onClickUnlikeReview={spyClickUnike}
+        onClickUnlikeReview={spyClickUnlike}
         clickedLike={false}
         isLoggedIn={true}
       />,
@@ -73,9 +73,28 @@ describe('<BoardReview />', () => {
   it('should handle click like and unlike', () => {
     const wrapper = component.find('.review-like-button');
     wrapper.simulate('click');
-    expect(component.state().clickedLike).toBeTruthy();
+    expect(spyClickLike).toHaveBeenCalledTimes(1);
+  });
+
+  it('should handle click like and unlike', () => {
+    component = mount(
+      <BoardReview
+        key={dummyReview.id}
+        className="board-review"
+        review={dummyReview}
+        onClickReview={spyReviewClick}
+        isMyReview={true}
+        onClickDeleteReview={spyDeleteReview}
+        onClickSaveReview={spySaveReview}
+        onClickLikeReview={spyClickLike}
+        onClickUnlikeReview={spyClickUnlike}
+        clickedLike={true}
+        isLoggedIn={true}
+      />,
+    );
+    const wrapper = component.find('.review-like-button');
     wrapper.simulate('click');
-    expect(component.state().clickedLike).toBeFalsy();
+    expect(spyClickUnlike).toHaveBeenCalledTimes(1);
   });
 
   it('should not handle click like and unlike when not logged in', () => {
@@ -89,7 +108,7 @@ describe('<BoardReview />', () => {
         onClickDeleteReview={spyDeleteReview}
         onClickSaveReview={spySaveReview}
         onClickLikeReview={spyClickLike}
-        onClickUnlikeReview={spyClickUnike}
+        onClickUnlikeReview={spyClickUnlike}
         clickedLike={false}
         isLoggedIn={false}
       />,

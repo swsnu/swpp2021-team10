@@ -361,8 +361,74 @@ describe('<WorkDetail />', () => {
     };
     const stubInitialReviewState = {
       reviews: [
-        { id: 1, author: { id: 1 } },
-        { id: 2, author: { id: 2 } },
+        { id: 1, author: { id: 1 }, clickedLike: false },
+        { id: 2, author: { id: 3 }, clickedLike: false },
+      ],
+    };
+    const mockStore = getMockStore(stubInitialReviewState, stubInitialTagState, stubInitialUserState, stubInitialWorkState);
+    const workDetail = (
+      <Provider store={mockStore}>
+        <ConnectedRouter history={history}>
+          <Switch>
+            <Route path="/" exact component={WorkDetail} />
+          </Switch>
+        </ConnectedRouter>
+      </Provider>
+    );
+    const component = mount(workDetail);
+    let wrapper = component.find('.spy-like-button').first();
+    wrapper.simulate('click');
+    expect(spyLikeReview).toHaveBeenCalledTimes(1);
+
+    wrapper = component.find('.spy-like-button').at(1);
+    wrapper.simulate('click');
+    expect(spyLikeReview).toHaveBeenCalledTimes(2);
+    wrapper = component.find('.spy-unlike-button').at(1);
+    wrapper.simulate('click');
+    expect(spyUnlikeReview).toHaveBeenCalledTimes(1);
+  });
+
+  it('should handle click unlike with my review', () => {
+    const stubInitialUserState = {
+      loggedInUser: stubLoggedInUser,
+    };
+    const stubInitialWorkState = {
+      selectedWork: stubWork,
+      noSuchSelectedWork: false,
+    };
+    const stubInitialReviewState = {
+      reviews: [
+        { id: 1, author: { id: 1 }, clickedLike: true },
+      ],
+    };
+    const mockStore = getMockStore(stubInitialReviewState, stubInitialTagState, stubInitialUserState, stubInitialWorkState);
+    const workDetail = (
+      <Provider store={mockStore}>
+        <ConnectedRouter history={history}>
+          <Switch>
+            <Route path="/" exact component={WorkDetail} />
+          </Switch>
+        </ConnectedRouter>
+      </Provider>
+    );
+    const component = mount(workDetail);
+    const wrapper = component.find('.spy-unlike-button').first();
+    wrapper.simulate('click');
+    expect(spyUnlikeReview).toHaveBeenCalledTimes(1);
+  });
+
+  it('should handle click like without my review', () => {
+    const stubInitialUserState = {
+      loggedInUser: stubLoggedInUser,
+    };
+    const stubInitialWorkState = {
+      selectedWork: stubWork,
+      noSuchSelectedWork: false,
+    };
+    const stubInitialReviewState = {
+      reviews: [
+        { id: 1, author: { id: 2 }, clickedLike: false },
+        { id: 2, author: { id: 3 }, clickedLike: true },
       ],
     };
     const mockStore = getMockStore(stubInitialReviewState, stubInitialTagState, stubInitialUserState, stubInitialWorkState);
@@ -389,38 +455,5 @@ describe('<WorkDetail />', () => {
     wrapper = component.find('.spy-unlike-button').at(1);
     wrapper.simulate('click');
     expect(spyUnlikeReview).toHaveBeenCalledTimes(2);
-  });
-
-  it('should handle click like without my review', () => {
-    const stubInitialUserState = {
-      loggedInUser: stubLoggedInUser,
-    };
-    const stubInitialWorkState = {
-      selectedWork: stubWork,
-      noSuchSelectedWork: false,
-    };
-    const stubInitialReviewState = {
-      reviews: [
-        { id: 1, author: { id: 2 } },
-        { id: 2, author: { id: 3 } },
-      ],
-    };
-    const mockStore = getMockStore(stubInitialReviewState, stubInitialTagState, stubInitialUserState, stubInitialWorkState);
-    const workDetail = (
-      <Provider store={mockStore}>
-        <ConnectedRouter history={history}>
-          <Switch>
-            <Route path="/" exact component={WorkDetail} />
-          </Switch>
-        </ConnectedRouter>
-      </Provider>
-    );
-    const component = mount(workDetail);
-    let wrapper = component.find('.spy-like-button').first();
-    wrapper.simulate('click');
-    expect(spyLikeReview).toHaveBeenCalledTimes(1);
-    wrapper = component.find('.spy-unlike-button').first();
-    wrapper.simulate('click');
-    expect(spyUnlikeReview).toHaveBeenCalledTimes(1);
   });
 });

@@ -4,14 +4,12 @@ import './DetailReview.css';
 class DetailReview extends Component {
   constructor(props) {
     super(props);
-    const { review, clickedLike } = this.props;
+    const { review } = this.props;
     this.state = {
       editMode: false,
-      clickedLike,
       title: review.title,
       content: review.content,
       score: String(review.score.toFixed(1)),
-      likes: review.likes,
     };
     this.onClickLike = this.onClickLike.bind(this);
     this.onClickUnlike = this.onClickUnlike.bind(this);
@@ -21,8 +19,6 @@ class DetailReview extends Component {
     const { onClickLikeReview, isLoggedIn } = this.props;
     if (isLoggedIn) {
       onClickLikeReview();
-      const { likes, clickedLike } = this.state;
-      this.setState({ likes: likes + 1, clickedLike: !clickedLike });
     } else {
       alert('Please login to give likes');
     }
@@ -31,8 +27,6 @@ class DetailReview extends Component {
   onClickUnlike() {
     const { onClickUnlikeReview } = this.props;
     onClickUnlikeReview();
-    const { likes, clickedLike } = this.state;
-    this.setState({ likes: likes - 1, clickedLike: !clickedLike });
   }
 
   onClickEdit() {
@@ -59,9 +53,11 @@ class DetailReview extends Component {
   }
 
   render() {
-    const { className, review, editable } = this.props;
     const {
-      editMode, title, content, score, likes, clickedLike,
+      className, review, editable, clickedLike,
+    } = this.props;
+    const {
+      editMode, title, content, score,
     } = this.state;
     const heart = clickedLike ? '/images/fullHeart.png' : '/images/emptyHeart.png';
     const titleElement = editMode ?
@@ -93,7 +89,7 @@ class DetailReview extends Component {
         <button className="detail-review-like-button" type="button" onClick={clickedLike ? this.onClickUnlike : this.onClickLike}>
           <img className="detail-review-like-heart-icon" src={heart} alt="like" />
         </button>
-        <h5 className="detail-review-like-value">{likes}</h5>
+        <h5 className="detail-review-like-value">{review.likes}</h5>
       </div>
     );
     const contentElement = editMode ?
