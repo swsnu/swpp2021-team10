@@ -5,6 +5,8 @@ import TagSearchWindow from '../TagSearchWindow/TagSearchWindow';
 
 import * as actionCreators from '../../store/actions/index';
 
+import './AccountSettings.css';
+
 class AccountSettings extends Component {
   state = {
     email: '',
@@ -106,9 +108,9 @@ class AccountSettings extends Component {
     }
 
     const imageContainer = () => {
-      if (this.state.selectedImage != null) return <img id="setting-profile-img" width="250px" src={URL.createObjectURL(this.state.selectedImage)} />;
-      else if (this.state.gotImage != null) return <img id="setting-profile-img" width="250px" src={this.state.gotImage} />;
-      else return <img id="setting-profile-img" width="250px" src="/images/no_image.png" />;
+      if (this.state.selectedImage != null) return <img id="setting-profile-img" src={URL.createObjectURL(this.state.selectedImage)} />;
+      else if (this.state.gotImage != null) return <img id="setting-profile-img" src={this.state.gotImage} />;
+      else return <img id="setting-profile-img" src="/images/no_image.png" />;
     };
 
     return (
@@ -120,32 +122,36 @@ class AccountSettings extends Component {
         <label id="setting-upload-image-label" htmlFor="setting-input-profile-image">
           Upload Profile Image
         </label>
-        <label id="setting-email">
-          <div id="setting-email-label-text">email</div>
-          <div id="setting-email-text">
-            { this.state.email }
-          </div>
-        </label>
-        <label id="setting-username">
-          <div id="setting-username-label-text">username</div>
-          <input id="setting-username-input" type="text" value={this.state.username} onChange={(event) => { this.setState({ username: event.target.value, usernameDupCheck: false }); }} />
-          <button id="setting-dupchk-button" onClick={() => this.checkUsernameDup()} type="button">check username duplication</button>
-          { this.state.usernameDupCheck && <img id="setting-dupchk-username-img" src="/images/check.png" alt="dupchk-username" width="20px" /> }
-        </label>
-        <label id="setting-password">
-          <div id="password-label-text">password</div>
-          <input id="setting-password-input" type="password" value={this.state.password} onChange={(event) => { this.setState({ password: event.target.value }); }} />
-        </label>
-        <label id="setting-password-check">
-          <div id="password-check-label-text">password check</div>
-          <input id="setting-password-check-input" type="password" value={this.state.passwordCheck} onChange={(event) => { this.setState({ passwordCheck: event.target.value }); }} />
-          { this.checkPasswordAccord() && <img id="setting-password-accord-img" src="/images/check.png" alt="password-accord" /> }
-        </label>
-        <h4 id="setting-favorite-genres">
-          Favorite Genres
-        </h4>
-        {this.state.tagGotCheck && <TagSearchWindow id="search-genre-search-window" onAddTag={this.onAddTag} onDeleteTag={this.onDeleteTag} defaultTag={this.state.gotTags} /> }
-        <br />
+        <div id="setting-userdata-holder">
+          <label id="setting-email">
+            <div id="setting-email-label-text">email</div>
+            <div id="setting-email-text">
+              { this.state.email }
+            </div>
+          </label>
+          <label id="setting-username">
+            <div id="setting-username-label-text">username</div>
+            <input id="setting-username-input" type="text" value={this.state.username} onChange={(event) => { this.setState({ username: event.target.value, usernameDupCheck: false }); }} />
+            <button id="setting-dupchk-button" onClick={() => this.checkUsernameDup()} type="button">check username duplication</button>
+            { this.state.usernameDupCheck && <img id="setting-dupchk-username-img" src="/images/check.png" alt="dupchk-username" width="20px" /> }
+          </label>
+          <label id="setting-password">
+            <div id="setting-password-label-text">password</div>
+            <input id="setting-password-input" type="password" value={this.state.password} onChange={(event) => { this.setState({ password: event.target.value }); }} />
+          </label>
+          <label id="setting-password-check">
+            <div id="setting-password-check-label-text">password check</div>
+            <input id="setting-password-check-input" type="password" value={this.state.passwordCheck} onChange={(event) => { this.setState({ passwordCheck: event.target.value }); }} />
+            { this.checkPasswordAccord() && <img id="setting-password-accord-img" src="/images/check.png" alt="password-accord" /> }
+          </label>
+        </div>
+        <div id="setting-fav-genre-holder">
+          <h4 id="setting-favorite-genres">
+            Favorite Genres
+          </h4>
+          {this.state.tagGotCheck && <TagSearchWindow id="search-genre-search-window" onAddTag={this.onAddTag} onDeleteTag={this.onDeleteTag} defaultTag={this.state.gotTags} /> }
+          <br />
+        </div>
         <button id="setting-submit-button" onClick={() => this.submitEditData()} type="button" disabled={!(this.state.usernameDupCheck && this.checkPasswordAccord())}>submit</button>
       </div>
     );

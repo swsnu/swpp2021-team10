@@ -1,0 +1,233 @@
+.setting-page { 
+    position: absolute; 
+    left: 50%;
+    transform: translateX(-50%); 
+    background-color: #fefefe;
+    width: 70rem;
+    height: 48rem;
+  }
+  
+  #setting-input-profile-image {
+    display: none;
+  }
+  
+  #setting-profile-image-holder {
+    position: absolute; 
+    left: 25%;
+    transform: translateX(-50%); 
+    top: 3rem;
+    width: 15rem;
+    height: 15rem;
+    flex-wrap: wrap;
+  
+    border: 2px solid;
+    border-color: black;
+    background-color: #fff;
+  
+    box-shadow: 1px 1px 5px grey;
+  }
+  
+  #setting-profile-img {
+    position: absolute;
+    top: 0; 
+    left: 0; 
+    transform: translate(50, 50); 
+    width: 100%; 
+    height: 100%;
+    object-fit: cover; 
+    margin: auto;
+  }
+  
+  
+  #setting-upload-image-label {
+    position: absolute; 
+    left: 25%;
+    transform: translateX(-50%);
+    top: 18rem;
+    display: inline-block;
+    padding: 1em 2em;
+    border-radius: 0;
+    color: black;
+    margin-top: 2rem;
+    font-size: 0.678rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    text-decoration: none;
+    background: linear-gradient(to right, rgba(178, 135, 111, 0) 25%, rgba(0, 0, 0, 1) 75%);
+    background-position: 1% 50%;
+    background-size: 400% 300%;
+    border: 1px solid black;
+    transition: 700ms cubic-bezier(0.165, 0.84, 0.44, 1);
+  }
+  #setting-upload-image-label:hover {
+  transition: 400ms cubic-bezier(0.165, 0.84, 0.44, 1);
+  }
+  #setting-upload-image-label:hover {
+  color: white;
+  color: #fff;
+  background-position: 99% 50%;
+  }
+  
+  #setting-userdata-holder {
+    position: absolute; 
+    left: 60%;
+    transform: translateX(-50%); 
+  }
+  
+  #setting-email-label-text {
+    margin-top: 3rem;
+    margin-bottom: 0.5rem;
+    font-size: 0.678rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    text-decoration: none;
+  }
+
+  #setting-email-text {
+    margin-top: 1rem;
+    margin-bottom: 0.5rem;
+    font-size: 0.678rem;
+    letter-spacing: 2px;
+    text-decoration: none;
+  }
+  
+  #setting-username-label-text {
+    margin-top: 1rem;
+    margin-bottom: 0.5rem;
+    font-size: 0.678rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    text-decoration: none;
+  }
+  
+  #setting-username-input {
+    width: 200px;
+    margin-bottom: 0.5em;
+    padding: 1em;
+    font-size: 0.750rem;
+    letter-spacing: 2px;
+  }
+  
+  #setting-dupchk-button {
+    position: absolute; 
+    display: inline-block;
+    padding: 0.7em 1.5em;
+    margin-left: 2em;
+    border-radius: 0;
+    color: black;
+    font-size: 0.66rem;
+    letter-spacing: 1px;
+    white-space: nowrap;
+    text-transform: uppercase;
+    text-decoration: none;
+    background: linear-gradient(to right, rgba(178, 135, 111, 0) 25%, rgba(0, 0, 0, 1) 75%);
+    background-position: 1% 50%;
+    background-size: 400% 300%;
+    border: 1px solid black;
+    transition: 700ms cubic-bezier(0.165, 0.84, 0.44, 1);
+  }
+  #setting-dupchk-button:hover {
+  transition: 400ms cubic-bezier(0.165, 0.84, 0.44, 1);
+  }
+  #setting-dupchk-button:hover {
+  color: white;
+  color: #fff;
+  background-position: 99% 50%;
+  }
+  
+  #setting-dupchk-button {
+    transform: translateY(21%);
+  }
+  
+  #setting-dupchk-username-img {
+    width: 25px;
+    height: 25px;
+    position: absolute; 
+    left: 0%;
+    transform: translate(-130%, 35%);
+  }
+  
+  #setting-password-label-text {
+    margin-top: 1rem;
+    margin-bottom: 0.5rem;
+    font-size: 0.678rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    text-decoration: none;
+  }
+  
+  #setting-password-input {
+    width: 200px;
+    margin-bottom: 0.5em;
+    padding: 1em;
+    font-size: 0.750rem;
+    letter-spacing: 2px;
+  }
+  
+  #setting-password-check-label-text {
+    margin-top: 1rem;
+    margin-bottom: 0.5rem;
+    font-size: 0.678rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    text-decoration: none;
+  }
+  
+  #setting-password-check-input {
+    width: 200px;
+    margin-bottom: 0.5em;
+    padding: 1em;
+    font-size: 0.750rem;
+    letter-spacing: 2px;
+  }
+  
+  #setting-password-accord-img {
+    width: 25px;
+    height: 25px;
+    position: absolute; 
+    left: 0%;
+    transform: translate(-130%, 35%);
+  }
+  
+  #setting-fav-genre-holder {
+    position: absolute; 
+    left: 50%;
+    transform: translate(-50%);
+    margin-top: 23.5rem;
+  }
+  
+  #setting-submit-button {
+    position: absolute; 
+    left: 50%;
+    top: 40rem;
+    transform: translate(-50%);
+    display: inline-block;
+    padding: 1em 2em;
+    border-radius: 0;
+    color: black;
+    margin-bottom: 2rem;
+    font-size: 0.999rem;
+    font-weight: bold;
+    letter-spacing: 2px;
+    white-space: nowrap;
+    text-transform: uppercase;
+    text-decoration: none;
+    background: linear-gradient(to right, rgba(178, 135, 111, 0) 25%, rgba(0, 0, 0, 1) 75%);
+    background-position: 1% 50%;
+    background-size: 400% 300%;
+    border: 1px solid black;
+    transition: 700ms cubic-bezier(0.165, 0.84, 0.44, 1);
+  }
+  #setting-submit-button:hover {
+  transition: 400ms cubic-bezier(0.165, 0.84, 0.44, 1);
+  }
+  #setting-submit-button:hover {
+  color: white;
+  color: #fff;
+  background-position: 99% 50%;
+  }
+  
+  #setting-submit-button {
+    border: 1px solid black;
+  }
+  
