@@ -5,6 +5,7 @@
   left: 0px;
   top: 0px;
   z-index: 10;
+  box-shadow: 0.3px 0.3px 3px grey;
 }
 
 .relative-parent {
@@ -23,50 +24,87 @@
   overflow-y: hidden;
 }
 
-a {
+#connectoon-logo, #recommendation-tab, #board-tab, #search-tab {
   text-decoration: none;
   color: black;
+  font-size: 0.5rem;
+  letter-spacing: 2px;
 }
 
-a:hover {
-  text-decoration: underline;
+#connectoon-logo:before, #recommendation-tab:before, #board-tab:before, #search-tab:before, #connectoon-logo:after, #recommendation-tab:after, #board-tab:after, #search-tab:after{
+  content: "";
+  display: block;
+  position: absolute;
+  height: 1.5px;
+  width: 0;
+}
+#connectoon-logo:before, #recommendation-tab:before, #board-tab:before, #search-tab:before {
+  transition: width 0s ease, background 0.4s ease;
+  left: 0;
+  right: 0;
+  bottom: -1px;
+}
+#connectoon-logo:after, #recommendation-tab:after, #board-tab:after, #search-tab:after {
+  right: 2.2%;
+  bottom: -1px;
+  background: black;
+  transition: width 0.4s ease;
+}
+#connectoon-logo:hover:before, #recommendation-tab:hover:before, #board-tab:hover:before, #search-tab:hover:before {
+  width: 97.8%;
+  background: black;
+  transition: width 0.4s ease;
+}
+#connectoon-logo:hover:after, #recommendation-tab:hover:after, #board-tab:hover:after, #search-tab:hover:after {
+  width: 97.8%;
+  background: 0 0;
+  transition: all 0s ease;
 }
 
 #connectoon-logo {
   position: absolute;
   left: max(calc(10px + (100% - 760px) * 0.25), 20px);
-  top: 15px;
+  top: 50%;
+  transform: translateY(-50%);
   font-size: 32px;
 }
 
 #recommendation-tab {
   position: absolute;
   left: max(calc(158px + (100% - 760px) * 0.40), 200px);
-  top: 30px;
+  top: 50%;
+  transform: translateY(-40%);
   font-size: 18px;
 }
 
 #board-tab {
   position: absolute;
   left: max(calc(312.2px + (100% - 760px) * 0.46), 355px);
-  top: 30px;
+  top: 50%;
+  transform: translateY(-40%);
   font-size: 18px;
 }
 
 #search-tab {
   position: absolute;
   left: max(calc(371.4px + (100% - 760px) * 0.52), 415px);
-  top: 30px;
+  top: 50%;
+  transform: translateY(-40%);
   font-size: 18px;
 }
 
 #search-input {
   position: absolute;
   left: max(calc(437px + (100% - 760px) * 0.60), 485px);
-  top: 25px;
+  top: 50%;
+  transform: translateY(-40%);
   width: 160px;
   height: 20px;
   z-index: 100;
+  font-size: 0.85rem;
+  letter-spacing: 1px;
+  text-decoration: none;
+  padding: 0.1em 0.3em;
   background-color: transparent;
   border: solid 0.5px #0a0a0a;
 }
@@ -80,7 +118,8 @@ a:hover {
 #search-glass-wrapper {
   position: absolute;
   left: max(calc(607px + (100% - 760px) * 0.60), 655px);
-  top: 30px;
+  top: 50%;
+  transform: translateY(-40%);
   width: 15px;
   height: 15px;
   background-color: transparent;
@@ -89,7 +128,7 @@ a:hover {
 }
 
 #search-glass-wrapper:hover{
-  cursor: grab;
+  cursor: pointer;
 }
 
 .nav-bar-buttons {
@@ -103,18 +142,46 @@ a:hover {
 }
 
 #login-button, #username-button {
+  background-color: white;
   top: 15px;
 }
 
+#login-button, #username-button, #mypage-button, #myreviews-button, #logout-button{
+  display: inline-block;
+  padding: 1em 2em;
+  border-radius: 0;
+  color: black;
+  font-size: 0.678rem;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  text-decoration: none;
+  background: linear-gradient(to right, rgba(178, 135, 111, 0) 25%, rgba(0, 0, 0, 1) 75%);
+  background-position: 1% 50%;
+  background-size: 400% 300%;
+  border: 1px solid black;
+  transition: 700ms cubic-bezier(0.165, 0.84, 0.44, 1);
+}
+#login-button:hover, #username-button:hover, #mypage-button:hover, #myreviews-button:hover, #logout-button:hover {
+transition: 400ms cubic-bezier(0.165, 0.84, 0.44, 1);
+}
+#login-button:hover, #username-button:hover, #mypage-button:hover, #myreviews-button:hover, #logout-button:hover {
+color: white;
+color: #fff;
+background-position: 99% 50%;
+}
+
 #mypage-button {
+  background-color: white;
   top: 54px;
 }
 
 #myreviews-button {
+  background-color: white;
   top: 93px;
 }
 
 #logout-button {
+  background-color: white;
   top: 132px;
 }
 
