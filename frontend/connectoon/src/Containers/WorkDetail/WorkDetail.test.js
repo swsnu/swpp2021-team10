@@ -61,6 +61,7 @@ describe('<WorkDetail />', () => {
   let spyDeleteReview;
   let spyLikeReview;
   let spyUnlikeReview;
+  let spyPutImage;
   beforeEach(() => {
     spyGetWork = jest.spyOn(workActionCreator, 'getWork')
       .mockImplementation((id) => { return (dispatch) => {}; });
@@ -76,6 +77,8 @@ describe('<WorkDetail />', () => {
       .mockImplementation((id) => { return (dispatch) => { return new Promise((resolve, reject) => resolve()); }; });
     spyUnlikeReview = jest.spyOn(reviewActionCreator, 'postUnlike')
       .mockImplementation((id) => { return (dispatch) => { return new Promise((resolve, reject) => resolve()); }; });
+    spyPutImage = jest.spyOn(workActionCreator, 'putImage')
+      .mockImplementation((id) => { return (dispatch) => {}; });
   });
 
   afterEach(() => {

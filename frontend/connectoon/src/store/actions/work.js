@@ -83,3 +83,9 @@ export const postWorkReview = (id, reviewData) => {
       .then((res) => { });
   };
 };
+
+export const putImage = (id) => {
+  return () => {
+    return axios.get('/works/' + id + '/image');
+  };
+};
