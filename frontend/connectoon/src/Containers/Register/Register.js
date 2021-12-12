@@ -47,7 +47,7 @@ class Register extends Component {
         toast('Email duplication has checked!');
       })
       .catch((e) => {
-        toast('There is duplicated email!');
+        toast('There is duplicated email or submitted email has wrong pattern!');
       });
   };
 
