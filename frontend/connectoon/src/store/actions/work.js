@@ -9,9 +9,9 @@ export const getMainWorks_ = (mainWorkListDict) => {
   };
 };
 
-export const getMainWorks = () => {
+export const getMainWorks = (requestWorks) => {
   return (dispatch) => {
-    return axios.get('/works/main/')
+    return axios.get('/works/main/', { params: { requestWorks } })
       .then((res) => {
         dispatch(getMainWorks_(res.data));
       });

@@ -4,63 +4,42 @@ import WorkObject from '../WorkObject/WorkObject';
 import './WorkList.css';
 
 const platformMapper = ['/images/naver_logo.png', '/images/kakao_logo.png', '/images/lezhin_logo.png'];
-class WorkList extends Component {
-  constructor(props) {
-    super(props);
-    this.state = { totalDisplayRow: 1 };
+
+const WorkList = (props) => {
+  const {
+    className, subject, workList, rows, worksInRow, onClickWork, onClickMore,
+  } = props;
+
+  const workObjects = workList.map((work) => (
+    <WorkObject
+      key={String(work.id) + work.title}
+      className="work-object"
+      src={work.thumbnail_picture}
+      platform={platformMapper[work.platform_id]}
+      completion={work.completion}
+      title={work.title}
+      artists={work.artists}
+      createdYear={work.year}
+      score={work.score_avg}
+      onClickWork={() => onClickWork(work.id)}
+    />
+  ));
+
+  let i = 0;
+  const displayingObjects = Array.from({ length: rows });
+  for (i = 0; i < rows; i += 1) {
+    displayingObjects[i] = workObjects.slice(worksInRow * i, worksInRow * (i + 1));
   }
 
-  onClickMore = () => {
-    const { totalDisplayRow } = this.state;
-    this.setState({ totalDisplayRow: totalDisplayRow + 2 });
-  };
-
-  onClickWorkObject = (workId) => {
-    const { onClickWork } = this.props;
-    onClickWork(workId);
-  }
-
-  render() {
-    const {
-      workList, workNumInRow, className, subject,
-    } = this.props;
-    const { totalDisplayRow } = this.state;
-    const workObjects = workList.map((work) => (
-      <WorkObject
-        key={String(work.id) + work.title}
-        className="work-object"
-        src={work.thumbnail_picture}
-        platform={platformMapper[work.platform_id]}
-        completion={work.completion}
-        title={work.title}
-        artists={work.artists}
-        createdYear={work.year}
-        score={work.score_avg}
-        onClickWork={() => this.onClickWorkObject(work.id)}
-      />
-    ));
-    let i = 0;
-    const displayingObjects = Array.from({ length: totalDisplayRow });
-    for (i = 0; i < totalDisplayRow; i += 1) {
-      displayingObjects[i] = workObjects.slice(i * workNumInRow, (i + 1) * workNumInRow);
-    }
-    return (
-      <div className={className}>
-        <div className="list-wrapper" align="left">
-          <h1 className="list-subject">{subject}</h1>
-          {displayingObjects}
-          {(workObjects.length > totalDisplayRow * workNumInRow) && <button type="button" className="more-works-button" onClick={() => this.onClickMore()}>more...</button>}
-        </div>
+  return (
+    <div className={className}>
+      <div className="list-wrapper" align="left">
+        <h1 className="list-subject">{subject}</h1>
+        {displayingObjects}
+        {(workList.length > worksInRow * rows) && <button type="button" className="more-works-button" onClick={() => onClickMore()}>more...</button>}
       </div>
-    );
-  }
-}
-
-WorkList.propTypes = {
-  workList: PropTypes.arrayOf(PropTypes.object).isRequired,
-  workNumInRow: PropTypes.number.isRequired,
-  className: PropTypes.string.isRequired,
-  subject: PropTypes.string.isRequired,
+    </div>
+  );
 };
 
 export default WorkList;

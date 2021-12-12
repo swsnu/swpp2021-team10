@@ -15,6 +15,8 @@ from django.views.decorators.csrf import csrf_exempt
 
 from django.db.models import Q
 
+import time
+
 def work_id(request, id):
     try:
         work = Work.objects.get(id = id)
@@ -102,9 +104,11 @@ def work_id_review(request, id):
 
 def work_main(request):
     if request.method == 'GET':
+        requestWorks = request.GET.getlist('requestWorks[]', None)
+
         most_reviewed_work_objects = Work.objects.all().order_by('-review_num')
         most_reviewed_works = []
-        for work in most_reviewed_work_objects:
+        for work in most_reviewed_work_objects[0:int(requestWorks[0])]:
             artist_name = [artist.name for artist in work.artists.all()]
             most_reviewed_works.append({
                 "id": work.id, "title": work.title, "thumbnail_picture": work.thumbnail_picture, "platform_id": work.platform_id, 
@@ -114,7 +118,7 @@ def work_main(request):
 
         highest_rated_work_objects = Work.objects.all().order_by('-score_avg')
         highest_rated_works = []
-        for work in highest_rated_work_objects:
+        for work in highest_rated_work_objects[0:int(requestWorks[1])]:
             artist_name = [artist.name for artist in work.artists.all()]
             highest_rated_works.append({
                 "id": work.id, "title": work.title, "thumbnail_picture": work.thumbnail_picture, "platform_id": work.platform_id, 

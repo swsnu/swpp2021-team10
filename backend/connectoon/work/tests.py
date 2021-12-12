@@ -166,12 +166,18 @@ class WorkTestCase(TestCase):
 
     def test_get_work_main_status(self):
         client = Client()
-        response = client.get('/api/v1/works/main/')
+        response = client.get('/api/v1/works/main/', {'requestWorks[]': ['1', '2']}, content_type='application/json')
         self.assertEqual(response.status_code, 200)
+
+        response_json = json.loads(response.content.decode())
+        most_reviewed_works = json.loads(response_json['worklists'][0]['works'])
+        highest_rated_works = json.loads(response_json['worklists'][1]['works'])
+        self.assertEqual(len(most_reviewed_works), 1)
+        self.assertEqual(len(highest_rated_works), 2)
         
     def test_get_work_main_most_reviewed(self):
         client = Client()
-        response = client.get('/api/v1/works/main/')
+        response = client.get('/api/v1/works/main/', {'requestWorks[]': ['24', '24']}, content_type='application/json')
 
         response_json = json.loads(response.content.decode())
         self.assertEquals(response_json['worklists'][0]['title'], "Most reviewed works")
@@ -183,19 +189,19 @@ class WorkTestCase(TestCase):
         
     def test_get_work_main_highest_rated(self):
         client = Client()
-        response = client.get('/api/v1/works/main/')
+        response = client.get('/api/v1/works/main/', {'requestWorks[]': ['24', '24']}, content_type='application/json')
 
         response_json = json.loads(response.content.decode())
     
         self.assertEquals(response_json['worklists'][1]['title'], "Highest rated works")
 
-        most_reviewed_works = json.loads(response_json['worklists'][1]['works'])
+        highest_rated_works = json.loads(response_json['worklists'][1]['works'])
 
-        for i in range(len(most_reviewed_works)):
+        for i in range(len(highest_rated_works)):
             if i!=0:
-                self.assertGreaterEqual(most_reviewed_works[i-1]['score_avg'], most_reviewed_works[i]['score_avg'])
+                self.assertGreaterEqual(highest_rated_works[i-1]['score_avg'], highest_rated_works[i]['score_avg'])
 
-    def test_get_work_wrong_api(self):
+    def test_get_work_main_wrong_api(self):
         client = Client()
 
         response = client.delete('/api/v1/works/main/')

@@ -23,4 +23,10 @@ describe('<WorkObject />', () => {
     wrapper.simulate('click');
     expect(spyWorkClick).toHaveBeenCalledTimes(1);
   });
+
+  it('should show score formatted as 2 decimal points', () => {
+    const component = mount(<WorkObject className="work-object" artists={['']} score={3.33333} />);
+    const wrapper = component.find('.work-object-score');
+    expect(wrapper.text()).toBe('3.33');
+  });
 });
