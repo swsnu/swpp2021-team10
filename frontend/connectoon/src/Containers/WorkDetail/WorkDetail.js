@@ -112,7 +112,7 @@ class WorkDetail extends Component {
           onClickDeleteReview={() => this.onClickDeleteReview(myReview[0].id)}
           onClickLikeReview={() => this.onClickLikeReview(myReview[0].id)}
           onClickUnlikeReview={() => this.onClickUnlikeReview(myReview[0].id)}
-          clickedLike={myReview[0].clickedLike}
+          clickedLike={myReview[0].clickedLike && loggedInUser}
           isLoggedIn={true}
         />
       </div>) :
@@ -142,7 +142,7 @@ class WorkDetail extends Component {
             review={review}
             onClickLikeReview={() => this.onClickLikeReview(review.id)}
             onClickUnlikeReview={() => this.onClickUnlikeReview(review.id)}
-            clickedLike={review.clickedLike}
+            clickedLike={review.clickedLike && loggedInUser}
             editable={false}
             isLoggedIn={!!loggedInUser}
           />))}

@@ -19,20 +19,37 @@ describe('<DetailReview />', () => {
   });
 
   it('should handle click like when logged in', () => {
+    const spyClickLike = jest.fn();
+    const spyClickUnlike = jest.fn();
     const component = mount(<DetailReview
       className="detail-review"
       review={stubReview}
       editable={false}
-      onClickLikeReview={jest.fn()}
-      onClickUnlikeReview={jest.fn()}
+      onClickLikeReview={spyClickLike}
+      onClickUnlikeReview={spyClickUnlike}
       clickedLike={false}
       isLoggedIn={true}
     />);
     const wrapper = component.find('.detail-review-like-button');
     wrapper.simulate('click');
-    expect(component.state().clickedLike).toBeTruthy();
+    expect(spyClickLike).toHaveBeenCalledTimes(1);
+  });
+
+  it('should handle click unlike', () => {
+    const spyClickLike = jest.fn();
+    const spyClickUnlike = jest.fn();
+    const component = mount(<DetailReview
+      className="detail-review"
+      review={stubReview}
+      editable={false}
+      onClickLikeReview={spyClickLike}
+      onClickUnlikeReview={spyClickUnlike}
+      clickedLike={true}
+      isLoggedIn={true}
+    />);
+    const wrapper = component.find('.detail-review-like-button');
     wrapper.simulate('click');
-    expect(component.state().clickedLike).toBeFalsy();
+    expect(spyClickUnlike).toHaveBeenCalledTimes(1);
   });
 
   it('should handle click like when not logged in', () => {
