@@ -2,9 +2,10 @@ import axios from 'axios';
 import { push } from 'connected-react-router';
 import * as actionTypes from './actionTypes';
 
-export const getMainWorks_ = (mainWorkListDict) => {
+export const getMainWorks_ = (mainWorkListDict, listStart) => {
   return {
     type: actionTypes.GET_MAIN_WORKS,
+    listStart,
     mainWorkLists: mainWorkListDict.worklists,
   };
 };
@@ -13,7 +14,7 @@ export const getMainWorks = (requestWorks) => {
   return (dispatch) => {
     return axios.get('/works/main/', { params: { requestWorks } })
       .then((res) => {
-        dispatch(getMainWorks_(res.data));
+        dispatch(getMainWorks_(res.data, requestWorks.map((requestWork) => { return requestWork[0] === 0; })));
       });
   };
 };

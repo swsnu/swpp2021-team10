@@ -166,7 +166,7 @@ class WorkTestCase(TestCase):
 
     def test_get_work_main_status(self):
         client = Client()
-        response = client.get('/api/v1/works/main/', {'requestWorks[]': ['1', '2']}, content_type='application/json')
+        response = client.get('/api/v1/works/main/', {'requestWorks[]': ['[0, 1]', '[0, 2]']}, content_type='application/json')
         self.assertEqual(response.status_code, 200)
 
         response_json = json.loads(response.content.decode())
@@ -177,7 +177,7 @@ class WorkTestCase(TestCase):
         
     def test_get_work_main_most_reviewed(self):
         client = Client()
-        response = client.get('/api/v1/works/main/', {'requestWorks[]': ['24', '24']}, content_type='application/json')
+        response = client.get('/api/v1/works/main/', {'requestWorks[]': ['[0, 24]', '[0, 24]']}, content_type='application/json')
 
         response_json = json.loads(response.content.decode())
         self.assertEquals(response_json['worklists'][0]['title'], "Most reviewed works")
@@ -189,7 +189,7 @@ class WorkTestCase(TestCase):
         
     def test_get_work_main_highest_rated(self):
         client = Client()
-        response = client.get('/api/v1/works/main/', {'requestWorks[]': ['24', '24']}, content_type='application/json')
+        response = client.get('/api/v1/works/main/', {'requestWorks[]': ['[0, 24]', '[0, 24]']}, content_type='application/json')
 
         response_json = json.loads(response.content.decode())
     

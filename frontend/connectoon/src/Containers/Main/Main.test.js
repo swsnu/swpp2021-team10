@@ -31,8 +31,8 @@ const stubInitialUserState = {
 
 const stubInitialWorkState = {
   mainWorkLists: [
-    { title: 'Test Works', works: JSON.stringify([{ id: 1 }]) },
-    { title: 'Test Works', works: JSON.stringify([{ id: 1 }]) },
+    { title: 'Test Works', works: [{ id: 1 }] },
+    { title: 'Test Works', works: [{ id: 1 }] },
   ],
 };
 
@@ -98,8 +98,8 @@ describe('<Main />', () => {
     });
     const stubInitialManyWorkState = {
       mainWorkLists: [
-        { title: 'Test Works', works: JSON.stringify(stubWorks) },
-        { title: 'Test Works', works: JSON.stringify(stubWorks) },
+        { title: 'Test Works', works: stubWorks },
+        { title: 'Test Works', works: stubWorks },
       ],
     };
     const manyWorksMockStore = getMockStore(stubInitialReviewState, stubInitialTagState, stubInitialUserState, stubInitialManyWorkState);
@@ -115,35 +115,36 @@ describe('<Main />', () => {
     const component = mount(main);
     const wrapper = component.find('.spyMore');
     expect(spyGetMainWork).toHaveBeenCalledTimes(1);
-    expect(spyGetMainWork).toHaveBeenCalledWith([24, 24]);
+    expect(spyGetMainWork).toHaveBeenCalledWith([[0, 24], [0, 24]]);
     wrapper.at(0).simulate('click');
     wrapper.at(0).simulate('click');
     expect(spyGetMainWork).toHaveBeenCalledTimes(2);
-    expect(spyGetMainWork).toHaveBeenLastCalledWith([44, 24]);
+    expect(spyGetMainWork).toHaveBeenLastCalledWith([[24, 44], [24, 24]]);
   });
 
-  it('should keep more clicked state after visiting other urls and comming back', () => {
-    const otherPage = (props) => {
-      return <div className="other-page" />;
-    };
-    main = (
-      <Provider store={mockStore}>
-        <ConnectedRouter history={history}>
-          <Switch>
-            <Route path="/main" exact component={Main} />
-            <Route path="/other" exact component={otherPage} />
-          </Switch>
-        </ConnectedRouter>
-      </Provider>
-    );
-    const component = mount(main);
-    console.log(component.debug());
-    history.push('/main');
-    console.log(component.debug());
-    const wrapper = component.find('.spyMore');
-    wrapper.at(0).simulate('click');
-    console.log(component.debug());
-    history.push('/other');
-    console.log(component.debug());
-  });
+  // it('should keep more clicked state after visiting other urls and comming back', () => {
+  //   const otherPage = (props) => {
+  //     return <div className="other-page" />;
+  //   };
+  //   history.push('/main');
+  //   main = (
+  //     <Provider store={mockStore}>
+  //       <ConnectedRouter history={history}>
+  //         <Switch>
+  //           <Route path="/main" exact component={Main} />
+  //           <Route path="/other" exact component={otherPage} />
+  //         </Switch>
+  //       </ConnectedRouter>
+  //     </Provider>
+  //   );
+  //   const component = mount(main);
+  //   console.log(component.debug());
+  //   history.push('/main');
+  //   console.log(component.debug());
+  //   const wrapper = component.find('.spyMore');
+  //   wrapper.at(0).simulate('click');
+  //   console.log(component.debug());
+  //   history.push('/other');
+  //   console.log(component.debug());
+  // });
 });

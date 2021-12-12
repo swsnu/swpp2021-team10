@@ -5,19 +5,15 @@ import * as actionTypes from '../actions/actionTypes';
 
 const stubWork = { id: 1 };
 const stubMainWorks = [
-  {
-    title: 'Test Works',
-    works: [
-      JSON.stringify(stubWork),
-    ],
-  },
+  { title: 'Test Works', works: JSON.stringify([stubWork]) },
+  { title: 'Test Works', works: JSON.stringify([stubWork]) },
 ];
 
 describe('Work Reducer', () => {
   it('should return default state', () => {
     const newState = reducer(undefined, {}); // initialize
     expect(newState).toEqual({
-      mainWorkLists: [],
+      mainWorkLists: [{ title: '', works: [] }, { title: '', works: [] }],
       selectedWorks: [],
       searchedWorks: [[], []],
       selectedWork: null,
@@ -29,10 +25,26 @@ describe('Work Reducer', () => {
 
   it('should return main works', () => {
     const stubInitialState = {
-      mainWorkLists: [stubWork],
+      mainWorkLists: [{ title: '', works: [] }, { title: '', works: [] }],
     };
-    const newState = reducer(stubInitialState, { type: actionTypes.GET_MAIN_WORKS, mainWorkLists: stubMainWorks });
-    expect(newState.mainWorkLists).toEqual(stubMainWorks);
+    const stubNewMainWorks = [
+      { title: 'Test Works', works: [stubWork] },
+      { title: 'Test Works', works: [stubWork] },
+    ];
+    const newState = reducer(stubInitialState, { type: actionTypes.GET_MAIN_WORKS, mainWorkLists: stubMainWorks, listStart: [true, true] });
+    expect(newState.mainWorkLists).toEqual(stubNewMainWorks);
+  });
+
+  it('should return concatenated main works', () => {
+    const stubInitialState = {
+      mainWorkLists: [{ title: 'Test Works', works: [stubWork] }, { title: 'Test Works', works: [stubWork] }],
+    };
+    const stubNewMainWorks = [
+      { title: 'Test Works', works: [stubWork, stubWork] },
+      { title: 'Test Works', works: [stubWork] },
+    ];
+    const newState = reducer(stubInitialState, { type: actionTypes.GET_MAIN_WORKS, mainWorkLists: stubMainWorks, listStart: [false, true] });
+    expect(newState.mainWorkLists).toEqual(stubNewMainWorks);
   });
 
   it('should get work', () => {

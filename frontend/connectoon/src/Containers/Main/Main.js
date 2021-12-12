@@ -18,7 +18,7 @@ class Main extends Component {
     } else {
       subjectRows = [1, 1];
     }
-    const requestWorks = subjectRows.map((rows) => { return worksInRow * (rows + pageRowIncrement); });
+    const requestWorks = subjectRows.map((rows) => { return [0, worksInRow * (rows + pageRowIncrement)]; });
     this.state = {
       subjectRows, requestWorks, worksInRow, rowIncrement, pageRowIncrement,
     };
@@ -37,19 +37,24 @@ class Main extends Component {
       subjectRows, requestWorks, worksInRow, rowIncrement, pageRowIncrement,
     } = this.state;
     subjectRows[listId] += rowIncrement;
-    const newRequestWorks = requestWorks.map((requestWork, idx) => {
-      return worksInRow * (subjectRows[idx] + rowIncrement) >= requestWork ? requestWork + worksInRow * pageRowIncrement : requestWork;
+    const newRequestWorks = [];
+    let fetchMore = false;
+    requestWorks.forEach((requestWork, idx) => {
+      if (worksInRow * (subjectRows[idx] + rowIncrement) >= requestWork[1]) {
+        fetchMore = true;
+        newRequestWorks.push([requestWork[1], requestWork[1] + worksInRow * pageRowIncrement]);
+      } else {
+        newRequestWorks.push([requestWork[1], requestWork[1]]);
+      }
     });
-    if (JSON.stringify(requestWorks) !== JSON.stringify(newRequestWorks)) {
-      this.setState({ requestWorks: newRequestWorks });
+    this.setState({ subjectRows, requestWorks: newRequestWorks });
+    if (fetchMore) {
       this.props.onGetMainWorks(newRequestWorks);
     }
-    this.setState({ subjectRows });
     this.props.history.replace('/main', { subjectRows });
   }
 
   render() {
-    // console.log(this.props.history);
     const { subjectRows, worksInRow } = this.state;
     const { mainWorkLists } = this.props;
     const workLists = mainWorkLists.map((mainWorkList, idx) => {
@@ -58,7 +63,7 @@ class Main extends Component {
           key={mainWorkList.title + String(idx)}
           className={mainWorkList.title.toLowerCase().replace(/ /g, '-').slice(0, -1) + '-list'}
           subject={mainWorkList.title}
-          workList={JSON.parse(mainWorkList.works)}
+          workList={mainWorkList.works}
           rows={subjectRows[idx]}
           worksInRow={worksInRow}
           onClickWork={(workId) => this.onClickWork(workId)}

@@ -4,6 +4,7 @@ const initialState = {
   works: [
   ],
   mainWorkLists: [
+    { title: '', works: [] }, { title: '', works: [] },
   ],
   selectedWorks: [
   ],
@@ -20,7 +21,14 @@ const initialState = {
 const reducer = (state = initialState, action) => {
   switch (action.type) {
     case actionTypes.GET_MAIN_WORKS:
-      return { ...state, mainWorkLists: action.mainWorkLists };
+      const newMainWorkLists = state.mainWorkLists.map((listDict, idx) => {
+        if (action.listStart[idx]) {
+          return { title: action.mainWorkLists[idx].title, works: JSON.parse(action.mainWorkLists[idx].works) };
+        } else {
+          return { title: action.mainWorkLists[idx].title, works: listDict.works.concat(JSON.parse(action.mainWorkLists[idx].works)) };
+        }
+      });
+      return { ...state, mainWorkLists: newMainWorkLists };
     case actionTypes.GET_WORK:
       return { ...state, selectedWork: action.selectedWork, noSuchSelectedWork: false };
     case actionTypes.WORK_NOT_EXISTING:

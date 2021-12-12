@@ -6,11 +6,6 @@ import store from '../store';
 const stubWork = {
   id: 0,
 };
-const stubReviews = [
-  {
-    id: 0,
-  },
-];
 
 describe('ActionCreators', () => {
   afterEach(() => {
@@ -20,16 +15,12 @@ describe('ActionCreators', () => {
   it('`getMainWorks` should fetch works correctly', (done) => {
     const stubMainWorksDict = {
       worklists: [
-        {
-          title: 'Test Works',
-          works: [
-            JSON.stringify(stubWork),
-          ],
-        },
+        { title: 'Test Works', works: JSON.stringify([stubWork]) },
+        { title: 'Test Works', works: JSON.stringify([stubWork]) },
       ],
     };
     const spy = jest.spyOn(axios, 'get')
-      .mockImplementation((url) => {
+      .mockImplementation((url, params) => {
         return new Promise((resolve, reject) => {
           const result = {
             status: 200,
@@ -38,9 +29,14 @@ describe('ActionCreators', () => {
           resolve(result);
         });
       });
-    store.dispatch(actionCreators.getMainWorks()).then(() => {
+    const stubNewMainWorksDict = [
+      { title: 'Test Works', works: [stubWork] },
+      { title: 'Test Works', works: [stubWork] },
+    ];
+    const stubRange = [0, 24];
+    store.dispatch(actionCreators.getMainWorks([stubRange, stubRange])).then(() => {
       const newState = store.getState();
-      expect(newState.work.mainWorkLists).toEqual(stubMainWorksDict.worklists);
+      expect(newState.work.mainWorkLists).toEqual(stubNewMainWorksDict);
       expect(spy).toHaveBeenCalledTimes(1);
       done();
     });
