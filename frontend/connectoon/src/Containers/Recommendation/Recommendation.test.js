@@ -13,7 +13,9 @@ import Recommendation from './Recommendation';
 
 const stubInitialReviewState = null;
 const stubInitialTagState = null;
-const stubInitialUserState = null;
+const stubInitialUserState = {
+  loggedInUser: { id: 1 },
+};
 const stubInitialWorkState = {
   recWorkLists: [
     [
@@ -68,6 +70,25 @@ describe('<Recommendation />', () => {
 
   afterEach(() => {
     jest.clearAllMocks();
+  });
+
+  it('should render please login message when not logged in', () => {
+    const stubInitialNoUserState = {
+      loggedInUser: null,
+    };
+    const noUserMockStore = getMockStore(stubInitialReviewState, stubInitialTagState, stubInitialNoUserState, stubInitialWorkState);
+    recommendation = (
+      <Provider store={noUserMockStore}>
+        <ConnectedRouter history={history}>
+          <Switch>
+            <Route path="/" exact render={() => <Recommendation className="recommendation" />} />
+          </Switch>
+        </ConnectedRouter>
+      </Provider>
+    );
+    const component = mount(recommendation);
+    const wrapper = component.find('h3');
+    expect(wrapper.text()).toBe('Please Login!');
   });
 
   it('should render Recommendation', () => {

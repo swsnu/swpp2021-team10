@@ -1,7 +1,7 @@
 .list-wrapper {
- width: 1000px;
- margin: 0 max(calc(50% - 500px), 0px) 40px max(calc(50% - 500px), 0px);
- display: inline-block;
+  width: 1000px;
+  margin: 0px max(calc(50% - 500px), 0px) 40px max(calc(50% - 500px), 0px);
+  display: inline-block;
 }
 
 .list-subject {

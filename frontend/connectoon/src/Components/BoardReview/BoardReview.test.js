@@ -100,20 +100,20 @@ describe('<BoardReview />', () => {
   });
 
   it('should handle click edit', () => {
-    let wrapper = component.find('.detail-edit-button');
+    let wrapper = component.find('.board-edit-button');
     wrapper.simulate('click');
     expect(component.state('editMode')).toBeTruthy();
-    wrapper = component.find('.detail-back-button');
+    wrapper = component.find('.board-back-button');
     expect(wrapper.length).toBe(1);
   });
 
   it('should handle click back', () => {
-    let wrapper = component.find('.detail-edit-button');
+    let wrapper = component.find('.board-edit-button');
     wrapper.simulate('click');
-    wrapper = component.find('.detail-back-button');
+    wrapper = component.find('.board-back-button');
     wrapper.simulate('click');
     expect(component.state('editMode')).toBeFalsy();
-    wrapper = component.find('.detail-edit-button');
+    wrapper = component.find('.board-edit-button');
     expect(wrapper.length).toBe(1);
   });
 
@@ -136,7 +136,7 @@ describe('<BoardReview />', () => {
   });
 
   it('should handle click edit, not go to work-detail', () => {
-    let wrapper = component.find('.detail-edit-button');
+    let wrapper = component.find('.board-edit-button');
     wrapper.simulate('click');
     expect(component.state('editMode')).toBeTruthy();
 
@@ -148,18 +148,18 @@ describe('<BoardReview />', () => {
     wrapper.simulate('click');
     expect(spyReviewClick).toHaveBeenCalledTimes(0);
 
-    wrapper = component.find('.detail-back-button');
+    wrapper = component.find('.board-back-button');
     expect(wrapper.length).toBe(1);
   });
 
   it('should handle click delete', () => {
-    const wrapper = component.find('.detail-delete-button');
+    const wrapper = component.find('.board-delete-button');
     wrapper.simulate('click');
     expect(spyDeleteReview).toHaveBeenCalledTimes(1);
   });
 
   it('should handle title, content, score changes', () => {
-    let wrapper = component.find('.detail-edit-button');
+    let wrapper = component.find('.board-edit-button');
     wrapper.simulate('click');
     wrapper = component.find('.review-title-input');
     wrapper.simulate('change', { target: { value: 'edit_title1' } });
@@ -173,22 +173,22 @@ describe('<BoardReview />', () => {
   });
 
   it('should handle click save', () => {
-    let wrapper = component.find('.detail-edit-button');
+    let wrapper = component.find('.board-edit-button');
     wrapper.simulate('click');
     wrapper = component.find('.review-title-input');
     wrapper.simulate('change', { target: { value: 'edit_title1' } });
-    wrapper = component.find('.detail-save-button');
+    wrapper = component.find('.board-save-button');
     wrapper.simulate('click');
     expect(component.state('editMode')).toBeFalsy();
     expect(spySaveReview).toHaveBeenCalledTimes(1);
   });
 
   it('should handle click back, returning to initial review data', () => {
-    let wrapper = component.find('.detail-edit-button');
+    let wrapper = component.find('.board-edit-button');
     wrapper.simulate('click');
     wrapper = component.find('.review-title-input');
     wrapper.simulate('change', { target: { value: 'edit_title1' } });
-    wrapper = component.find('.detail-back-button');
+    wrapper = component.find('.board-back-button');
     wrapper.simulate('click');
     expect(component.state('editMode')).toBeFalsy();
     expect(component.state('title')).toBe('Dummy Review Title');

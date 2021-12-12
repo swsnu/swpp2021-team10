@@ -10,7 +10,7 @@ class BoardReview extends Component {
       editMode: false,
       title: review.title,
       content: review.content,
-      score: review.score,
+      score: String(review.score.toFixed(1)),
       likes: review.likes,
       clickedLike,
     };
@@ -46,7 +46,7 @@ class BoardReview extends Component {
   onClickBack() {
     const { review } = this.props;
     this.setState({
-      editMode: false, title: review.title, content: review.content, score: review.score,
+      editMode: false, title: review.title, content: review.content, score: String(review.score.toFixed(1)),
     });
   }
 
@@ -77,7 +77,7 @@ class BoardReview extends Component {
     const heart = clickedLike ? '/images/fullHeart.png' : '/images/emptyHeart.png';
     const platformMapper = ['/images/naver_logo.png', '/images/kakao_logo.png', '/images/lezhin_logo.png'];
     const reviewTitle = editMode ?
-      <div onClick={(e) => e.stopPropagation()}>
+      <div className="review-title-input-wrapper" onClick={(e) => e.stopPropagation()}>
         <input
           className="review-title-input"
           value={title}
@@ -87,13 +87,13 @@ class BoardReview extends Component {
       : <h4 className="review-title">{title}</h4>;
     const buttonElement = editMode ? (
       <div className="board-review-button-region" onClick={(e) => e.stopPropagation()}>
-        <button className="detail-save-button" type="button" onClick={this.onClickSave}>save</button>
-        <button className="detail-back-button" type="button" onClick={this.onClickBack}>back</button>
+        <button className="board-save-button" type="button" onClick={this.onClickSave}>save</button>
+        <button className="board-back-button" type="button" onClick={this.onClickBack}>back</button>
       </div>
     ) : (
       <div className="board-review-button-region" onClick={(e) => e.stopPropagation()}>
-        <button className="detail-edit-button" type="button" onClick={this.onClickEdit}>edit</button>
-        <button className="detail-delete-button" type="button" onClick={this.onClickDelete}>delete</button>
+        <button className="board-edit-button" type="button" onClick={this.onClickEdit}>edit</button>
+        <button className="board-delete-button" type="button" onClick={this.onClickDelete}>delete</button>
       </div>
     );
     const reviewContent = editMode
@@ -125,9 +125,17 @@ class BoardReview extends Component {
         </label>
       </div>
     ) : (
-      <div className="review-score">
-        <img className="review-score-star-icon" src="/images/ratingStar.png" alt="star" />
-        <h5 className="review-value score">{score}</h5>
+      <div>
+        <div className="review-score">
+          <img className="review-score-star-icon" src="/images/ratingStar.png" alt="star" />
+          <h5 className="review-value score">{score}</h5>
+        </div>
+        <div className="review-likes">
+          <button className="review-like-button" type="button" onClick={clickedLike ? this.onClickUnlike : this.onClickLike}>
+            <img className="review-like-heart-icon" src={heart} />
+          </button>
+          <h5 className="review-value like">{likes}</h5>
+        </div>
       </div>
     );
 
@@ -137,25 +145,14 @@ class BoardReview extends Component {
           <WorkThumbnail className="work-thumbnail" src={review.work.thumbnail_picture} platform={platformMapper[review.work.platform_id]} />
         </td>
         <td className="board-review detail">
-          <div className="board-review-header">
-            <h3 className="work-title">{review.work.title}</h3>
-            <div className="review-score-likes-wrapper" onClick={(e) => e.stopPropagation()}>
-              {reviewScore}
-
-              <div className="review-likes">
-                <button className="review-like-button" type="button" onClick={clickedLike ? this.onClickUnlike : this.onClickLike}>
-                  <img className="review-like-heart-icon" src={heart} />
-                </button>
-                <h5 className="review-value like">{likes}</h5>
-              </div>
-            </div>
+          <h3 className="work-title">{review.work.title}</h3>
+          <div className="review-score-likes-wrapper" onClick={(e) => e.stopPropagation()}>
+            {reviewScore}
           </div>
-          <div className="profile-title-button-wrapper">
-            <div className="profile-title-wrapper">
-              <img className="user-profile-image" src="/images/dummyAccountIcon.jpeg" alt="user-profile" />
-              <div className="author-name">{review.author.username}</div>
-              {reviewTitle}
-            </div>
+          <div className="profile-title-wrapper">
+            <img className="user-profile-image" src="/images/dummyAccountIcon.jpeg" alt="user-profile" />
+            <div className="author-name">{review.author.username}</div>
+            {reviewTitle}
             {isMyReview ? buttonElement : null}
           </div>
           {reviewContent}
