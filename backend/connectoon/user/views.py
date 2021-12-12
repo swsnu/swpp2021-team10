@@ -8,6 +8,7 @@ from django.views.decorators.http import require_GET
 
 import json
 from json.decoder import JSONDecodeError
+import re
 
 from django.views.decorators.http import require_POST
 
@@ -80,6 +81,11 @@ def user_dup_email(request):
             req_data = json.loads(request.body.decode())
             email = req_data['email']
         except (KeyError, JSONDecodeError):
+            return HttpResponseBadRequest()
+
+        r = re.compile('[a-zA-Z0-9]+@[a-zA-Z0-9.]+')
+        match = re.match(r, email)
+        if match is None:
             return HttpResponseBadRequest()
 
         try:

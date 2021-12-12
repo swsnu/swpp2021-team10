@@ -121,6 +121,22 @@ class UserTestCase(TestCase):
                                content_type='application/json', HTTP_X_CSRFTOKEN=csrftoken)
         self.assertEqual(response.status_code, 400)
 
+        # Check wrong email type
+        response = client.post('/api/v1/users/dup/email/',
+                               json.dumps({'email': 'test2snu.ac.kr'}),
+                               content_type='application/json', HTTP_X_CSRFTOKEN=csrftoken)
+        self.assertEqual(response.status_code, 400)
+
+        response = client.post('/api/v1/users/dup/email/',
+                               json.dumps({'email': 'test2@'}),
+                               content_type='application/json', HTTP_X_CSRFTOKEN=csrftoken)
+        self.assertEqual(response.status_code, 400)
+
+        response = client.post('/api/v1/users/dup/email/',
+                               json.dumps({'email': '@snu.ac.kr'}),
+                               content_type='application/json', HTTP_X_CSRFTOKEN=csrftoken)
+        self.assertEqual(response.status_code, 400)
+
         response = client.post('/api/v1/users/dup/email/',
                                json.dumps({'email': 'test4@snu.ac.kr'}),
                                content_type='application/json', HTTP_X_CSRFTOKEN=csrftoken)
