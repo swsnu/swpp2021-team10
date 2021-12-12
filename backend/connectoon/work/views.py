@@ -5,6 +5,7 @@ import operator
 from django.http.response import HttpResponseBadRequest, JsonResponse
 from json.decoder import JSONDecodeError
 from django.forms.models import model_to_dict
+from django.core.files import File
 
 from work.models import Work
 from review.models import Review, ReviewUserLike
@@ -14,6 +15,8 @@ from django.contrib.auth import get_user_model
 from django.views.decorators.csrf import csrf_exempt
 
 from django.db.models import Q
+
+import make_profile
 
 def work_id(request, id):
     try:
@@ -92,6 +95,11 @@ def work_id_review(request, id):
         work.score_sum = work.score_sum + float(score)
         work.score_avg = work.score_sum / work.review_num
         work.save()
+
+        if request_user.profile_picture:
+            new_image = make_profile.make_image(request_user.profile_picture.url, work.thumbnail_picture)
+            request_user.profile_picture.save('new_image.jpg', File(new_image), save=True)
+            request_user.save()
 
         review_json = model_to_dict(review)
         return JsonResponse(review_json, status=201) 
