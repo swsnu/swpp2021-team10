@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { Redirect } from 'react-router';
 import * as actionCreators from '../../store/actions/index';
 
 import './MyReviews.css';
@@ -32,6 +33,10 @@ class MyReviews extends Component {
 
   render() {
     const { myReviews, loggedInUser } = this.props;
+
+    if (!loggedInUser) {
+      return <Redirect to="/main" />;
+    }
 
     const reviewLists = myReviews?.map((review) => {
       return (

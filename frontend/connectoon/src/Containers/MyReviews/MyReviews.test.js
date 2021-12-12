@@ -25,6 +25,10 @@ jest.mock('../../Components/BoardReview/BoardReview', () => {
   });
 });
 
+const spyMain = (props) => {
+  return <div className="spy-main" />;
+};
+
 const stubInitialWorkState = {
 };
 
@@ -155,7 +159,7 @@ describe('<MyReviews />', () => {
     expect(spyUnlikeReview).toHaveBeenCalledTimes(1);
   });
 
-  it('should handle redirect', () => {
+  it('should be redirected to login when not logged in', () => {
     const newmockStore = getMockStore(stubInitialReviewState, stubInitialTagState, { loggedInUser: false }, stubInitialWorkState);
     const myNewReviews = (
       <Provider store={newmockStore}>
@@ -172,5 +176,23 @@ describe('<MyReviews />', () => {
     const component = mount(myNewReviews);
     expect(spyHistoryPush).toHaveBeenCalledTimes(1);
     expect(spyHistoryPush).toHaveBeenCalledWith('/login');
+  });
+
+  it('should be redirected to main when clicked log out', () => {
+    const newMyReviews = (
+      <Provider store={mockStore}>
+        <ConnectedRouter history={history}>
+          <Switch>
+            {/* eslint-disable-next-line */}
+            <Route path="/" exact render={(props) => <MyReviews {...props} />} />
+            <Route path="/main" exact render={() => spyMain()} />
+          </Switch>
+        </ConnectedRouter>
+      </Provider>
+    );
+    const component = mount(newMyReviews);
+    console.log(component.debug());
+    const wrapper = component.find('.spy-main');
+    expect(wrapper.length).toBe(1);
   });
 });
