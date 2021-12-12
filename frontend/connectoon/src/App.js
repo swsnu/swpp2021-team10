@@ -4,6 +4,9 @@ import {
   Route, Redirect, Switch,
 } from 'react-router-dom';
 
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 import { ConnectedRouter } from 'connected-react-router';
 
 import { persistStore } from 'redux-persist';
@@ -33,6 +36,7 @@ function App() {
           <div className="App">
             <NavBar className="nav-bar" />
             <div className="nav-bar-empty-space" />
+            <ToastContainer position="top-center" autoClose={3000} hideProgressBar newestOnTop={false} closeOnClick={true} rtl={false} pauseOnFocusLoss draggable pauseOnHover />
             <Switch>
               <Route path="/main" exact component={Main} />
               <Route path="/recommendation" exact component={Recommendation} />

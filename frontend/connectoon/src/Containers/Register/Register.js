@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Redirect } from 'react-router';
+
+import { toast } from 'react-toastify';
+
 import TagSearchWindow from '../TagSearchWindow/TagSearchWindow';
 
 import * as actionCreators from '../../store/actions/index';
@@ -41,8 +44,11 @@ class Register extends Component {
     this.props.dupCheckEmail(emailData)
       .then(() => {
         this.setState({ emailDupCheck: true });
+        toast('Email duplication has checked!');
       })
-      .catch((e) => {});
+      .catch((e) => {
+        toast('There is duplicated email!');
+      });
   };
 
   checkUsernameDup = () => {
@@ -55,8 +61,11 @@ class Register extends Component {
     this.props.dupCheckUsername(usernameData)
       .then(() => {
         this.setState({ usernameDupCheck: true });
+        toast('Username duplication has checked!');
       })
-      .catch((e) => {});
+      .catch((e) => {
+        toast('There is duplicated username!');
+      });
   };
 
   onAddTag = (tagName) => {
@@ -79,6 +88,21 @@ class Register extends Component {
   }
 
   submitRegisterData = () => {
+    let emailString = '';
+    let usernameString = '';
+    let passwordString = '';
+    if (!this.state.emailDupCheck) emailString += 'You should check email duplication!\n';
+    if (!this.state.usernameDupCheck) usernameString += 'You should check username duplication!\n';
+    if (!this.checkPasswordAccord()) passwordString += 'You should match password and password check with guide!\n';
+
+    if (emailString) toast(emailString);
+    if (usernameString) toast(usernameString);
+    if (passwordString) toast(passwordString);
+
+    if (emailString || usernameString || passwordString) {
+      return;
+    }
+
     const {
       email, username, password, selectedImage, tags,
     } = this.state;
@@ -138,7 +162,7 @@ class Register extends Component {
           <TagSearchWindow id="search-genre-search-window" onAddTag={this.onAddTag} onDeleteTag={this.onDeleteTag} defaultTag={[]} />
         </div>
         <br />
-        <button id="register-submit-button" onClick={() => this.submitRegisterData()} type="button" disabled={!(this.state.emailDupCheck && this.state.usernameDupCheck && this.checkPasswordAccord())}>submit</button>
+        <button id="register-submit-button" onClick={() => this.submitRegisterData()} type="button">submit</button>
       </div>
     );
   }
