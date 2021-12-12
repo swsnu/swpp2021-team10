@@ -1,0 +1,122 @@
+.login-page-container { 
+    position: absolute; 
+    left: 50%;
+    transform: translateX(-50%); 
+    background-color: #fefefe;
+    border: 1px solid black;
+    top: 30%;
+    padding: 50px;
+    box-shadow: 3px 3px 10px grey;
+}
+
+#email-label-text {
+    margin-top: 2rem;
+    margin-bottom: 0.5rem;
+    font-size: 0.678rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    text-decoration: none;
+}
+
+#password-label-text {
+    margin-top: 1rem;
+    margin-bottom: 0.5rem;
+    font-size: 0.678rem;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    text-decoration: none;
+}
+
+#login-email-input {
+    width: 200px;
+    margin-bottom: 0.5em;
+    padding: 1em;
+    font-size: 0.750rem;
+    letter-spacing: 2px;
+}
+
+#login-password-input {
+    width: 200px;
+    margin-bottom: 1em;
+    padding: 1em;
+    font-size: 0.750rem;
+    letter-spacing: 2px;
+}
+
+#login-submit-button {
+    position: absolute; 
+    left: 50%;
+    transform: translateX(-50%); 
+    display: inline-block;
+    padding: 1em 2em;
+    border-radius: 0;
+    color: black;
+    margin-top: 2rem;
+    font-size: 0.678rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    text-decoration: none;
+    background: linear-gradient(to right, rgba(178, 135, 111, 0) 25%, rgba(0, 0, 10, 0.8) 75%);
+    background-position: 1% 50%;
+    background-size: 400% 300%;
+    border: 1px solid black;
+    transition: 700ms cubic-bezier(0.165, 0.84, 0.44, 1);
+}
+#login-submit-button:hover {
+transition: 400ms cubic-bezier(0.165, 0.84, 0.44, 1);
+}
+#login-submit-button:hover {
+color: white;
+color: #fff;
+background-position: 99% 50%;
+}
+
+#login-register-link {
+    text-align: right;
+    position: absolute; 
+    left: 50%;
+    transform: translateX(-50%); 
+}
+
+#login-register-link {
+    display: inline-block;
+    padding: 1em 0;
+    border-radius: 0;
+    color: black;
+    margin-top: 4rem;
+    font-size: 0.678rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    text-decoration: none;
+    position: relative;
+}
+#login-register-link:before, #login-register-link:after {
+content: "";
+display: block;
+position: absolute;
+height: 1px;
+width: 0;
+}
+#login-register-link:before {
+transition: width 0s ease, background 0.4s ease;
+left: 0;
+right: 0;
+bottom: 6px;
+}
+#login-register-link:after {
+right: 2.2%;
+bottom: 6px;
+background: black;
+transition: width 0.4s ease;
+}
+#login-register-link:hover:before {
+width: 97.8%;
+background: black;
+transition: width 0.4s ease;
+}
+#login-register-link:hover:after {
+width: 97.8%;
+background: 0 0;
+transition: all 0s ease;
+}
+
