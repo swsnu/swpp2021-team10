@@ -4,6 +4,7 @@
   transform: translateX(-50%); 
   background-color: #fefefe;
   width: 70rem;
+  height: 48rem;
 }
 
 #input-profile-image {
@@ -231,13 +232,13 @@ background-position: 99% 50%;
   position: absolute; 
   left: 50%;
   transform: translate(-50%);
-  margin-top: 25rem;
+  margin-top: 23.5rem;
 }
 
 #register-submit-button {
   position: absolute; 
   left: 50%;
-  top: 35rem;
+  top: 40rem;
   transform: translate(-50%);
   display: inline-block;
   padding: 1em 2em;
