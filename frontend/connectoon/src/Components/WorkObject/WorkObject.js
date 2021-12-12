@@ -13,7 +13,7 @@ const WorkObject = (props) => {
         <h4 className="work-object-title description">{title}</h4>
         <h5 className="work-object-artist description">{artists.toString()}</h5>
         <img className="work-object-score-star-icon" src="/images/ratingStar.png" alt="rating" />
-        <h5 className="work-object-score description">{score}</h5>
+        <h5 className="work-object-score description">{score ? score.toFixed(2) : '0'}</h5>
         <h5 className="work-object-created-year description">{createdYear}</h5>
       </div>
     </div>

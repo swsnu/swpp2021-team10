@@ -131,7 +131,7 @@ def work_recommend(request):  # TODO
     request_user = request.user
     if request.method == 'GET':
         if request_user.is_authenticated:
-            tag_list = [Tag.objects.get(id=tag['id']) for tag in request_user.user_tag.all().values()]
+            tag_list = [Tag.objects.get(id=tag['tag_id']) for tag in request_user.user_tag.all().values()]
             
             tag_based_work = list(map(lambda work: {'title': work['title'], 'thumbnail_picture': work['thumbnail_picture'],
             'description': work['description'], 'year': work['year'], 'link': work['link'],
