@@ -6,6 +6,8 @@ import WorkList from '../../Components/WorkList/WorkList';
 
 import * as actionCreators from '../../store/actions/index';
 
+import './MyPage.css';
+
 class MyPage extends Component {
   componentDidMount() {
     this.props.onGetMyReviews();
@@ -32,8 +34,8 @@ class MyPage extends Component {
     }
 
     const imageContainer = () => {
-      if (loggedInUser.profile_picture != null) return <img id="setting-profile-img" width="250px" src={loggedInUser.profile_picture} />;
-      else return <img id="setting-profile-img" width="250px" src="/images/no_image.png" />;
+      if (loggedInUser.profile_picture != null) return <img id="mypage-profile-img" width="250px" src={loggedInUser.profile_picture} />;
+      else return <img id="mypage-profile-img" width="250px" src="/images/no_image.png" />;
     };
 
     const genreTags = () => {
@@ -73,11 +75,17 @@ class MyPage extends Component {
         <div id="mypage-profile-image-holder">
           {imageContainer() }
         </div>
-        <h3 id="mypage-username">{loggedInUser.username}</h3>
-        <h4 id="mypage-email">{loggedInUser.email}</h4>
-        <button id="mypage-account-settings" type="button" onClick={() => this.onClickAccountSettings()}>Account Settings</button>
-        { genreTags() }
-        { myReviewWorkList() }
+        <div id="mypage-userdata-holder">
+          <h3 id="mypage-username">{loggedInUser.username}</h3>
+          <h4 id="mypage-email">{loggedInUser.email}</h4>
+          <button id="mypage-account-settings" type="button" onClick={() => this.onClickAccountSettings()}>Account Settings</button>
+        </div>
+        <div id="mypage-genre-tags-holder">
+          { genreTags() }
+        </div>
+        <div id="mypage-myreviews-holder">
+          { myReviewWorkList() }
+        </div>
       </div>
     );
   }
