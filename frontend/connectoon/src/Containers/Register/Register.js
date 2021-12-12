@@ -146,7 +146,7 @@ class Register extends Component {
             { this.state.usernameDupCheck && <img id="register-dupchk-username-img" src="/images/check.png" alt="dupchk-username" width="20px" /> }
           </label>
           <label id="register-password">
-            <div id="register-password-label-text">password</div>
+            <div id="register-password-label-text">password (at least 6 characters)</div>
             <input id="register-password-input" type="password" value={this.state.password} onChange={(event) => { this.setState({ password: event.target.value }); }} />
           </label>
           <label id="register-password-check">
