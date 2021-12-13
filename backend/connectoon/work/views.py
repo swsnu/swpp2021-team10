@@ -15,8 +15,6 @@ from django.views.decorators.csrf import csrf_exempt
 
 from django.db.models import Q
 
-import time
-
 def work_id(request, id):
     try:
         work = Work.objects.get(id = id)
