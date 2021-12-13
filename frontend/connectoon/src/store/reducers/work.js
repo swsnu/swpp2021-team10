@@ -13,7 +13,7 @@ const initialState = {
   ],
   selectedWork: null,
   noSuchSelectedWork: false,
-  reccomWorks: [
+  recommWorks: [
     [], [],
   ],
 };
@@ -34,14 +34,14 @@ const reducer = (state = initialState, action) => {
     case actionTypes.WORK_NOT_EXISTING:
       return { ...state, selectedWork: null, noSuchSelectedWork: true };
     case actionTypes.GET_REC_WORKS:
-      const newReccomWorks = state.reccomWorks.map((listDict, idx) => {
+      const newRecommWorks = state.recommWorks.map((listDict, idx) => {
         if (action.listStart[idx]) {
           return action.selectedWorks[idx];
         } else {
           return listDict.concat(action.selectedWorks[idx]);
         }
       });
-      return { ...state, reccomWorks: newReccomWorks };
+      return { ...state, recommWorks: newRecommWorks };
     case actionTypes.GET_SEARCH_WORKS:
       const newSearchedWorks = state.searchedWorks.map((listDict, idx) => {
         if (action.listStart[idx]) {

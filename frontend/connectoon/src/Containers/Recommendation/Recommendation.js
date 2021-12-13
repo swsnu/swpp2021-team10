@@ -111,7 +111,7 @@ Recommendation.propTypes = {
 const mapStateToProps = (state) => {
   return {
     loggedInUser: state.user.loggedInUser,
-    recWorkLists: state.work.reccomWorks,
+    recWorkLists: state.work.recommWorks,
   };
 };
 

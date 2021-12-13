@@ -218,7 +218,7 @@ class WorkTestCase(TestCase):
 
     def test_work_recommend(self):
         client = Client()
-        response = client.get('/api/v1/works/recommend/')
+        response = client.get('/api/v1/works/recommend/', {'requestWorks[]': ['[0, 1]', '[0, 2]']}, content_type='application/json')
         self.assertEqual(response.status_code, 401)
 
         Work.objects.first().tags.add(Tag.objects.first())
@@ -227,7 +227,7 @@ class WorkTestCase(TestCase):
         response = client.post('/api/v1/users/login/',
                                json.dumps({'email': 'dummy@user.com', 'password': '1234'}),
                                content_type='application/json', HTTP_X_CSRFTOKEN=csrftoken)
-        response = client.get('/api/v1/works/recommend/')
+        response = client.get('/api/v1/works/recommend/', {'requestWorks[]': ['[0, 1]', '[0, 2]']}, content_type='application/json')
         self.assertEqual(response.status_code, 200)
 
         csrftoken = client.get('/api/v1/token/').cookies['csrftoken'].value  # Get csrf token from cookie
