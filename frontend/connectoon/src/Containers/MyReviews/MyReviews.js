@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { Redirect } from 'react-router';
 import * as actionCreators from '../../store/actions/index';
 
 import './MyReviews.css';
@@ -19,19 +20,27 @@ class MyReviews extends Component {
     this.props.history.push(`/works/${workId}`);
   }
 
-  onClickSaveReview(id, title, content, score) {
-    this.props.onEditReview(id, { title, content, score });
+  onClickSaveReview(id, title, content, score, workId) {
+    this.props.onEditReview(id, { title, content, score })
+      .then(() => {
+        this.props.onGetMyReviews();
+        this.props.onPutImage(workId);
+      });
   }
 
   onClickDeleteReview(id) {
     this.props.onDeleteReview(id)
       .then(() => {
-        this.props.onGetBoardReviews();
+        this.props.onGetMyReviews();
       });
   }
 
   render() {
     const { myReviews, loggedInUser } = this.props;
+
+    if (!loggedInUser) {
+      return <Redirect to="/main" />;
+    }
 
     const reviewLists = myReviews?.map((review) => {
       return (
@@ -41,7 +50,7 @@ class MyReviews extends Component {
           review={review}
           onClickReview={(workId) => this.onClickReview(workId)}
           isMyReview={loggedInUser && loggedInUser.id === review.author.id}
-          onClickSaveReview={(title, content, score) => this.onClickSaveReview(review.id, title, content, score)}
+          onClickSaveReview={(title, content, score) => this.onClickSaveReview(review.id, title, content, score, review.work.id)}
           onClickDeleteReview={() => this.onClickDeleteReview(review.id)}
           onClickLikeReview={() => this.props.onPostLike(review.id)}
           onClickUnlikeReview={() => this.props.onPostUnlike(review.id)}
@@ -86,6 +95,7 @@ const mapDispatchToProps = (dispatch) => {
     onDeleteReview: (id) => dispatch(actionCreators.deleteReview(id)),
     onPostLike: (id) => dispatch(actionCreators.postLike(id)),
     onPostUnlike: (id) => dispatch(actionCreators.postUnlike(id)),
+    onPutImage: (id) => dispatch(actionCreators.putImage(id)),
   };
 };
 

@@ -28,6 +28,7 @@ class WorkDetail extends Component {
       .then(() => {
         this.props.onGetWork(this.props.match.params.id);
         this.props.onGetWorkReviews(this.props.match.params.id);
+        this.props.onPutImage(this.props.match.params.id);
       });
   }
 
@@ -44,6 +45,7 @@ class WorkDetail extends Component {
       .then(() => {
         this.props.onGetWork(this.props.match.params.id);
         this.props.onGetWorkReviews(this.props.match.params.id);
+        this.props.onPutImage(this.props.match.params.id);
       });
   }
 
@@ -104,7 +106,7 @@ class WorkDetail extends Component {
           onClickDeleteReview={() => this.onClickDeleteReview(myReview[0].id)}
           onClickLikeReview={() => this.props.onPostLike(myReview[0].id)}
           onClickUnlikeReview={() => this.props.onPostUnlike(myReview[0].id)}
-          clickedLike={myReview[0].clickedLike}
+          clickedLike={myReview[0].clickedLike && loggedInUser}
           isLoggedIn={true}
         />
       </div>) :
@@ -134,7 +136,7 @@ class WorkDetail extends Component {
             review={review}
             onClickLikeReview={() => this.props.onPostLike(review.id)}
             onClickUnlikeReview={() => this.props.onPostUnlike(review.id)}
-            clickedLike={review.clickedLike}
+            clickedLike={review.clickedLike && loggedInUser}
             editable={false}
             isLoggedIn={!!loggedInUser}
           />))}
@@ -170,6 +172,7 @@ const mapDispatchToProps = (dispatch) => {
     onDeleteReview: (id) => dispatch(actionCreators.deleteReview(id)),
     onPostLike: (id) => dispatch(actionCreators.postLike(id)),
     onPostUnlike: (id) => dispatch(actionCreators.postUnlike(id)),
+    onPutImage: (id) => dispatch(actionCreators.putImage(id)),
   };
 };
 

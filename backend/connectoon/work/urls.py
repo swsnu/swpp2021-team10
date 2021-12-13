@@ -8,4 +8,5 @@ urlpatterns = [
     path('main/', views.work_main, name='work_main'),
     path('recommend/', views.work_recommend, name='work_recommend'),
     path('search/', views.work_search, name='work_search'),
+    path('<int:id>/image/', views.work_image, name='work_image'),
 ]

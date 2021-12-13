@@ -7,6 +7,7 @@ import { Switch, Route } from 'react-router';
 import { getMockStore } from '../../test-utils/mocks';
 import { history } from '../../store/store';
 import * as reviewActionCreator from '../../store/actions/review';
+import * as workActionCreator from '../../store/actions/work';
 import MyReviews from './MyReviews';
 
 jest.mock('../../Components/BoardReview/BoardReview', () => {
@@ -24,6 +25,10 @@ jest.mock('../../Components/BoardReview/BoardReview', () => {
     );
   });
 });
+
+const spyMain = (props) => {
+  return <div className="spy-main" />;
+};
 
 const stubInitialWorkState = {
 };
@@ -83,6 +88,7 @@ describe('<MyReviews />', () => {
   let spyDeleteReview;
   let spyLikeReview;
   let spyUnlikeReview;
+  let spyPutImage;
   beforeEach(() => {
     myReviews = (
       <Provider store={mockStore}>
@@ -104,6 +110,8 @@ describe('<MyReviews />', () => {
       .mockImplementation((id) => { return (dispatch) => { return new Promise((resolve, reject) => resolve()); }; });
     spyUnlikeReview = jest.spyOn(reviewActionCreator, 'postUnlike')
       .mockImplementation((id) => { return (dispatch) => { return new Promise((resolve, reject) => resolve()); }; });
+    spyPutImage = jest.spyOn(workActionCreator, 'putImage')
+      .mockImplementation((id) => { return (dispatch) => {}; });
   });
 
   afterEach(() => {
@@ -155,7 +163,7 @@ describe('<MyReviews />', () => {
     expect(spyUnlikeReview).toHaveBeenCalledTimes(1);
   });
 
-  it('should handle redirect', () => {
+  it('should be redirected to login when not logged in', () => {
     const newmockStore = getMockStore(stubInitialReviewState, stubInitialTagState, { loggedInUser: false }, stubInitialWorkState);
     const myNewReviews = (
       <Provider store={newmockStore}>
@@ -172,5 +180,23 @@ describe('<MyReviews />', () => {
     const component = mount(myNewReviews);
     expect(spyHistoryPush).toHaveBeenCalledTimes(1);
     expect(spyHistoryPush).toHaveBeenCalledWith('/login');
+  });
+
+  it('should be redirected to main when clicked log out', () => {
+    const newMyReviews = (
+      <Provider store={mockStore}>
+        <ConnectedRouter history={history}>
+          <Switch>
+            {/* eslint-disable-next-line */}
+            <Route path="/" exact render={(props) => <MyReviews {...props} />} />
+            <Route path="/main" exact render={() => spyMain()} />
+          </Switch>
+        </ConnectedRouter>
+      </Provider>
+    );
+    const component = mount(newMyReviews);
+    console.log(component.debug());
+    const wrapper = component.find('.spy-main');
+    expect(wrapper.length).toBe(1);
   });
 });

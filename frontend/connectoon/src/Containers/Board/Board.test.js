@@ -56,17 +56,22 @@ const stubReviews = [
   {
     id: 1,
     work: stubWork,
-    author: {
-      id: 1,
-      email: 'dummy@swpp.com',
-      profile_img: '',
-      username: 'dummyuser',
-    },
+    author: stubAuthor,
     score: 3.5,
     likes: 10,
     title: 'Dummy Review Title',
     content: 'Dummy Content\nLong\nLong\nLogn\nLong\nFinish\n',
     clickedLike: false,
+  },
+  {
+    id: 2,
+    work: stubWork,
+    author: stubAuthor,
+    score: 3.5,
+    likes: 10,
+    title: 'Dummy Review Title',
+    content: 'Dummy Content\nLong\nLong\nLogn\nLong\nFinish\n',
+    clickedLike: true,
   },
 ];
 
@@ -121,7 +126,7 @@ describe('<Board />', () => {
     const spyHistoryPush = jest.spyOn(history, 'push')
       .mockImplementation((path) => { });
     const component = mount(board);
-    const wrapper = component.find('.spyReview');
+    const wrapper = component.find('.spyReview').first();
     wrapper.simulate('click');
     expect(spyHistoryPush).toHaveBeenCalledTimes(1);
     expect(spyHistoryPush).toHaveBeenCalledWith('/works/1');
@@ -129,28 +134,28 @@ describe('<Board />', () => {
 
   it('should handle click edit', () => {
     const component = mount(board);
-    const wrapper = component.find('.spy-save-button');
+    const wrapper = component.find('.spy-save-button').first();
     wrapper.simulate('click');
     expect(spyEditReview).toHaveBeenCalledTimes(1);
   });
 
   it('should handle click delete', () => {
     const component = mount(board);
-    const wrapper = component.find('.spy-delete-button');
+    const wrapper = component.find('.spy-delete-button').first();
     wrapper.simulate('click');
     expect(spyDeleteReview).toHaveBeenCalledTimes(1);
   });
 
   it('should handle click like', () => {
     const component = mount(board);
-    const wrapper = component.find('.spy-like-button');
+    const wrapper = component.find('.spy-like-button').first();
     wrapper.simulate('click');
     expect(spyLikeReview).toHaveBeenCalledTimes(1);
   });
 
-  it('should handle click like', () => {
+  it('should handle click unlike', () => {
     const component = mount(board);
-    const wrapper = component.find('.spy-unlike-button');
+    const wrapper = component.find('.spy-unlike-button').first();
     wrapper.simulate('click');
     expect(spyUnlikeReview).toHaveBeenCalledTimes(1);
   });

@@ -37,3 +37,11 @@
   width: 100%;
   height: 70px;
 }
+
+.Toastify__toast-container--top-center {
+  margin-top: 5rem;
+}
+
+.Toastify__toast-container {
+  --toastify-text-color-light: #000000;
+}

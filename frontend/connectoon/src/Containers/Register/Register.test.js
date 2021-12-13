@@ -89,6 +89,22 @@ describe('<Register />', () => {
     expect(spy).toHaveBeenCalledTimes(1);
   });
 
+  it('should fail email duplication', () => {
+    const component = mount(register);
+    const spy = jest.spyOn(axios, 'post')
+      .mockImplementation(() => {
+        return new Promise((resolve, reject) => {
+          const result = {
+            status: 400,
+          };
+          reject(result);
+        });
+      });
+    const wrapper = component.find('#register-dupchk-email-button');
+    wrapper.simulate('click');
+    expect(spy).toHaveBeenCalledTimes(1);
+  });
+
   it('should check username duplication', () => {
     const component = mount(register);
     const spy = jest.spyOn(axios, 'post')
@@ -98,6 +114,22 @@ describe('<Register />', () => {
             status: 200,
           };
           resolve(result);
+        });
+      });
+    const wrapper = component.find('#register-dupchk-username-button');
+    wrapper.simulate('click');
+    expect(spy).toHaveBeenCalledTimes(1);
+  });
+
+  it('should fail username duplication', () => {
+    const component = mount(register);
+    const spy = jest.spyOn(axios, 'post')
+      .mockImplementation(() => {
+        return new Promise((resolve, reject) => {
+          const result = {
+            status: 400,
+          };
+          reject(result);
         });
       });
     const wrapper = component.find('#register-dupchk-username-button');
@@ -115,6 +147,16 @@ describe('<Register />', () => {
     pwArea.simulate('change', { target: { value: 'qwe123' } });
     const pwChkArea = component.find('#register-password-check-input');
     pwChkArea.simulate('change', { target: { value: 'qwe123' } });
+  });
+
+  it('should not submit when no changed', () => {
+    const spyRegister = jest.spyOn(actionCreatorUser, 'register')
+      .mockImplementation((registerData) => { return () => {}; });
+    const component = mount(register);
+
+    const submitButton = component.find('#register-submit-button');
+    submitButton.simulate('click');
+    expect(spyRegister).toHaveBeenCalledTimes(0);
   });
 
   it('should submit register', () => {

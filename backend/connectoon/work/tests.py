@@ -246,3 +246,14 @@ class WorkTestCase(TestCase):
 
         response = client.post('/api/v1/works/search/', HTTP_X_CSRFTOKEN=csrftoken)
         self.assertEqual(response.status_code, 405)
+
+    def test_work_image_id_not_exist(self):
+        client = Client()
+        response = client.get('/api/v1/works/10/image/')
+        self.assertEqual(response.status_code, 404)
+        
+    def test_work_image_wrong_api(self):
+        client = Client()
+        response = client.delete('/api/v1/works/1/image/')
+
+        self.assertEqual(response.status_code, 405)
