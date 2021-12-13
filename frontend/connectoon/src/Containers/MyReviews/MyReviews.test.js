@@ -7,6 +7,7 @@ import { Switch, Route } from 'react-router';
 import { getMockStore } from '../../test-utils/mocks';
 import { history } from '../../store/store';
 import * as reviewActionCreator from '../../store/actions/review';
+import * as workActionCreator from '../../store/actions/work';
 import MyReviews from './MyReviews';
 
 jest.mock('../../Components/BoardReview/BoardReview', () => {
@@ -83,6 +84,7 @@ describe('<MyReviews />', () => {
   let spyDeleteReview;
   let spyLikeReview;
   let spyUnlikeReview;
+  let spyPutImage;
   beforeEach(() => {
     myReviews = (
       <Provider store={mockStore}>
@@ -104,6 +106,8 @@ describe('<MyReviews />', () => {
       .mockImplementation((id) => { return (dispatch) => { return new Promise((resolve, reject) => resolve()); }; });
     spyUnlikeReview = jest.spyOn(reviewActionCreator, 'postUnlike')
       .mockImplementation((id) => { return (dispatch) => { return new Promise((resolve, reject) => resolve()); }; });
+    spyPutImage = jest.spyOn(workActionCreator, 'putImage')
+      .mockImplementation((id) => { return (dispatch) => {}; });
   });
 
   afterEach(() => {

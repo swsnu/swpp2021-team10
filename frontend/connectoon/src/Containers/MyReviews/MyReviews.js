@@ -19,14 +19,18 @@ class MyReviews extends Component {
     this.props.history.push(`/works/${workId}`);
   }
 
-  onClickSaveReview(id, title, content, score) {
-    this.props.onEditReview(id, { title, content, score });
+  onClickSaveReview(id, title, content, score, workId) {
+    this.props.onEditReview(id, { title, content, score })
+      .then(() => {
+        this.props.onGetMyReviews();
+        this.props.onPutImage(workId);
+      });
   }
 
   onClickDeleteReview(id) {
     this.props.onDeleteReview(id)
       .then(() => {
-        this.props.onGetBoardReviews();
+        this.props.onGetMyReviews();
       });
   }
 
@@ -41,7 +45,7 @@ class MyReviews extends Component {
           review={review}
           onClickReview={(workId) => this.onClickReview(workId)}
           isMyReview={loggedInUser && loggedInUser.id === review.author.id}
-          onClickSaveReview={(title, content, score) => this.onClickSaveReview(review.id, title, content, score)}
+          onClickSaveReview={(title, content, score) => this.onClickSaveReview(review.id, title, content, score, review.work.id)}
           onClickDeleteReview={() => this.onClickDeleteReview(review.id)}
           onClickLikeReview={() => this.props.onPostLike(review.id)}
           onClickUnlikeReview={() => this.props.onPostUnlike(review.id)}
@@ -86,6 +90,7 @@ const mapDispatchToProps = (dispatch) => {
     onDeleteReview: (id) => dispatch(actionCreators.deleteReview(id)),
     onPostLike: (id) => dispatch(actionCreators.postLike(id)),
     onPostUnlike: (id) => dispatch(actionCreators.postUnlike(id)),
+    onPutImage: (id) => dispatch(actionCreators.putImage(id)),
   };
 };
 

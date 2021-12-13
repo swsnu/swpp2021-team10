@@ -96,11 +96,6 @@ def work_id_review(request, id):
         work.score_avg = work.score_sum / work.review_num
         work.save()
 
-        if request_user.profile_picture:
-            new_image = make_profile.make_image(request_user.profile_picture.url, work.thumbnail_picture)
-            request_user.profile_picture.save('new_image.jpg', File(new_image), save=True)
-            request_user.save()
-
         review_json = model_to_dict(review)
         return JsonResponse(review_json, status=201) 
     
@@ -212,5 +207,23 @@ def work_search(request):  # TODO
         'id': work['id']}, work_artist_list))
         
         return JsonResponse(return_work_list, safe=False)
+    else:
+        return HttpResponseNotAllowed(['GET'])
+
+def work_image(request, id):  # TODO
+    try:
+        work = Work.objects.get(id = id)
+    except Work.DoesNotExist:
+        return HttpResponse(status=404)
+    
+    if request.method == 'GET':
+        request_user = request.user
+
+        if request_user.profile_picture:
+            new_image = make_profile.make_image(request_user.profile_picture.url, work.thumbnail_picture)
+            request_user.profile_picture.save('new_image.jpg', File(new_image), save=True)
+            request_user.save()
+
+        return HttpResponse(status=200)
     else:
         return HttpResponseNotAllowed(['GET'])

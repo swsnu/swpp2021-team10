@@ -27,4 +27,5 @@ export {
   getRecWorks,
   getSearchWorks,
   postWorkReview,
+  putImage,
 } from './work';

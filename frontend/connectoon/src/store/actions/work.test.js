@@ -149,4 +149,21 @@ describe('ActionCreators', () => {
       done();
     });
   });
+
+  it('\'putImage\' should work', (done) => {
+    const spy = jest.spyOn(axios, 'get')
+      .mockImplementation((url) => {
+        return new Promise((resolve, reject) => {
+          const result = {
+            status: 200,
+          };
+          resolve(result);
+        });
+      });
+
+    store.dispatch(actionCreators.putImage(1)).then(() => {
+      expect(spy).toHaveBeenCalledTimes(1);
+      done();
+    });
+  });
 });

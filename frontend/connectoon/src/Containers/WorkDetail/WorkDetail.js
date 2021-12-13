@@ -28,6 +28,7 @@ class WorkDetail extends Component {
       .then(() => {
         this.props.onGetWork(this.props.match.params.id);
         this.props.onGetWorkReviews(this.props.match.params.id);
+        this.props.onPutImage(this.props.match.params.id);
       });
   }
 
@@ -44,6 +45,7 @@ class WorkDetail extends Component {
       .then(() => {
         this.props.onGetWork(this.props.match.params.id);
         this.props.onGetWorkReviews(this.props.match.params.id);
+        this.props.onPutImage(this.props.match.params.id);
       });
   }
 
@@ -178,6 +180,7 @@ const mapDispatchToProps = (dispatch) => {
     onDeleteReview: (id) => dispatch(actionCreators.deleteReview(id)),
     onPostLike: (id) => dispatch(actionCreators.postLike(id)),
     onPostUnlike: (id) => dispatch(actionCreators.postUnlike(id)),
+    onPutImage: (id) => dispatch(actionCreators.putImage(id)),
   };
 };
 
