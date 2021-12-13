@@ -89,8 +89,8 @@ class MyPage extends Component {
 
       return <WorkList
         key="MyReviews"
-        className="MyReviewList"
-        subject="My Reviews"
+        className="my-reviewed-work-list"
+        subject="Works that I reviewed"
         workList={reviewedWorkList}
         rows={subjectRows[0]}
         worksInRow={worksInRow}

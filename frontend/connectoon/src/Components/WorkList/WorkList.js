@@ -36,7 +36,7 @@ const WorkList = (props) => {
       <div className="list-wrapper" align="left">
         <h1 className="list-subject">{subject}</h1>
         {displayingObjects}
-        {(workList.length > worksInRow * rows) && <button type="button" className="more-works-button" onClick={() => onClickMore()}>more...</button>}
+        {(workList.length > worksInRow * rows) && <button type="button" className="more-works-button" onClick={() => onClickMore()}>more</button>}
       </div>
     </div>
   );

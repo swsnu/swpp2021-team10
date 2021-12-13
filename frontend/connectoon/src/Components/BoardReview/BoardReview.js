@@ -50,11 +50,6 @@ class BoardReview extends Component {
     });
   }
 
-  onClickThisReview = (workId) => {
-    const { onClickReview } = this.props;
-    onClickReview(workId);
-  }
-
   onClickSave() {
     this.setState({ editMode: false });
     const { title, content, score } = this.state;
@@ -140,7 +135,7 @@ class BoardReview extends Component {
     );
 
     return (
-      <tr className={className} onClick={() => this.onClickThisReview(review.work.id)}>
+      <tr className={className} onClick={() => this.props.onClickReview(review.work.id)}>
         <td className="board-review thumbnail">
           <WorkThumbnail className="work-thumbnail" src={review.work.thumbnail_picture} platform={platformMapper[review.work.platform_id]} />
         </td>
