@@ -7,6 +7,7 @@ import { withRouter } from 'react-router';
 import * as actionCreators from '../../store/actions/index';
 import WorkList from '../../Components/WorkList/WorkList';
 import TagSearchWindow from '../TagSearchWindow/TagSearchWindow';
+import { stateConstructor, stateUpdator } from '../WorkPaginationTools/tools';
 
 import './Search.css';
 
@@ -31,22 +32,12 @@ class Search extends Component {
       initGenre = '';
     }
 
-    let subjectRows;
-    const worksInRow = 4;
-    const rowIncrement = 2;
-    const pageRowIncrement = 5;
     const { location } = this.props;
-    if (location.state && location.state.subjectRows) {
-      subjectRows = location.state.subjectRows;
-    } else {
-      subjectRows = [1, 1];
-    }
-    const requestWorks = subjectRows.map((rows) => { return [0, worksInRow * (rows + pageRowIncrement)]; });
-
+    const pseudoState = stateConstructor(location);
     this.state = {
-      title: initTitle, genre: initGenre, subjectRows, requestWorks, worksInRow, rowIncrement, pageRowIncrement,
+      title: initTitle, genre: initGenre, ...pseudoState,
     };
-    onGetWorks(initTitle, initGenre, requestWorks);
+    onGetWorks(initTitle, initGenre, pseudoState.requestWorks);
   }
 
   onSearch = (nextTitle, nextGenre) => {
@@ -77,20 +68,7 @@ class Search extends Component {
   }
 
   onClickMore = (listId) => {
-    const {
-      subjectRows, requestWorks, worksInRow, rowIncrement, pageRowIncrement,
-    } = this.state;
-    subjectRows[listId] += rowIncrement;
-    const newRequestWorks = [];
-    let fetchMore = false;
-    requestWorks.forEach((requestWork, idx) => {
-      if (worksInRow * (subjectRows[idx] + rowIncrement) >= requestWork[1]) {
-        fetchMore = true;
-        newRequestWorks.push([requestWork[1], requestWork[1] + worksInRow * pageRowIncrement]);
-      } else {
-        newRequestWorks.push([requestWork[1], requestWork[1]]);
-      }
-    });
+    const { subjectRows, newRequestWorks, fetchMore } = stateUpdator(listId, this.state);
     this.setState({ subjectRows, requestWorks: newRequestWorks });
     if (fetchMore) {
       const { title, genre } = this.state;

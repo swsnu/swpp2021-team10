@@ -1,28 +1,16 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { useHistory } from 'react-router';
 
 import WorkList from '../../Components/WorkList/WorkList';
 import './Main.css';
 import * as actionCreators from '../../store/actions/index';
+import { stateConstructor, stateUpdator } from '../WorkPaginationTools/tools';
 
 class Main extends Component {
   constructor(props) {
     super(props);
-    let subjectRows;
-    const worksInRow = 4;
-    const rowIncrement = 2;
-    const pageRowIncrement = 5;
     const { location } = this.props;
-    if (location.state && location.state.subjectRows) {
-      subjectRows = location.state.subjectRows;
-    } else {
-      subjectRows = [1, 1];
-    }
-    const requestWorks = subjectRows.map((rows) => { return [0, worksInRow * (rows + pageRowIncrement)]; });
-    this.state = {
-      subjectRows, requestWorks, worksInRow, rowIncrement, pageRowIncrement,
-    };
+    this.state = stateConstructor(location);
   }
 
   componentDidMount() {
@@ -34,20 +22,7 @@ class Main extends Component {
   }
 
   onClickMore = (listId) => {
-    const {
-      subjectRows, requestWorks, worksInRow, rowIncrement, pageRowIncrement,
-    } = this.state;
-    subjectRows[listId] += rowIncrement;
-    const newRequestWorks = [];
-    let fetchMore = false;
-    requestWorks.forEach((requestWork, idx) => {
-      if (worksInRow * (subjectRows[idx] + rowIncrement) >= requestWork[1]) {
-        fetchMore = true;
-        newRequestWorks.push([requestWork[1], requestWork[1] + worksInRow * pageRowIncrement]);
-      } else {
-        newRequestWorks.push([requestWork[1], requestWork[1]]);
-      }
-    });
+    const { subjectRows, newRequestWorks, fetchMore } = stateUpdator(listId, this.state);
     this.setState({ subjectRows, requestWorks: newRequestWorks });
     if (fetchMore) {
       this.props.onGetMainWorks(newRequestWorks);
