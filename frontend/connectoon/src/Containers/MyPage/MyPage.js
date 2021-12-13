@@ -9,8 +9,25 @@ import * as actionCreators from '../../store/actions/index';
 import './MyPage.css';
 
 class MyPage extends Component {
+  constructor(props) {
+    super(props);
+    let subjectRows;
+    const worksInRow = 4;
+    const rowIncrement = 2;
+    const pageRowIncrement = 5;
+    if (this.props.location.state) {
+      subjectRows = this.props.location.state.subjectRows;
+    } else {
+      subjectRows = [1];
+    }
+    const requestReviews = subjectRows.map((rows) => { return [0, worksInRow * (rows + pageRowIncrement)]; });
+    this.state = {
+      subjectRows, requestReviews, worksInRow, rowIncrement, pageRowIncrement,
+    };
+  }
+
   componentDidMount() {
-    this.props.onGetMyReviews();
+    this.props.onGetMyReviews(this.state.requestReviews);
   }
 
   onClickAccountSettings = () => {
@@ -26,8 +43,31 @@ class MyPage extends Component {
     this.props.history.push('/works/' + String(workId));
   }
 
+  onClickMore = (listId) => {
+    const {
+      subjectRows, requestReviews, worksInRow, rowIncrement, pageRowIncrement,
+    } = this.state;
+    subjectRows[listId] += rowIncrement;
+    const newRequestReviews = [];
+    let fetchMore = false;
+    requestReviews.forEach((requestReview, idx) => {
+      if (worksInRow * (subjectRows[idx] + rowIncrement) >= requestReview[1]) {
+        fetchMore = true;
+        newRequestReviews.push([requestReview[1], requestReview[1] + worksInRow * pageRowIncrement]);
+      } else {
+        newRequestReviews.push([requestReview[1], requestReview[1]]);
+      }
+    });
+    this.setState({ subjectRows, requestReviews: newRequestReviews });
+    if (fetchMore) {
+      this.props.onGetMyReviews(newRequestReviews);
+    }
+    this.props.history.replace('/mypage', { subjectRows });
+  }
+
   render() {
     const { loggedInUser, myReviews } = this.props;
+    const { subjectRows, worksInRow } = this.state;
 
     if (!loggedInUser) {
       return <Redirect to="/main" />;
@@ -65,8 +105,10 @@ class MyPage extends Component {
         className="MyReviewList"
         subject="My Reviews"
         workList={reviewedWorkList}
-        workNumInRow={4}
+        rows={subjectRows[0]}
+        worksInRow={worksInRow}
         onClickWork={(workId) => this.onClickWork(workId)}
+        onClickMore={() => this.onClickMore(0)}
       />;
     };
 
@@ -100,7 +142,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    onGetMyReviews: () => dispatch(actionCreators.getMyReviews()),
+    onGetMyReviews: (requestReviews) => dispatch(actionCreators.getMyReviews(requestReviews)),
   };
 };
 

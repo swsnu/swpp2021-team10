@@ -109,7 +109,8 @@ def work_main(request):
         most_reviewed_work_objects = Work.objects.all().order_by('-review_num')
         most_reviewed_works = []
         request_range = json.loads(requestWorks[0])
-        for work in most_reviewed_work_objects[request_range[0]:request_range[1]]:
+        max_idx = len(most_reviewed_work_objects)
+        for work in most_reviewed_work_objects[min(max_idx, request_range[0]):min(max_idx, request_range[1])]:
             artist_name = [artist.name for artist in work.artists.all()]
             most_reviewed_works.append({
                 "id": work.id, "title": work.title, "thumbnail_picture": work.thumbnail_picture, "platform_id": work.platform_id, 
@@ -120,7 +121,8 @@ def work_main(request):
         highest_rated_work_objects = Work.objects.all().order_by('-score_avg')
         highest_rated_works = []
         request_range = json.loads(requestWorks[1])
-        for work in highest_rated_work_objects[request_range[0]:request_range[1]]:
+        max_idx = len(highest_rated_work_objects)
+        for work in highest_rated_work_objects[min(max_idx, request_range[0]):min(max_idx, request_range[1])]:
             artist_name = [artist.name for artist in work.artists.all()]
             highest_rated_works.append({
                 "id": work.id, "title": work.title, "thumbnail_picture": work.thumbnail_picture, "platform_id": work.platform_id, 

@@ -4,7 +4,9 @@ import './WriteReview.css';
 class WriteReview extends Component {
   constructor(props) {
     super(props);
-    this.state = { title: '', content: '', score: '5.0' };
+    this.state = {
+      title: '', content: '', score: '5.0', confirmPressed: false,
+    };
 
     this.onClickConfirm = this.onClickConfirm.bind(this);
   }
@@ -12,12 +14,13 @@ class WriteReview extends Component {
   onClickConfirm() {
     const { title, content, score } = this.state;
     const { onClickReviewConfirm } = this.props;
+    this.setState({ confirmPressed: true });
     onClickReviewConfirm(title, content, parseFloat(score));
   }
 
   render() {
     const { className, loggedInUser } = this.props;
-    const { title, content } = this.state;
+    const { title, content, confirmPressed } = this.state;
     return (
       <div className={className}>
         <h3 className="work-write-review-header">Write Review</h3>
@@ -50,7 +53,7 @@ class WriteReview extends Component {
           <button
             type="button"
             className="write-review-confirm-button"
-            disabled={title.match(/^\s*$/g) || content.match(/^\s*$/g) || !loggedInUser}
+            disabled={title.match(/^\s*$/g) || content.match(/^\s*$/g) || !loggedInUser || confirmPressed}
             onClick={this.onClickConfirm}
           >
             {loggedInUser ? 'Confirm' : 'Please Login'}

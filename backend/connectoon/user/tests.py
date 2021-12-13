@@ -319,10 +319,9 @@ class UserTestCase(TestCase):
             work=Work.objects.first(), score=5.0, title="DUMMY2", content="DUMMY_CONTENT2", author=author2
         )
         client = Client()
-        response = client.get('/api/v1/users/me/reviews/')
+        response = client.get('/api/v1/users/me/reviews/', {'requestReviews[]': ['[0, 2]']}, content_type='application/json')
 
         self.assertEqual(response.status_code, 200)
-
 
         response = client.post('/api/v1/users/me/reviews/', {})
         self.assertEqual(response.status_code, 405)
@@ -336,12 +335,15 @@ class UserTestCase(TestCase):
                                json.dumps({'email': 'dummy@user.com', 'password': '1234'}),
                                content_type='application/json', HTTP_X_CSRFTOKEN=csrftoken)
 
+        response = client.get('/api/v1/users/me/reviews/', {'requestReviews[]': ['[0, 1]']}, content_type='application/json')
+        response_json = json.loads(response.content.decode())
+        self.assertEqual(len(response_json['reviews']), 1)
+
+
         response = client.post('/api/v1/reviews/1/like/')
 
-
-        response = client.get('/api/v1/users/me/reviews/')
+        response = client.get('/api/v1/users/me/reviews/', {'requestReviews[]': ['[0, 24]']}, content_type='application/json')
         response_json = json.loads(response.content.decode())['reviews']
-
 
         for review in response_json:
             self.assertEqual(review['author']['id'], author.id)

@@ -11,6 +11,17 @@ import store, { history } from '../../store/store';
 
 import * as actionCreatorReview from '../../store/actions/review';
 
+jest.mock('../../Components/WorkList/WorkList', () => {
+  return jest.fn((props) => {
+    return (
+      <div className="spyWorkList">
+        <div className="spyWork" onClick={() => props.onClickWork(props.workList[0].id)} />
+        <div className="spyMore" onClick={() => props.onClickMore()} />
+      </div>
+    );
+  });
+});
+
 const stubWork = {
   id: 1, title: 'TEST_TITLE', thumbnail_image: 'TEST_SRC', platform_id: 0, year: 2000, artists: ['TEST_ARTIST'], score_avg: 0, completion: true,
 };
@@ -58,9 +69,10 @@ const mockStore = getMockStore(stubInitialReviewState, stubInitialTagState, stub
 describe('<MyPage />', () => {
   global.URL.createObjectURL = jest.fn();
   let myPage;
+  let spyToken;
   beforeEach(() => {
-    const spyToken = jest.spyOn(actionCreatorReview, 'getMyReviews')
-      .mockImplementation(() => { return () => {}; });
+    spyToken = jest.spyOn(actionCreatorReview, 'getMyReviews')
+      .mockImplementation((requestReviews) => { return (dispatch) => {}; });
 
     myPage = (
       <Provider store={mockStore}>
@@ -169,9 +181,55 @@ describe('<MyPage />', () => {
     const spyHistoryPush = jest.spyOn(history, 'push')
       .mockImplementation((path) => { });
     const component = mount(myPage);
-    component.find('.work-object').at(0).simulate('click');
+    component.find('.spyWork').at(0).simulate('click');
     expect(spyHistoryPush).toHaveBeenCalledTimes(1);
     expect(spyHistoryPush).toHaveBeenCalledWith('/works/1');
+  });
+
+  it('should handle more click', () => {
+    const spyHistoryReplace = jest.spyOn(history, 'replace')
+      .mockImplementation((path, state) => { });
+    const component = mount(myPage);
+    const wrapper = component.find('.spyMore');
+    wrapper.at(0).simulate('click');
+    const newMyPageInstance = component.find(MyPage.WrappedComponent).instance();
+    expect(newMyPageInstance.state.subjectRows[0]).toBe(3);
+    expect(spyHistoryReplace).toHaveBeenCalledTimes(1);
+    expect(spyHistoryReplace).toHaveBeenCalledWith('/mypage', { subjectRows: [3] });
+  });
+
+  it('should fetch more works when enough more clicks are given', () => {
+    const spyHistoryReplace = jest.spyOn(history, 'replace')
+      .mockImplementation((path, state) => { });
+    const stubReviews = Array.from({ length: 48 }).map((idx) => {
+      return {
+        id: idx,
+        work: {
+          id: idx, title: 'TEST', thumbnail_picture: 'http://img.png', platform_id: 1, artists: [], year: 2000, score: 5.0,
+        },
+      };
+    });
+    const stubInitialManyReviewState = {
+      reviews: stubReviews,
+    };
+    const manyWorksMockStore = getMockStore(stubInitialManyReviewState, stubInitialTagState, stubInitialUserState, stubInitialWorkState);
+    myPage = (
+      <Provider store={manyWorksMockStore}>
+        <ConnectedRouter history={history}>
+          <Switch>
+            <Route path="/" exact component={MyPage} />
+          </Switch>
+        </ConnectedRouter>
+      </Provider>
+    );
+    const component = mount(myPage);
+    const wrapper = component.find('.spyMore');
+    expect(spyToken).toHaveBeenCalledTimes(1);
+    expect(spyToken).toHaveBeenCalledWith([[0, 24]]);
+    wrapper.at(0).simulate('click');
+    wrapper.at(0).simulate('click');
+    expect(spyToken).toHaveBeenCalledTimes(2);
+    expect(spyToken).toHaveBeenLastCalledWith([[24, 44]]);
   });
 
   it('should redirect to main when not logged in', () => {

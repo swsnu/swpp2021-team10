@@ -43,13 +43,28 @@ describe('Review Reducer', () => {
   });
 
   it('should get reviews', () => {
+    const stubEmptyInitialState = [];
     const stubReviews = [stubReview1, stubReview2];
-    const newState = reducer(undefined, {
+    const newState = reducer(stubEmptyInitialState, {
       type: actionTypes.GET_REVIEWS,
+      start: true,
       reviews: stubReviews,
     });
     expect(newState).toEqual({
       reviews: stubReviews,
+    });
+  });
+
+  it('should get concatenated reviews', () => {
+    const stubReviews = [stubReview1, stubReview2];
+    const newState = reducer(stubInitialState, {
+      type: actionTypes.GET_REVIEWS,
+      start: false,
+      reviews: stubReviews,
+    });
+    const stubNewReviews = [stubReview1, stubReview2, stubReview1, stubReview2];
+    expect(newState).toEqual({
+      reviews: stubNewReviews,
     });
   });
 

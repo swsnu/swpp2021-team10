@@ -14,7 +14,7 @@ jest.mock('../../Components/WorkList/WorkList', () => {
     return (
       <div className="spyWorkList">
         <div className="spyWork" onClick={() => props.onClickWork(props.workList[0].id)} />
-        <div className="spyMore" onClick={() => props.onClickMore(0)} />
+        <div className="spyMore" onClick={() => props.onClickMore()} />
       </div>
     );
   });

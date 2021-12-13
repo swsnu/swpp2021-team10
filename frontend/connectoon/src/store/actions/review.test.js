@@ -95,7 +95,7 @@ describe('ActionCreators', () => {
 
   it('\'getMyReviews\' should fetch reviews correctly', (done) => {
     const spy = jest.spyOn(axios, 'get')
-      .mockImplementation((url) => {
+      .mockImplementation((url, params) => {
         return new Promise((resolve, reject) => {
           const result = {
             status: 200,
@@ -104,7 +104,8 @@ describe('ActionCreators', () => {
           resolve(result);
         });
       });
-    store.dispatch(actionCreators.getMyReviews()).then(() => {
+    const stubRange = [0, 24];
+    store.dispatch(actionCreators.getMyReviews([stubRange])).then(() => {
       const newState = store.getState();
       expect(newState.review.reviews).toBe(stubReviews.reviews);
       expect(spy).toHaveBeenCalledTimes(1);
