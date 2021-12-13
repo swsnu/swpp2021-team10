@@ -46,18 +46,19 @@ export const getWork = (id) => {
   };
 };
 
-export const getRecWorks_ = (works) => {
+export const getRecWorks_ = (works, listStart) => {
   return {
     type: actionTypes.GET_REC_WORKS,
+    listStart,
     selectedWorks: works,
   };
 };
 
-export const getRecWorks = () => {
+export const getRecWorks = (requestWorks) => {
   return (dispatch) => {
-    return axios.get('/works/recommend')
+    return axios.get('/works/recommend', { params: { requestWorks } })
       .then((res) => {
-        dispatch(getRecWorks_(res.data));
+        dispatch(getRecWorks_(res.data, requestWorks.map((requestWork) => { return requestWork[0] === 0; })));
       });
   };
 };
