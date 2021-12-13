@@ -341,7 +341,7 @@ class UserTestCase(TestCase):
 
         response = client.get('/api/v1/users/me/reviews/')
         response_json = json.loads(response.content.decode())['reviews']
-        
+
 
         for review in response_json:
             self.assertEqual(review['author']['id'], author.id)
