@@ -319,9 +319,10 @@ class UserTestCase(TestCase):
             work=Work.objects.first(), score=5.0, title="DUMMY2", content="DUMMY_CONTENT2", author=author2
         )
         client = Client()
-        response = client.get('/api/v1/users/me/reviews/', {'requestReviews[]': ['[0, 2]']}, content_type='application/json')
+        response = client.get('/api/v1/users/me/reviews/')
 
         self.assertEqual(response.status_code, 200)
+
 
         response = client.post('/api/v1/users/me/reviews/', {})
         self.assertEqual(response.status_code, 405)
@@ -340,6 +341,7 @@ class UserTestCase(TestCase):
 
         response = client.get('/api/v1/users/me/reviews/')
         response_json = json.loads(response.content.decode())['reviews']
+        
 
         for review in response_json:
             self.assertEqual(review['author']['id'], author.id)

@@ -26,7 +26,7 @@ class MyPage extends Component {
   }
 
   componentDidMount() {
-    this.props.onGetMyReviews(this.state.requestReviews);
+    this.props.onGetMyReviews();
   }
 
   onClickAccountSettings = () => {

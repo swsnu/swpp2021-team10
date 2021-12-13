@@ -187,8 +187,6 @@ def work_search(request):  # TODO
     if request.method == 'GET':
         keyword = request.GET.get('q', None)
         keytag = request.GET.get('tags', None)
-
-        print(keytag)
         
         return_work_list = [[], []]
         if keyword == '' and keytag == '':
