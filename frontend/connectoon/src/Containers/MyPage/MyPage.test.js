@@ -72,7 +72,7 @@ describe('<MyPage />', () => {
   let spyToken;
   beforeEach(() => {
     spyToken = jest.spyOn(actionCreatorReview, 'getMyReviews')
-      .mockImplementation((requestReviews) => { return (dispatch) => {}; });
+      .mockImplementation(() => { return (dispatch) => {}; });
 
     myPage = (
       <Provider store={mockStore}>
@@ -196,40 +196,6 @@ describe('<MyPage />', () => {
     expect(newMyPageInstance.state.subjectRows[0]).toBe(3);
     expect(spyHistoryReplace).toHaveBeenCalledTimes(1);
     expect(spyHistoryReplace).toHaveBeenCalledWith('/mypage', { subjectRows: [3] });
-  });
-
-  it('should fetch more works when enough more clicks are given', () => {
-    const spyHistoryReplace = jest.spyOn(history, 'replace')
-      .mockImplementation((path, state) => { });
-    const stubReviews = Array.from({ length: 48 }).map((idx) => {
-      return {
-        id: idx,
-        work: {
-          id: idx, title: 'TEST', thumbnail_picture: 'http://img.png', platform_id: 1, artists: [], year: 2000, score: 5.0,
-        },
-      };
-    });
-    const stubInitialManyReviewState = {
-      reviews: stubReviews,
-    };
-    const manyWorksMockStore = getMockStore(stubInitialManyReviewState, stubInitialTagState, stubInitialUserState, stubInitialWorkState);
-    myPage = (
-      <Provider store={manyWorksMockStore}>
-        <ConnectedRouter history={history}>
-          <Switch>
-            <Route path="/" exact component={MyPage} />
-          </Switch>
-        </ConnectedRouter>
-      </Provider>
-    );
-    const component = mount(myPage);
-    const wrapper = component.find('.spyMore');
-    expect(spyToken).toHaveBeenCalledTimes(1);
-    expect(spyToken).toHaveBeenCalledWith([[0, 24]]);
-    wrapper.at(0).simulate('click');
-    wrapper.at(0).simulate('click');
-    expect(spyToken).toHaveBeenCalledTimes(2);
-    expect(spyToken).toHaveBeenLastCalledWith([[24, 44]]);
   });
 
   it('should redirect to main when not logged in', () => {

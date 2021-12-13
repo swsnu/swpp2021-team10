@@ -30,10 +30,9 @@ export const deleteReview = (id) => {
   };
 };
 
-export const getReviews_ = (reviews, start) => {
+export const getReviews_ = (reviews) => {
   return {
     type: actionTypes.GET_REVIEWS,
-    start,
     reviews,
   };
 };
@@ -42,7 +41,7 @@ export const getWorkReviews = (id) => {
   return (dispatch) => {
     return axios.get('/works/' + id + '/reviews/')
       .then((res) => {
-        dispatch(getReviews_(res.data.reviews, true));
+        dispatch(getReviews_(res.data.reviews));
       });
   };
 };
@@ -51,16 +50,16 @@ export const getBoardReviews = () => {
   return (dispatch) => {
     return axios.get('/reviews/board/')
       .then((res) => {
-        dispatch(getReviews_(res.data.reviews, true));
+        dispatch(getReviews_(res.data.reviews));
       });
   };
 };
 
-export const getMyReviews = (requestReviews) => {
+export const getMyReviews = () => {
   return (dispatch) => {
-    return axios.get('/users/me/reviews/', { params: { requestReviews } })
+    return axios.get('/users/me/reviews/')
       .then((res) => {
-        dispatch(getReviews_(res.data.reviews, requestReviews[0][0] === 0));
+        dispatch(getReviews_(res.data.reviews));
       });
   };
 };

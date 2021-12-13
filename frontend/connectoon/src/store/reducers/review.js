@@ -7,13 +7,7 @@ const initialState = {
 const reducer = (state = initialState, action) => {
   switch (action.type) {
     case actionTypes.GET_REVIEWS:
-      let newReviews;
-      if (action.start) {
-        newReviews = action.reviews;
-      } else {
-        newReviews = state.reviews.concat(action.reviews);
-      }
-      return { ...state, reviews: newReviews };
+      return { ...state, reviews: action.reviews };
     case actionTypes.EDIT_REVIEW:
       const editedReviews = state.reviews.map((x) => {
         if (x.id === action.targetReview.id) {

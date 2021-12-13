@@ -335,14 +335,10 @@ class UserTestCase(TestCase):
                                json.dumps({'email': 'dummy@user.com', 'password': '1234'}),
                                content_type='application/json', HTTP_X_CSRFTOKEN=csrftoken)
 
-        response = client.get('/api/v1/users/me/reviews/', {'requestReviews[]': ['[0, 1]']}, content_type='application/json')
-        response_json = json.loads(response.content.decode())
-        self.assertEqual(len(response_json['reviews']), 1)
-
-
         response = client.post('/api/v1/reviews/1/like/')
 
-        response = client.get('/api/v1/users/me/reviews/', {'requestReviews[]': ['[0, 24]']}, content_type='application/json')
+
+        response = client.get('/api/v1/users/me/reviews/')
         response_json = json.loads(response.content.decode())['reviews']
 
         for review in response_json:

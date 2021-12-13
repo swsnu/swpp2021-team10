@@ -279,11 +279,7 @@ def user_me_review(request):
     user_class = get_user_model()
     response_dict = []
 
-    requestReviews = request.GET.getlist('requestReviews[]', None)
-    request_range = json.loads(requestReviews[0])
-    max_idx = len(my_reviews)
-
-    for review in my_reviews[min(max_idx, request_range[0]):min(max_idx, request_range[1])]:
+    for review in my_reviews:
         work = review.work
         work_artist_name = [artist.name for artist in work.artists.all()]
         

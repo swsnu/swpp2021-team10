@@ -14,16 +14,14 @@ class MyPage extends Component {
     let subjectRows;
     const worksInRow = 4;
     const rowIncrement = 2;
-    const pageRowIncrement = 5;
     const { location } = this.props;
     if (location.state && location.state.subjectRows) {
       subjectRows = location.state.subjectRows;
     } else {
       subjectRows = [1];
     }
-    const requestReviews = subjectRows.map((rows) => { return [0, worksInRow * (rows + pageRowIncrement)]; });
     this.state = {
-      subjectRows, requestReviews, worksInRow, rowIncrement, pageRowIncrement,
+      subjectRows, worksInRow, rowIncrement,
     };
   }
 
@@ -46,23 +44,10 @@ class MyPage extends Component {
 
   onClickMore = (listId) => {
     const {
-      subjectRows, requestReviews, worksInRow, rowIncrement, pageRowIncrement,
+      subjectRows, rowIncrement,
     } = this.state;
     subjectRows[listId] += rowIncrement;
-    const newRequestReviews = [];
-    let fetchMore = false;
-    requestReviews.forEach((requestReview, idx) => {
-      if (worksInRow * (subjectRows[idx] + rowIncrement) >= requestReview[1]) {
-        fetchMore = true;
-        newRequestReviews.push([requestReview[1], requestReview[1] + worksInRow * pageRowIncrement]);
-      } else {
-        newRequestReviews.push([requestReview[1], requestReview[1]]);
-      }
-    });
-    this.setState({ subjectRows, requestReviews: newRequestReviews });
-    if (fetchMore) {
-      this.props.onGetMyReviews(newRequestReviews);
-    }
+    this.setState({ subjectRows });
     const { history } = this.props;
     history.replace('/mypage', { subjectRows });
   }
@@ -144,7 +129,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    onGetMyReviews: (requestReviews) => dispatch(actionCreators.getMyReviews(requestReviews)),
+    onGetMyReviews: () => dispatch(actionCreators.getMyReviews()),
   };
 };
 
