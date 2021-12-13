@@ -51,7 +51,8 @@ class Main extends Component {
     if (fetchMore) {
       this.props.onGetMainWorks(newRequestWorks);
     }
-    this.props.history.replace('/main', { subjectRows });
+    const { history } = this.props;
+    history.replace(history.location.pathname, { subjectRows });
   }
 
   render() {

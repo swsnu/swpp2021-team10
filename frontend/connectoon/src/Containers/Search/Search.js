@@ -30,38 +30,83 @@ class Search extends Component {
       initTitle = this.props.match.params.keyword;
       initGenre = '';
     }
+
+    let subjectRows;
+    const worksInRow = 4;
+    const rowIncrement = 2;
+    const pageRowIncrement = 5;
+    if (this.props.location.state) {
+      subjectRows = this.props.location.state.subjectRows;
+    } else {
+      subjectRows = [1, 1];
+    }
+    const requestWorks = subjectRows.map((rows) => { return [0, worksInRow * (rows + pageRowIncrement)]; });
+
     this.state = {
-      title: initTitle,
-      genre: initGenre,
+      title: initTitle, genre: initGenre, subjectRows, requestWorks, worksInRow, rowIncrement, pageRowIncrement,
     };
-    onGetWorks(initTitle, initGenre);
+    onGetWorks(initTitle, initGenre, requestWorks);
+
+    console.log(this.props.history);
+  }
+
+  onSearch = (nextTitle, nextGenre) => {
+    const { worksInRow, pageRowIncrement } = this.state;
+    const { onGetWorks } = this.props;
+    const subjectRows = [1, 1];
+    const requestWorks = subjectRows.map((rows) => { return [0, worksInRow * (rows + pageRowIncrement)]; });
+    this.setState({
+      title: nextTitle, genre: nextGenre, subjectRows, requestWorks,
+    });
+    onGetWorks(nextTitle, nextGenre, requestWorks);
+    const { history } = this.props;
+    history.replace(history.location.pathname, { subjectRows });
   }
 
   onAddTag = (name) => {
-    const { onGetWorks } = this.props;
     const { title, genre } = this.state;
-    this.setState({ genre: genre + '$' + name });
-    onGetWorks(title, genre + '$' + name);
+    this.onSearch(title, genre + '$' + name);
   }
 
   onDeleteTag = (name) => {
-    const { onGetWorks } = this.props;
     const { title, genre } = this.state;
-    this.setState({ genre: genre.replace('$' + name, '') });
-    onGetWorks(title, genre.replace('$' + name, ''));
+    this.onSearch(title, genre.replace('$' + name, ''));
   }
 
   onClickWork = (workId) => {
     this.props.history.push('/works/' + String(workId));
   }
 
-  render() {
+  onClickMore = (listId) => {
     const {
-      storedWorks,
-      storedTags,
-      onGetWorks,
-    } = this.props;
-    const { title, genre } = this.state;
+      subjectRows, requestWorks, worksInRow, rowIncrement, pageRowIncrement,
+    } = this.state;
+    subjectRows[listId] += rowIncrement;
+    const newRequestWorks = [];
+    let fetchMore = false;
+    requestWorks.forEach((requestWork, idx) => {
+      if (worksInRow * (subjectRows[idx] + rowIncrement) >= requestWork[1]) {
+        fetchMore = true;
+        newRequestWorks.push([requestWork[1], requestWork[1] + worksInRow * pageRowIncrement]);
+      } else {
+        newRequestWorks.push([requestWork[1], requestWork[1]]);
+      }
+    });
+    this.setState({ subjectRows, requestWorks: newRequestWorks });
+    if (fetchMore) {
+      const { title, genre } = this.state;
+      const { onGetWorks } = this.props;
+      onGetWorks(title, genre, newRequestWorks);
+    }
+    const { history } = this.props;
+    history.replace(history.location.pathname, { subjectRows });
+  }
+
+  render() {
+    const { storedWorks, storedTags, onGetWorks } = this.props;
+    const {
+      title, genre, subjectRows, worksInRow,
+    } = this.state;
 
     if (storedTags.length === 0) {
       return null;
@@ -69,8 +114,26 @@ class Search extends Component {
 
     const resultSubject = title === '' ? 'Search result' : 'Title search result';
 
-    const titleList = <WorkList class="ts-wl" className="title-search-work-list" subject={resultSubject} onClickWork={(workId) => this.onClickWork(workId)} workList={storedWorks[0]} workNumInRow={4} />;
-    const artistList = <WorkList class="as-wl" className="artist-search-work-list" subject="Artist search result" onClickWork={(workId) => this.onClickWork(workId)} workList={storedWorks[1]} workNumInRow={4} />;
+    const titleList = <WorkList
+      class="ts-wl"
+      className="title-search-work-list"
+      subject={resultSubject}
+      workList={storedWorks[0]}
+      rows={subjectRows[0]}
+      worksInRow={worksInRow}
+      onClickWork={(workId) => this.onClickWork(workId)}
+      onClickMore={() => this.onClickMore(0)}
+    />;
+    const artistList = <WorkList
+      class="as-wl"
+      className="artist-search-work-list"
+      subject="Artist search result"
+      workList={storedWorks[1]}
+      rows={subjectRows[1]}
+      worksInRow={worksInRow}
+      onClickWork={(workId) => this.onClickWork(workId)}
+      onClickMore={() => this.onClickMore(1)}
+    />;
 
     const defaultTag = genre !== '' ? storedTags.filter((x) => x.name === genre.split('$')[1]) : [];
 
@@ -78,7 +141,7 @@ class Search extends Component {
       <div className="search">
         <div className="search-title-artist" align="left">
           <label id="search-title-artist">Title/Artist</label>
-          <input type="text" id="search-title-artist-input" value={title} onChange={(e) => { this.setState({ title: e.target.value }); onGetWorks(e.target.value, genre); }} />
+          <input type="text" id="search-title-artist-input" value={title} onChange={(e) => { this.onSearch(e.target.value, genre); }} />
         </div>
         <TagSearchWindow className="search-genre-search-window" onAddTag={this.onAddTag} onDeleteTag={this.onDeleteTag} defaultTag={defaultTag} />
         {storedWorks[0].length !== 0 && titleList}
@@ -110,7 +173,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    onGetWorks: (keyword, keytag) => dispatch(actionCreators.getSearchWorks(keyword, keytag)),
+    onGetWorks: (keyword, keytag, requestWorks) => dispatch(actionCreators.getSearchWorks(keyword, keytag, requestWorks)),
     onGetTags: (keyword) => dispatch(actionCreators.getSearchTags(keyword)),
   };
 };

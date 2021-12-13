@@ -36,7 +36,15 @@ const reducer = (state = initialState, action) => {
     case actionTypes.GET_REC_WORKS:
       return { ...state, recWorkLists: action.selectedWorks };
     case actionTypes.GET_SEARCH_WORKS:
-      return { ...state, searchedWorks: action.selectedWorks };
+      const newSearchedWorks = state.searchedWorks.map((listDict, idx) => {
+        if (action.listStart[idx]) {
+          return action.selectedWorks[idx];
+        } else {
+          return listDict.concat(action.selectedWorks[idx]);
+        }
+      });
+      console.log(newSearchedWorks);
+      return { ...state, searchedWorks: newSearchedWorks };
     default:
       break;
   }

@@ -62,18 +62,20 @@ export const getRecWorks = () => {
   };
 };
 
-export const getSearchWorks_ = (works) => {
+export const getSearchWorks_ = (works, listStart) => {
   return {
     type: actionTypes.GET_SEARCH_WORKS,
+    listStart,
     selectedWorks: works,
   };
 };
 
-export const getSearchWorks = (keyword, keytag) => {
+export const getSearchWorks = (keyword, keytag, requestWorks) => {
   return (dispatch) => {
-    return axios.get('/works/search?q=' + keyword + '&tags=' + keytag)
+    console.log('search:', keyword, keytag, requestWorks);
+    return axios.get('/works/search?q=' + keyword + '&tags=' + keytag, { params: { requestWorks } })
       .then((res) => {
-        dispatch(getSearchWorks_(res.data));
+        dispatch(getSearchWorks_(res.data, requestWorks.map((requestWork) => { return requestWork[0] === 0; })));
       });
   };
 };

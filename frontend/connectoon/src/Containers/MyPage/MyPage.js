@@ -62,7 +62,8 @@ class MyPage extends Component {
     if (fetchMore) {
       this.props.onGetMyReviews(newRequestReviews);
     }
-    this.props.history.replace('/mypage', { subjectRows });
+    const { history } = this.props;
+    history.replace(history.location.pathname, { subjectRows });
   }
 
   render() {

@@ -197,19 +197,24 @@ def work_search(request):  # TODO
             work_title_list = [work for work in tag_filtered_work.filter(Q(title__contains=keyword)).values()]
             work_artist_list = [work for work in tag_filtered_work.filter(Q(artists__name__contains=keyword)).values()]
 
+        requestWorks = request.GET.getlist('requestWorks[]', None)
+        request_range = json.loads(requestWorks[0])
+        max_idx = len(work_title_list)
         return_work_list[0] = list(map(lambda work: {'title': work['title'], 'thumbnail_picture': work['thumbnail_picture'],
         'description': work['description'], 'year': work['year'], 'link': work['link'],
         'completion': work['completion'], 'score_avg': work['score_avg'], 'review_num': work['review_num'],
         'platform_id': work['platform_id'],
         'artists': [artist.name for artist in Work.objects.get(title=work['title']).artists.all()],
-        'id': work['id']}, work_title_list))
+        'id': work['id']}, work_title_list[min(max_idx, request_range[0]):min(max_idx, request_range[1])]))
 
+        request_range = json.loads(requestWorks[1])
+        max_idx = len(work_artist_list)
         return_work_list[1] = list(map(lambda work: {'title': work['title'], 'thumbnail_picture': work['thumbnail_picture'],
         'description': work['description'], 'year': work['year'], 'link': work['link'],
         'completion': work['completion'], 'score_avg': work['score_avg'], 'review_num': work['review_num'],
         'platform_id': work['platform_id'],
         'artists': [artist.name for artist in Work.objects.get(title=work['title']).artists.all()],
-        'id': work['id']}, work_artist_list))
+        'id': work['id']}, work_artist_list[min(max_idx, request_range[0]):min(max_idx, request_range[1])]))
         
         return JsonResponse(return_work_list, safe=False)
     else:
