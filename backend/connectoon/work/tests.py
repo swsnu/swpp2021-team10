@@ -236,9 +236,9 @@ class WorkTestCase(TestCase):
 
     def test_work_search(self):
         client = Client(enforce_csrf_checks=True)
-        response = client.get('/api/v1/works/search/?q=&tags=')
-        response = client.get('/api/v1/works/search/?q=Du&tags=')
-        response = client.get('/api/v1/works/search/?q=Du&tags=$Dummy')
+        response = client.get('/api/v1/works/search/?q=&tags=&requestWorks[]=[0, 1]&requestWorks[]=[0, 2]')
+        response = client.get('/api/v1/works/search/?q=Du&tags=&requestWorks[]=[0, 1]&requestWorks[]=[0, 2]')
+        response = client.get('/api/v1/works/search/?q=Du&tags=$Dummy&requestWorks[]=[0, 1]&requestWorks[]=[0, 2]')
         self.assertEqual(response.status_code, 200)
 
         response = client.get('/api/v1/token/')

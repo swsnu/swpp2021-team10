@@ -72,7 +72,6 @@ export const getSearchWorks_ = (works, listStart) => {
 
 export const getSearchWorks = (keyword, keytag, requestWorks) => {
   return (dispatch) => {
-    console.log('search:', keyword, keytag, requestWorks);
     return axios.get('/works/search?q=' + keyword + '&tags=' + keytag, { params: { requestWorks } })
       .then((res) => {
         dispatch(getSearchWorks_(res.data, requestWorks.map((requestWork) => { return requestWork[0] === 0; })));

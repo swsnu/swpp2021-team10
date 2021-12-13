@@ -13,8 +13,9 @@ class Main extends Component {
     const worksInRow = 4;
     const rowIncrement = 2;
     const pageRowIncrement = 5;
-    if (this.props.location.state) {
-      subjectRows = this.props.location.state.subjectRows;
+    const { location } = this.props;
+    if (location.state && location.state.subjectRows) {
+      subjectRows = location.state.subjectRows;
     } else {
       subjectRows = [1, 1];
     }
@@ -52,7 +53,7 @@ class Main extends Component {
       this.props.onGetMainWorks(newRequestWorks);
     }
     const { history } = this.props;
-    history.replace(history.location.pathname, { subjectRows });
+    history.replace('/main', { subjectRows });
   }
 
   render() {

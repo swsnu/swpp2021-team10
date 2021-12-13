@@ -35,8 +35,9 @@ class Search extends Component {
     const worksInRow = 4;
     const rowIncrement = 2;
     const pageRowIncrement = 5;
-    if (this.props.location.state) {
-      subjectRows = this.props.location.state.subjectRows;
+    const { location } = this.props;
+    if (location.state && location.state.subjectRows) {
+      subjectRows = location.state.subjectRows;
     } else {
       subjectRows = [1, 1];
     }
@@ -46,8 +47,6 @@ class Search extends Component {
       title: initTitle, genre: initGenre, subjectRows, requestWorks, worksInRow, rowIncrement, pageRowIncrement,
     };
     onGetWorks(initTitle, initGenre, requestWorks);
-
-    console.log(this.props.history);
   }
 
   onSearch = (nextTitle, nextGenre) => {

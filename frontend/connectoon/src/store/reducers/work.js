@@ -43,7 +43,6 @@ const reducer = (state = initialState, action) => {
           return listDict.concat(action.selectedWorks[idx]);
         }
       });
-      console.log(newSearchedWorks);
       return { ...state, searchedWorks: newSearchedWorks };
     default:
       break;

@@ -94,10 +94,25 @@ describe('Work Reducer', () => {
     };
     const newState = reducer(stubInitialState, {
       type: actionTypes.GET_SEARCH_WORKS,
+      listStart: [true, true],
       selectedWorks: [[stubWork], [stubWork, stubWork]],
     });
     expect(newState).toEqual({
       searchedWorks: [[stubWork], [stubWork, stubWork]],
+    });
+  });
+
+  it('should return concatenated searched works', () => {
+    const stubInitialState = {
+      searchedWorks: [[stubWork], [stubWork]],
+    };
+    const newState = reducer(stubInitialState, {
+      type: actionTypes.GET_SEARCH_WORKS,
+      listStart: [false, true],
+      selectedWorks: [[stubWork], [stubWork, stubWork]],
+    });
+    expect(newState).toEqual({
+      searchedWorks: [[stubWork, stubWork], [stubWork, stubWork]],
     });
   });
 });
