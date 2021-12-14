@@ -27,6 +27,7 @@ class MyPage extends Component {
 
   componentDidMount() {
     this.props.onGetMyReviews();
+    this.props.onGetMyUser();
   }
 
   onClickAccountSettings = () => {
@@ -130,6 +131,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     onGetMyReviews: () => dispatch(actionCreators.getMyReviews()),
+    onGetMyUser: () => dispatch(actionCreators.getMyUser()),
   };
 };
 
