@@ -350,6 +350,17 @@ class UserTestCase(TestCase):
             else:
                 self.assertEqual(review['clickedLike'], False)
 
+    def test_user_toggle_transferred(self):
+        user_class = get_user_model()
+        client = Client()
+        response = client.post('/api/v1/users/login/',
+                               json.dumps({'email': 'test1@snu.ac.kr', 'password': 'qwe123'}),
+                               content_type='application/json')
+
+        response = client.post('/api/v1/users/me/toggle_transfer/')
+        self.assertEqual(response.status_code, 204)
+
+
 
 
 class UsersManagersTests(TestCase):

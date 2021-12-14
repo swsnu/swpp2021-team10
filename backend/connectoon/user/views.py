@@ -56,17 +56,23 @@ def user_register(request):
 
     if profile_picture:
         created_user.profile_picture = profile_picture
+        created_user.transferred_picture = profile_picture
     created_user.save()
 
     user_tag = created_user.user_tag.all()
     tag_list = [{'id': user_tag.tag.id, 'name': user_tag.tag.name} for user_tag in user_tag]
+
+    if created_user.want_transferred:
+        return_picture = request.build_absolute_uri(created_user.transferred_picture.url) if created_user.transferred_picture else ''
+    else:
+        return_picture = request.build_absolute_uri(created_user.profile_picture.url) if created_user.profile_picture else ''
 
     response_dict = {
         'id': created_user.id,
         'email': created_user.email,
         'username': created_user.username,
         'tags': tag_list,
-        'profile_picture': request.build_absolute_uri(created_user.profile_picture.url) if created_user.profile_picture else ''
+        'profile_picture': return_picture
     }
 
     return JsonResponse(response_dict, status=201)
@@ -142,13 +148,17 @@ def user_login(request):
                 return_tag_list.append(
                     {'key': tag.id, 'name': tag.name, 'related': related_list, 'prior': tag.prior})
 
+            if user.want_transferred:
+                return_picture = request.build_absolute_uri(user.transferred_picture.url) if user.transferred_picture else ''
+            else:
+                return_picture = request.build_absolute_uri(user.profile_picture.url) if user.profile_picture else ''
+
             response_dict = {
                 'id': user.id,
                 'username': user.username,
                 'email': user.email,
                 'tags': return_tag_list,
-                'profile_picture': request.build_absolute_uri(
-                    user.profile_picture.url) if user.profile_picture else ''
+                'profile_picture': return_picture
             }
 
             return JsonResponse(response_dict, status=200)
@@ -248,19 +258,26 @@ def user_me(request):
 
             if profile_picture:
                 request_user.profile_picture = profile_picture
+                request_user.transferred_picture = profile_picture
 
             request_user.save()
 
             updated_user_tag = request_user.user_tag.all()
             tag_list = [{'id': user_tag.tag.id, 'name': user_tag.tag.name} for user_tag in updated_user_tag]
 
+            if request_user.want_transferred:
+                return_picture = request.build_absolute_uri(
+                    request_user.transferred_picture.url) if request_user.transferred_picture else ''
+            else:
+                return_picture = request.build_absolute_uri(
+                    request_user.profile_picture.url) if request_user.profile_picture else ''
+
             response_dict = {
                 'id': request_user.id,
                 'email': request_user.email,
                 'username': request_user.username,
                 'tags': tag_list,
-                'profile_picture': request.build_absolute_uri(
-                    request_user.profile_picture.url) if request_user.profile_picture else ''
+                'profile_picture': return_picture
             }
 
             return JsonResponse(response_dict, status=200)
@@ -305,3 +322,16 @@ def user_me_review(request):
 
     return JsonResponse({"reviews": response_dict}, status = 200, safe=False)
 
+
+@require_POST
+def user_toggle_transferred(request):
+    request_user = request.user
+    if request_user.is_authenticated:
+        toggled = not request_user.want_transferred
+        request_user.want_transferred = toggled
+
+        request_user.save()
+
+        return HttpResponse(status=204)
+    else:
+        return HttpResponse(status=401)
