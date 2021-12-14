@@ -23,6 +23,17 @@ jest.mock('../../Components/WorkList/WorkList', () => {
   });
 });
 
+jest.mock('../../Components/WorkList/WorkList', () => {
+  return jest.fn((props) => {
+    return (
+      <div className="spyWorkList">
+        <div className="spyWork" onClick={() => props.onClickWork(props.workList[0].id)} />
+        <div className="spyMore" onClick={() => props.onClickMore()} />
+      </div>
+    );
+  });
+});
+
 const stubWork = {
   id: 1, title: 'TEST_TITLE', thumbnail_image: 'TEST_SRC', platform_id: 0, year: 2000, artists: ['TEST_ARTIST'], score_avg: 0, completion: true,
 };

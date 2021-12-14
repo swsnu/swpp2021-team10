@@ -77,29 +77,51 @@ describe('Work Reducer', () => {
 
   it('should get recommended works', () => {
     const stubInitialState = {
+<<<<<<< HEAD
       recommWorks: [[], [], ''],
+=======
+      recommWorks: [[], []],
+>>>>>>> 72305c5 (Review pagination roll back (#88))
     };
     const newState = reducer(stubInitialState, {
       type: actionTypes.GET_REC_WORKS,
       listStart: [true, true],
+<<<<<<< HEAD
       selectedWorks: [[stubWork], [stubWork], 'dummy'],
     });
     expect(newState).toEqual({
       recommWorks: [[stubWork], [stubWork], 'dummy'],
+=======
+      selectedWorks: [[stubWork], [stubWork]],
+    });
+    expect(newState).toEqual({
+      recommWorks: [[stubWork], [stubWork]],
+>>>>>>> 72305c5 (Review pagination roll back (#88))
     });
   });
 
   it('should return concatenated recommended works', () => {
     const stubInitialState = {
+<<<<<<< HEAD
       recommWorks: [[stubWork], [stubWork], ''],
+=======
+      recommWorks: [[stubWork], [stubWork]],
+>>>>>>> 72305c5 (Review pagination roll back (#88))
     };
     const newState = reducer(stubInitialState, {
       type: actionTypes.GET_REC_WORKS,
       listStart: [false, true],
+<<<<<<< HEAD
       selectedWorks: [[stubWork, stubWork], [stubWork], 'dummy'],
     });
     expect(newState).toEqual({
       recommWorks: [[stubWork, stubWork, stubWork], [stubWork], 'dummy'],
+=======
+      selectedWorks: [[stubWork, stubWork], [stubWork]],
+    });
+    expect(newState).toEqual({
+      recommWorks: [[stubWork, stubWork, stubWork], [stubWork]],
+>>>>>>> 72305c5 (Review pagination roll back (#88))
     });
   });
 
