@@ -9,6 +9,22 @@ import * as actionCreators from '../../store/actions/index';
 import './MyPage.css';
 
 class MyPage extends Component {
+  constructor(props) {
+    super(props);
+    let subjectRows;
+    const worksInRow = 4;
+    const rowIncrement = 2;
+    const { location } = this.props;
+    if (location.state && location.state.subjectRows) {
+      subjectRows = location.state.subjectRows;
+    } else {
+      subjectRows = [1];
+    }
+    this.state = {
+      subjectRows, worksInRow, rowIncrement,
+    };
+  }
+
   componentDidMount() {
     this.props.onGetMyReviews();
   }
@@ -26,8 +42,19 @@ class MyPage extends Component {
     this.props.history.push('/works/' + String(workId));
   }
 
+  onClickMore = (listId) => {
+    const {
+      subjectRows, rowIncrement,
+    } = this.state;
+    subjectRows[listId] += rowIncrement;
+    this.setState({ subjectRows });
+    const { history } = this.props;
+    history.replace('/mypage', { subjectRows });
+  }
+
   render() {
     const { loggedInUser, myReviews } = this.props;
+    const { subjectRows, worksInRow } = this.state;
 
     if (!loggedInUser) {
       return <Redirect to="/main" />;
@@ -62,11 +89,13 @@ class MyPage extends Component {
 
       return <WorkList
         key="MyReviews"
-        className="MyReviewList"
-        subject="My Reviews"
+        className="my-reviewed-work-list"
+        subject="Works that I reviewed"
         workList={reviewedWorkList}
-        workNumInRow={4}
+        rows={subjectRows[0]}
+        worksInRow={worksInRow}
         onClickWork={(workId) => this.onClickWork(workId)}
+        onClickMore={() => this.onClickMore(0)}
       />;
     };
 

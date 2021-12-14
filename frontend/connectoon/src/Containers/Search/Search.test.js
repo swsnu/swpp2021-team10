@@ -11,6 +11,17 @@ import * as tagActionCreators from '../../store/actions/tag';
 
 import Search from './Search';
 
+jest.mock('../../Components/WorkList/WorkList', () => {
+  return jest.fn((props) => {
+    return (
+      <div className="spyWorkList">
+        <div className="spyWork" onClick={() => props.onClickWork(props.workList[0].id)} />
+        <div className="spyMore" onClick={() => props.onClickMore()} />
+      </div>
+    );
+  });
+});
+
 const stubInitialReviewState = null;
 const stubInitialTagState = {
   tags: [
@@ -34,28 +45,8 @@ const stubInitialUserState = null;
 const stubInitialWorkState = {
   selectedWork: null,
   searchedWorks: [
-    [
-      {
-        title: 'test1',
-        artists: [
-          'test1',
-        ],
-      },
-      {
-        title: 'test2',
-        artists: [
-          'test2',
-        ],
-      },
-    ],
-    [
-      {
-        title: 'test',
-        artists: [
-          'test',
-        ],
-      },
-    ],
+    [{ id: 1 }, { id: 2 }],
+    [{ id: 3 }],
   ],
   selectedReviews: [
   ],
@@ -68,6 +59,7 @@ describe('<Search />', () => {
   let search;
   let spyGetSearchWorks;
   let spyGetSearchTags;
+  let spyHistoryReplace;
   beforeEach(() => {
     search = (
       <Provider store={mockStore}>
@@ -79,9 +71,11 @@ describe('<Search />', () => {
       </Provider>
     );
     spyGetSearchWorks = jest.spyOn(workActionCreators, 'getSearchWorks')
-      .mockImplementation(() => { return (dispatch) => {}; });
+      .mockImplementation((keyword, keytag, requestWorks) => { return (dispatch) => {}; });
     spyGetSearchTags = jest.spyOn(tagActionCreators, 'getSearchTags')
-      .mockImplementation(() => { return (dispatch) => {}; });
+      .mockImplementation((keyword) => { return (dispatch) => {}; });
+    spyHistoryReplace = jest.spyOn(history, 'replace')
+      .mockImplementation((path, state) => { return (dispatch) => { }; });
   });
 
   afterEach(() => {
@@ -150,7 +144,66 @@ describe('<Search />', () => {
   });
 
   it('should handle clicking work object', () => {
+    const spyHistoryPush = jest.spyOn(history, 'push')
+      .mockImplementation((path) => { });
     const component = mount(search);
-    component.find('.work-object').at(0).simulate('click');
+    const mockedEvent = { target: { value: 'test' } };
+    component.find('#search-title-artist-input').at(0).simulate('change', mockedEvent);
+    const wrapper = component.find('.spyWork');
+    wrapper.at(0).simulate('click');
+    expect(spyHistoryPush).toHaveBeenCalledTimes(1);
+    expect(spyHistoryPush).toHaveBeenCalledWith('/works/1');
+    wrapper.at(1).simulate('click');
+    expect(spyHistoryPush).toHaveBeenCalledTimes(2);
+    expect(spyHistoryPush).toHaveBeenLastCalledWith('/works/3');
+  });
+
+  it('should handle more click', () => {
+    const component = mount(search);
+    const mockedEvent = { target: { value: 'test' } };
+    component.find('#search-title-artist-input').at(0).simulate('change', mockedEvent);
+    expect(spyHistoryReplace).toHaveBeenCalledTimes(1);
+
+    const wrapper = component.find('.spyMore');
+    wrapper.at(0).simulate('click');
+    const newSearchInstance = component.find(Search.WrappedComponent).instance();
+    expect(newSearchInstance.state.subjectRows[0]).toBe(3);
+    expect(spyHistoryReplace).toHaveBeenCalledTimes(2);
+    // expect(spyHistoryReplace).toHaveBeenLastCalledWith('/search', { subjectRows: [3, 1] });
+
+    wrapper.at(1).simulate('click');
+    expect(newSearchInstance.state.subjectRows[1]).toBe(3);
+    expect(spyHistoryReplace).toHaveBeenCalledTimes(3);
+  });
+
+  it('should fetch more works when enough more clicks are given', () => {
+    const stubWorks = Array.from({ length: 48 }).map((idx) => {
+      return { id: idx };
+    });
+    const stubInitialManyWorkState = {
+      selectedWork: null,
+      searchedWorks: [stubWorks, stubWorks],
+      selectedReviews: [
+      ],
+      searchWord: '',
+    };
+    const manyWorkMockStore = getMockStore(stubInitialReviewState, stubInitialTagState, stubInitialUserState, stubInitialManyWorkState);
+    search = (
+      <Provider store={manyWorkMockStore}>
+        <ConnectedRouter history={history}>
+          <Switch>
+            <Route path="/" exact render={() => <Search className="search" />} />
+          </Switch>
+        </ConnectedRouter>
+      </Provider>
+    );
+    const component = mount(search);
+    const wrapper = component.find('.spyMore');
+    expect(spyGetSearchWorks).toHaveBeenCalledTimes(1);
+    expect(spyGetSearchWorks).toHaveBeenCalledWith('', '', [[0, 24], [0, 24]]);
+    wrapper.at(0).simulate('click');
+    wrapper.at(0).simulate('click');
+    expect(spyGetSearchWorks).toHaveBeenCalledTimes(2);
+    expect(spyGetSearchWorks).toHaveBeenLastCalledWith('', '', [[24, 44], [24, 24]]);
   });
 });

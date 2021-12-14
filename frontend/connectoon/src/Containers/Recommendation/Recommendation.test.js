@@ -11,41 +11,26 @@ import * as tagActionCreators from '../../store/actions/tag';
 
 import Recommendation from './Recommendation';
 
+jest.mock('../../Components/WorkList/WorkList', () => {
+  return jest.fn((props) => {
+    return (
+      <div className="spyWorkList">
+        <div className="spyWork" onClick={() => props.onClickWork(props.workList[0].id)} />
+        <div className="spyMore" onClick={() => props.onClickMore()} />
+      </div>
+    );
+  });
+});
+
 const stubInitialReviewState = null;
 const stubInitialTagState = null;
 const stubInitialUserState = {
   loggedInUser: { id: 1 },
 };
 const stubInitialWorkState = {
-  recWorkLists: [
-    [
-      {
-        title: 'test1',
-        artists: [
-          'test1',
-        ],
-      },
-      {
-        title: 'test2',
-        artists: [
-          'test2',
-        ],
-      },
-    ],
-    [
-      {
-        title: 'test1',
-        artists: [
-          'test1',
-        ],
-      },
-      {
-        title: 'test2',
-        artists: [
-          'test2',
-        ],
-      },
-    ],
+  recommWorks: [
+    [{ id: 1 }, { id: 2 }],
+    [{ id: 3 }, { id: 4 }],
   ],
 };
 
@@ -65,7 +50,7 @@ describe('<Recommendation />', () => {
       </Provider>
     );
     spyGetRecWorks = jest.spyOn(workActionCreators, 'getRecWorks')
-      .mockImplementation(() => { return (dispatch) => {}; });
+      .mockImplementation((requestWorks) => { return (dispatch) => {}; });
   });
 
   afterEach(() => {
@@ -99,7 +84,7 @@ describe('<Recommendation />', () => {
 
   it('should render Recommendation with empty workList', () => {
     const stubInitialWorkStateTest = {
-      recWorkLists: [],
+      recommWorks: [[], []],
     };
     const mockStoreTest = getMockStore(stubInitialReviewState, stubInitialTagState, stubInitialUserState, stubInitialWorkStateTest);
     recommendation = (
@@ -115,7 +100,24 @@ describe('<Recommendation />', () => {
   });
 
   it('should handle clicking work object', () => {
+    const spyHistoryPush = jest.spyOn(history, 'push')
+      .mockImplementation((path) => { });
     const component = mount(recommendation);
-    component.find('.work-object').at(0).simulate('click');
+    const wrapper = component.find('.spyWork');
+    wrapper.at(0).simulate('click');
+    expect(spyHistoryPush).toHaveBeenCalledTimes(1);
+    expect(spyHistoryPush).toHaveBeenCalledWith('/works/1');
+  });
+
+  it('should handle more click', () => {
+    const spyHistoryReplace = jest.spyOn(history, 'replace')
+      .mockImplementation((path, state) => { });
+    const component = mount(recommendation);
+    const wrapper = component.find('.spyMore');
+    wrapper.at(0).simulate('click');
+    const newRecommInstance = component.find(Recommendation.WrappedComponent).instance();
+    expect(newRecommInstance.state.subjectRows[0]).toBe(3);
+    expect(spyHistoryReplace).toHaveBeenCalledTimes(1);
+    expect(spyHistoryReplace).toHaveBeenCalledWith('/recommendation', { subjectRows: [3, 1] });
   });
 });

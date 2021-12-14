@@ -6,19 +6,31 @@ import { withRouter } from 'react-router';
 
 import * as actionCreators from '../../store/actions/index';
 import WorkList from '../../Components/WorkList/WorkList';
+import { stateConstructor, stateUpdator } from '../WorkPaginationTools/tools';
 
 import './Recommendation.css';
 
 class Recommendation extends Component {
   constructor(props) {
     super(props);
-    const { onGetRecWorks } = this.props;
-    this.state = { workNumInRow: 4 };
-    onGetRecWorks();
+    const { location, onGetRecWorks } = this.props;
+    this.state = stateConstructor(location);
+    const { requestWorks } = this.state;
+    onGetRecWorks(requestWorks);
   }
 
   onClickWork = (workId) => {
     this.props.history.push('/works/' + String(workId));
+  }
+
+  onClickMore = (listId) => {
+    const { subjectRows, newRequestWorks, fetchMore } = stateUpdator(listId, this.state);
+    this.setState({ subjectRows, requestWorks: newRequestWorks });
+    if (fetchMore) {
+      this.props.onGetMainWorks(newRequestWorks);
+    }
+    const { history } = this.props;
+    history.replace('/recommendation', { subjectRows });
   }
 
   render() {
@@ -31,8 +43,27 @@ class Recommendation extends Component {
     if (recWorkLists.length < 2) {
       return null;
     }
-    const genreList = <WorkList class="g-wl" className="genre-based-work-list" subject="Genre-based recommendation" onClickWork={(workId) => this.onClickWork(workId)} workList={recWorkLists[0]} workNumInRow={4} />;
-    const reviewList = <WorkList class="r-wl" className="review-based-work-list" subject="Review-based recommendation" onClickWork={(workId) => this.onClickWork(workId)} workList={recWorkLists[1]} workNumInRow={4} />;
+    const { subjectRows, worksInRow } = this.state;
+    const genreList = <WorkList
+      class="g-wl"
+      className="genre-based-work-list"
+      subject="Genre-based recommendation"
+      workList={recWorkLists[0]}
+      rows={subjectRows[0]}
+      worksInRow={worksInRow}
+      onClickWork={(workId) => this.onClickWork(workId)}
+      onClickMore={() => this.onClickMore(0)}
+    />;
+    const reviewList = <WorkList
+      class="r-wl"
+      className="review-based-work-list"
+      subject="Review-based recommendation"
+      workList={recWorkLists[1]}
+      rows={subjectRows[1]}
+      worksInRow={worksInRow}
+      onClickWork={(workId) => this.onClickWork(workId)}
+      onClickMore={() => this.onClickMore(1)}
+    />;
 
     return (
       <div className="recommendation-page">
@@ -56,13 +87,13 @@ Recommendation.propTypes = {
 const mapStateToProps = (state) => {
   return {
     loggedInUser: state.user.loggedInUser,
-    recWorkLists: state.work.recWorkLists,
+    recWorkLists: state.work.recommWorks,
   };
 };
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    onGetRecWorks: () => dispatch(actionCreators.getRecWorks()),
+    onGetRecWorks: (requestWorks) => dispatch(actionCreators.getRecWorks(requestWorks)),
   };
 };
 

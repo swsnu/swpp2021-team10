@@ -11,13 +11,20 @@
 
 .more-works-button {
   width: 48px;
-  text-decoration: underline;
-  background-color: #fdfdfd;
+  height: 40px;
   border: none;
   display: inline-block;
-  font-size: 13px;
+  font-size: 16px;
+  border-radius: 5px;
+
+  background-color: #eee;
+  color: black;
+  transition: background-color 0.5s ease;
 }
 
 .more-works-button:hover {
-  cursor: grab;
+  cursor: pointer;
+
+  background-color: #ccc;
+  transition: background-color 0.5s ease;
 }
