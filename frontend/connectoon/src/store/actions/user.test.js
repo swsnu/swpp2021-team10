@@ -7,6 +7,7 @@ const stubUser = {
   id: 0,
   email: 'test@snu.ac.kr',
   username: 'test',
+  tags: ['tag1'],
 };
 
 const stubReviews = [
@@ -50,6 +51,23 @@ describe('ActionCreators', () => {
       });
 
     store.dispatch(actionCreators.logIn({ email: 'test@snu.ac.kr', password: 'qwe123' })).then(() => {
+      expect(spy).toHaveBeenCalledTimes(1);
+      done();
+    });
+  });
+
+  it('\'logIn\' should catch error', (done) => {
+    const spy = jest.spyOn(axios, 'post')
+      .mockImplementation((url, rv) => {
+        return new Promise((resolve, reject) => {
+          const result = {
+            status: 400,
+          };
+          reject(result);
+        });
+      });
+
+    store.dispatch(actionCreators.logIn({ email: 'test@snu.ac.kr', password: 'qwe23' })).then(() => {
       expect(spy).toHaveBeenCalledTimes(1);
       done();
     });

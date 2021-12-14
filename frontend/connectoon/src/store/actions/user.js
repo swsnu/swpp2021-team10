@@ -1,3 +1,5 @@
+import { toast } from 'react-toastify';
+
 import axios from 'axios';
 import { push } from 'connected-react-router';
 import * as actionTypes from './actionTypes';
@@ -32,6 +34,9 @@ export const logIn = (loginData) => {
     return axios.post('/users/login/', loginData)
       .then((res) => {
         dispatch(logIn_(res.data));
+      })
+      .catch((e) => {
+        toast.error('Wrong account data!');
       });
   };
 };
