@@ -4,125 +4,35 @@ import { connect } from 'react-redux';
 import WorkList from '../../Components/WorkList/WorkList';
 import './Main.css';
 import * as actionCreators from '../../store/actions/index';
+import { stateConstructor, stateUpdator } from '../WorkPaginationTools/tools';
 
-const dummyWorks = [
-  {
-    id: 1,
-    thumbnail_picture: 'https://shared-comic.pstatic.net/thumb/webtoon/721948/thumbnail/thumbnail_IMAG06_eef5b6c4-39dc-46d9-89d1-1a1ee357b696.jpg',
-    platform_id: 1,
-    completion: false,
-    title: 'Study Group',
-    artists: 'Shin, Hyeongwook',
-    year: '2019',
-    score_avg: '4.9',
-  },
-  {
-    id: 2,
-    thumbnail_picture: 'https://shared-comic.pstatic.net/thumb/webtoon/20853/thumbnail/thumbnail_IMAG06_89061d8c-e491-42f1-8c15-40932e5eb939.jpg',
-    platform_id: 1,
-    completion: true,
-    title: '마음의 소리',
-    artists: '조석',
-    year: '2006',
-    score_avg: '4.7',
-  },
-  {
-    id: 3,
-    thumbnail_picture: 'https://shared-comic.pstatic.net/thumb/webtoon/721948/thumbnail/thumbnail_IMAG06_eef5b6c4-39dc-46d9-89d1-1a1ee357b696.jpg',
-    platform_id: 1,
-    completion: false,
-    title: 'Study Group',
-    artists: 'Shin, Hyeongwook',
-    year: '2019',
-    score_avg: '4.9',
-  },
-  {
-    id: 4,
-    thumbnail_picture: 'https://shared-comic.pstatic.net/thumb/webtoon/20853/thumbnail/thumbnail_IMAG06_89061d8c-e491-42f1-8c15-40932e5eb939.jpg',
-    platform_id: 1,
-    completion: true,
-    title: '마음의 소리',
-    artists: '조석',
-    year: '2006',
-    score_avg: '4.7',
-  },
-  {
-    id: 5,
-    thumbnail_picture: 'https://shared-comic.pstatic.net/thumb/webtoon/721948/thumbnail/thumbnail_IMAG06_eef5b6c4-39dc-46d9-89d1-1a1ee357b696.jpg',
-    platform_id: 1,
-    completion: false,
-    title: 'Study Group',
-    artists: 'Shin, Hyeongwook',
-    year: '2019',
-    score_avg: '4.9',
-  },
-  {
-    id: 6,
-    thumbnail_picture: 'https://shared-comic.pstatic.net/thumb/webtoon/20853/thumbnail/thumbnail_IMAG06_89061d8c-e491-42f1-8c15-40932e5eb939.jpg',
-    platform_id: 1,
-    completion: true,
-    title: '마음의 소리',
-    artists: '조석',
-    year: '2006',
-    score_avg: '4.7',
-  },
-  {
-    id: 7,
-    thumbnail_picture: 'https://shared-comic.pstatic.net/thumb/webtoon/721948/thumbnail/thumbnail_IMAG06_eef5b6c4-39dc-46d9-89d1-1a1ee357b696.jpg',
-    platform_id: 1,
-    completion: false,
-    title: 'Study Group',
-    artists: 'Shin, Hyeongwook',
-    year: '2019',
-    score_avg: '4.9',
-  },
-  {
-    id: 8,
-    thumbnail_picture: 'https://shared-comic.pstatic.net/thumb/webtoon/20853/thumbnail/thumbnail_IMAG06_89061d8c-e491-42f1-8c15-40932e5eb939.jpg',
-    platform_id: 1,
-    completion: true,
-    title: '마음의 소리',
-    artists: '조석',
-    year: '2006',
-    score_avg: '4.7',
-  },
-  {
-    id: 9,
-    thumbnail_picture: 'https://shared-comic.pstatic.net/thumb/webtoon/721948/thumbnail/thumbnail_IMAG06_eef5b6c4-39dc-46d9-89d1-1a1ee357b696.jpg',
-    platform_id: 1,
-    completion: false,
-    title: 'Study Group',
-    artists: 'Shin, Hyeongwook',
-    year: '2019',
-    score_avg: '4.9',
-  },
-  {
-    id: 10,
-    thumbnail_picture: 'https://shared-comic.pstatic.net/thumb/webtoon/20853/thumbnail/thumbnail_IMAG06_89061d8c-e491-42f1-8c15-40932e5eb939.jpg',
-    platform_id: 1,
-    completion: true,
-    title: '마음의 소리',
-    artists: '조석',
-    year: '2006',
-    score_avg: '4.7',
-  },
-];
 class Main extends Component {
   constructor(props) {
     super(props);
-    this.state = { workNumInRow: 4 };
+    const { location } = this.props;
+    this.state = stateConstructor(location);
   }
 
   componentDidMount() {
-    this.props.onGetMainWorks();
+    this.props.onGetMainWorks(this.state.requestWorks);
   }
 
   onClickWork = (workId) => {
     this.props.history.push('/works/' + String(workId));
   }
 
+  onClickMore = (listId) => {
+    const { subjectRows, newRequestWorks, fetchMore } = stateUpdator(listId, this.state);
+    this.setState({ subjectRows, requestWorks: newRequestWorks });
+    if (fetchMore) {
+      this.props.onGetMainWorks(newRequestWorks);
+    }
+    const { history } = this.props;
+    history.replace('/main', { subjectRows });
+  }
+
   render() {
-    const { workNumInRow } = this.state;
+    const { subjectRows, worksInRow } = this.state;
     const { mainWorkLists } = this.props;
     const workLists = mainWorkLists.map((mainWorkList, idx) => {
       return (
@@ -130,9 +40,11 @@ class Main extends Component {
           key={mainWorkList.title + String(idx)}
           className={mainWorkList.title.toLowerCase().replace(/ /g, '-').slice(0, -1) + '-list'}
           subject={mainWorkList.title}
-          workList={JSON.parse(mainWorkList.works)}
-          workNumInRow={workNumInRow}
+          workList={mainWorkList.works}
+          rows={subjectRows[idx]}
+          worksInRow={worksInRow}
           onClickWork={(workId) => this.onClickWork(workId)}
+          onClickMore={() => this.onClickMore(idx)}
         />
       );
     });
@@ -153,7 +65,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    onGetMainWorks: () => dispatch(actionCreators.getMainWorks()),
+    onGetMainWorks: (requestWorks) => dispatch(actionCreators.getMainWorks(requestWorks)),
   };
 };
 

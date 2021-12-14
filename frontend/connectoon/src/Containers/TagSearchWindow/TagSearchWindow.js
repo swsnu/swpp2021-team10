@@ -62,7 +62,7 @@ class TagSearchWindow extends Component {
       return boolVal;
     }).map((x) => (
       <GenreTag
-        key={x.key}
+        key={x.id}
         tagName={x.name}
         deletable={false}
         selected={false}
@@ -73,7 +73,7 @@ class TagSearchWindow extends Component {
 
     const clickedList = selectedTags.map((x) => (
       <GenreTag
-        key={x.key}
+        key={x.id}
         tagName={x.name}
         deletable={true}
         selected={true}

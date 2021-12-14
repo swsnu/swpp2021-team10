@@ -5,14 +5,12 @@ import './BoardReview.css';
 class BoardReview extends Component {
   constructor(props) {
     super(props);
-    const { review, clickedLike } = this.props;
+    const { review } = this.props;
     this.state = {
       editMode: false,
       title: review.title,
       content: review.content,
       score: String(review.score.toFixed(1)),
-      likes: review.likes,
-      clickedLike,
     };
 
     this.onClickLike = this.onClickLike.bind(this);
@@ -27,16 +25,12 @@ class BoardReview extends Component {
     const { onClickLikeReview, isLoggedIn } = this.props;
     if (isLoggedIn) {
       onClickLikeReview();
-      const { likes, clickedLike } = this.state;
-      this.setState({ likes: likes + 1, clickedLike: !clickedLike });
     }
   }
 
   onClickUnlike() {
     const { onClickUnlikeReview } = this.props;
     onClickUnlikeReview();
-    const { likes, clickedLike } = this.state;
-    this.setState({ likes: likes - 1, clickedLike: !clickedLike });
   }
 
   onClickEdit() {
@@ -48,11 +42,6 @@ class BoardReview extends Component {
     this.setState({
       editMode: false, title: review.title, content: review.content, score: String(review.score.toFixed(1)),
     });
-  }
-
-  onClickThisReview = (workId) => {
-    const { onClickReview } = this.props;
-    onClickReview(workId);
   }
 
   onClickSave() {
@@ -69,10 +58,10 @@ class BoardReview extends Component {
 
   render() {
     const {
-      className, review, isMyReview,
+      className, review, isMyReview, clickedLike,
     } = this.props;
     const {
-      editMode, title, content, score, clickedLike, likes,
+      editMode, title, content, score,
     } = this.state;
     const heart = clickedLike ? '/images/fullHeart.png' : '/images/emptyHeart.png';
     const platformMapper = ['/images/naver_logo.png', '/images/kakao_logo.png', '/images/lezhin_logo.png'];
@@ -134,13 +123,13 @@ class BoardReview extends Component {
           <button className="review-like-button" type="button" onClick={clickedLike ? this.onClickUnlike : this.onClickLike}>
             <img className="review-like-heart-icon" src={heart} />
           </button>
-          <h5 className="review-value like">{likes}</h5>
+          <h5 className="review-value like">{review.likes}</h5>
         </div>
       </div>
     );
 
     return (
-      <tr className={className} onClick={() => this.onClickThisReview(review.work.id)}>
+      <tr className={className} onClick={() => this.props.onClickReview(review.work.id)}>
         <td className="board-review thumbnail">
           <WorkThumbnail className="work-thumbnail" src={review.work.thumbnail_picture} platform={platformMapper[review.work.platform_id]} />
         </td>

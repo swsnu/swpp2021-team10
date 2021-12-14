@@ -2,18 +2,19 @@ import axios from 'axios';
 import { push } from 'connected-react-router';
 import * as actionTypes from './actionTypes';
 
-export const getMainWorks_ = (mainWorkListDict) => {
+export const getMainWorks_ = (mainWorkListDict, listStart) => {
   return {
     type: actionTypes.GET_MAIN_WORKS,
+    listStart,
     mainWorkLists: mainWorkListDict.worklists,
   };
 };
 
-export const getMainWorks = () => {
+export const getMainWorks = (requestWorks) => {
   return (dispatch) => {
-    return axios.get('/works/main/')
+    return axios.get('/works/main/', { params: { requestWorks } })
       .then((res) => {
-        dispatch(getMainWorks_(res.data));
+        dispatch(getMainWorks_(res.data, requestWorks.map((requestWork) => { return requestWork[0] === 0; })));
       });
   };
 };
@@ -45,34 +46,36 @@ export const getWork = (id) => {
   };
 };
 
-export const getRecWorks_ = (works) => {
+export const getRecWorks_ = (works, listStart) => {
   return {
     type: actionTypes.GET_REC_WORKS,
+    listStart,
     selectedWorks: works,
   };
 };
 
-export const getRecWorks = () => {
+export const getRecWorks = (requestWorks) => {
   return (dispatch) => {
-    return axios.get('/works/recommend')
+    return axios.get('/works/recommend', { params: { requestWorks } })
       .then((res) => {
-        dispatch(getRecWorks_(res.data));
+        dispatch(getRecWorks_(res.data, requestWorks.map((requestWork) => { return requestWork[0] === 0; })));
       });
   };
 };
 
-export const getSearchWorks_ = (works) => {
+export const getSearchWorks_ = (works, listStart) => {
   return {
     type: actionTypes.GET_SEARCH_WORKS,
+    listStart,
     selectedWorks: works,
   };
 };
 
-export const getSearchWorks = (keyword, keytag) => {
+export const getSearchWorks = (keyword, keytag, requestWorks) => {
   return (dispatch) => {
-    return axios.get('/works/search?q=' + keyword + '&tags=' + keytag)
+    return axios.get('/works/search?q=' + keyword + '&tags=' + keytag, { params: { requestWorks } })
       .then((res) => {
-        dispatch(getSearchWorks_(res.data));
+        dispatch(getSearchWorks_(res.data, requestWorks.map((requestWork) => { return requestWork[0] === 0; })));
       });
   };
 };
@@ -81,5 +84,11 @@ export const postWorkReview = (id, reviewData) => {
   return (dispatch) => {
     return axios.post('/works/' + String(id) + '/reviews/', reviewData)
       .then((res) => { });
+  };
+};
+
+export const putImage = (id) => {
+  return () => {
+    return axios.get('/works/' + id + '/image');
   };
 };

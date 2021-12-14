@@ -11,6 +11,8 @@ from django.contrib.auth import get_user_model
 from work.models import Work
 from .models import Review, ReviewUserLike
 
+import make_profile
+
 
 def review_id(request, id):  # TODO
     try:

@@ -41,7 +41,7 @@ class Board extends Component {
           onClickDeleteReview={() => this.onClickDeleteReview(review.id)}
           onClickLikeReview={() => this.props.onPostLike(review.id)}
           onClickUnlikeReview={() => this.props.onPostUnlike(review.id)}
-          clickedLike={review.clickedLike}
+          clickedLike={review.clickedLike && loggedInUser}
           isLoggedIn={!!loggedInUser}
         />
       );
