@@ -8,6 +8,7 @@ from django.views.decorators.http import require_GET
 
 import json
 from json.decoder import JSONDecodeError
+import re
 
 from django.views.decorators.http import require_POST
 
@@ -86,6 +87,12 @@ def user_dup_email(request):
             req_data = json.loads(request.body.decode())
             email = req_data['email']
         except (KeyError, JSONDecodeError):
+            return HttpResponseBadRequest()
+
+        r = re.compile(
+            '(?:[a-z0-9!#$%&*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&*+/=?^_`{|}~-]+)*|"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])*")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\[(?:(?:(2(5[0-5]|[0-4][0-9])|1[0-9][0-9]|[1-9]?[0-9]))\.){3}(?:(2(5[0-5]|[0-4][0-9])|1[0-9][0-9]|[1-9]?[0-9])|[a-z0-9-]*[a-z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\])')
+        match = re.match(r, email)
+        if match is None:
             return HttpResponseBadRequest()
 
         try:
@@ -167,14 +174,16 @@ def user_login(request):
     else:
         return HttpResponseNotAllowed(['POST'])
 
+
 def user_logout(request):
-     if request.method == 'GET':
-         if not request.user.is_authenticated:
-             return HttpResponse(status=401)
-         auth_logout(request)
-         return HttpResponse(status=200)
-     else:
-         return HttpResponseNotAllowed(['GET'])
+    if request.method == 'GET':
+        if not request.user.is_authenticated:
+            return HttpResponse(status=401)
+        auth_logout(request)
+        return HttpResponse(status=200)
+    else:
+        return HttpResponseNotAllowed(['GET'])
+
 
 def user_id(request, id):  # TODO
     return HttpResponse(status=501)
@@ -202,7 +211,8 @@ def user_me(request):
                 'username': request_user.username,
                 'email': request_user.email,
                 'tags': return_tag_list,
-                'profile_picture': request.build_absolute_uri(request_user.profile_picture.url) if request_user.profile_picture else ''
+                'profile_picture': request.build_absolute_uri(
+                    request_user.profile_picture.url) if request_user.profile_picture else ''
             }
             return JsonResponse(response_dict, status=200)
         else:
@@ -240,13 +250,13 @@ def user_me(request):
 
             # delete UserTagFav if not in request
             for user_tag in user_tag_old:
-                if not(user_tag.tag.name in tags):
+                if not (user_tag.tag.name in tags):
                     user_tag.delete()
 
             # create new UserTagFav if not exist
             user_tag_old_name_list = [ut.tag.name for ut in user_tag_old]
             for tag in tag_new:
-                if not(tag.name in user_tag_old_name_list):
+                if not (tag.name in user_tag_old_name_list):
                     UserTagFav.objects.create(user=request_user, tag=tag)
 
             # change data
@@ -287,39 +297,40 @@ def user_me(request):
         return HttpResponseNotAllowed(['GET', 'PUT'])
 
 
-
 @require_GET
-def user_me_review(request): 
+def user_me_review(request):
     request_user = request.user
 
-    my_reviews = Review.objects.filter(author__id = request_user.id)
+    my_reviews = Review.objects.filter(author__id=request_user.id)
     user_class = get_user_model()
     response_dict = []
 
     for review in my_reviews:
         work = review.work
         work_artist_name = [artist.name for artist in work.artists.all()]
-        
+
         work_dict = {
             "id": work.id, "title": work.title, "thumbnail_picture": work.thumbnail_picture,
             "platform_id": work.platform_id, "year": work.year, "artists": work_artist_name
         }
-        
+
         author = user_class.objects.get(id=review.author_id)
         author_dict = {
-            "id": author.id, "username": author.username, "email": author.email, # "profile_picture": author.profile_picture
+            "id": author.id, "username": author.username, "email": author.email,
+            # "profile_picture": author.profile_picture
         }
 
-        if ReviewUserLike.objects.filter(user = request_user, review = review):
+        if ReviewUserLike.objects.filter(user=request_user, review=review):
             clickedLikeReview = True
         else:
             clickedLikeReview = False
 
         response_dict.append({
-            "id": review.id, "title": review.title, "content": review.content, "score": review.score, "likes": review.likes,
+            "id": review.id, "title": review.title, "content": review.content, "score": review.score,
+            "likes": review.likes,
             "work": work_dict, "author": author_dict, "clickedLike": clickedLikeReview
         })
-
+    
     return JsonResponse({"reviews": response_dict}, status = 200, safe=False)
 
 
