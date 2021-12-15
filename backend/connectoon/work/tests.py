@@ -17,6 +17,8 @@ class WorkTestCase(TestCase):
             email='dummy@user.com', password='1234', username='dummy1')
         author2 = user_class.objects.create_user(
             email='dummy2@user.com', password='1234', username='dummy2')
+        author3 = user_class.objects.create_user(
+            email='dummy3@user.com', password='1234', username='dummy3')
         Work.objects.create(
             title='DummyTitle', year=2019, description="HI", 
             link="https://www.naver.com/",completion=True, platform_id=1, review_num = 2, score_sum = 5.0, score_avg = 2.5
@@ -166,12 +168,18 @@ class WorkTestCase(TestCase):
 
     def test_get_work_main_status(self):
         client = Client()
-        response = client.get('/api/v1/works/main/')
+        response = client.get('/api/v1/works/main/', {'requestWorks[]': ['[0, 1]', '[0, 2]']}, content_type='application/json')
         self.assertEqual(response.status_code, 200)
+
+        response_json = json.loads(response.content.decode())
+        most_reviewed_works = json.loads(response_json['worklists'][0]['works'])
+        highest_rated_works = json.loads(response_json['worklists'][1]['works'])
+        self.assertEqual(len(most_reviewed_works), 1)
+        self.assertEqual(len(highest_rated_works), 2)
         
     def test_get_work_main_most_reviewed(self):
         client = Client()
-        response = client.get('/api/v1/works/main/')
+        response = client.get('/api/v1/works/main/', {'requestWorks[]': ['[0, 24]', '[0, 24]']}, content_type='application/json')
 
         response_json = json.loads(response.content.decode())
         self.assertEquals(response_json['worklists'][0]['title'], "Most reviewed works")
@@ -183,19 +191,19 @@ class WorkTestCase(TestCase):
         
     def test_get_work_main_highest_rated(self):
         client = Client()
-        response = client.get('/api/v1/works/main/')
+        response = client.get('/api/v1/works/main/', {'requestWorks[]': ['[0, 24]', '[0, 24]']}, content_type='application/json')
 
         response_json = json.loads(response.content.decode())
     
         self.assertEquals(response_json['worklists'][1]['title'], "Highest rated works")
 
-        most_reviewed_works = json.loads(response_json['worklists'][1]['works'])
+        highest_rated_works = json.loads(response_json['worklists'][1]['works'])
 
-        for i in range(len(most_reviewed_works)):
+        for i in range(len(highest_rated_works)):
             if i!=0:
-                self.assertGreaterEqual(most_reviewed_works[i-1]['score_avg'], most_reviewed_works[i]['score_avg'])
+                self.assertGreaterEqual(highest_rated_works[i-1]['score_avg'], highest_rated_works[i]['score_avg'])
 
-    def test_get_work_wrong_api(self):
+    def test_get_work_main_wrong_api(self):
         client = Client()
 
         response = client.delete('/api/v1/works/main/')
@@ -212,7 +220,7 @@ class WorkTestCase(TestCase):
 
     def test_work_recommend(self):
         client = Client()
-        response = client.get('/api/v1/works/recommend/')
+        response = client.get('/api/v1/works/recommend/', {'requestWorks[]': ['[0, 1]', '[0, 2]']}, content_type='application/json')
         self.assertEqual(response.status_code, 401)
 
         Work.objects.first().tags.add(Tag.objects.first())
@@ -221,18 +229,29 @@ class WorkTestCase(TestCase):
         response = client.post('/api/v1/users/login/',
                                json.dumps({'email': 'dummy@user.com', 'password': '1234'}),
                                content_type='application/json', HTTP_X_CSRFTOKEN=csrftoken)
-        response = client.get('/api/v1/works/recommend/')
+        response = client.get('/api/v1/works/recommend/', {'requestWorks[]': ['[0, 1]', '[0, 2]']}, content_type='application/json')
+        self.assertEqual(response.status_code, 200)
+    
+    def test_work_recommend_review_not_exist(self):
+        client = Client()
+        csrftoken = client.get('/api/v1/token/').cookies['csrftoken'].value  # Get csrf token from cookie
+        response = client.post('/api/v1/users/login/',
+                               json.dumps({'email': 'dummy3@user.com', 'password': '1234'}),
+                               content_type='application/json', HTTP_X_CSRFTOKEN=csrftoken)
+        response = client.get('/api/v1/works/recommend/', {'requestWorks[]': ['[0, 1]', '[0, 2]']}, content_type='application/json')
         self.assertEqual(response.status_code, 200)
 
+    def test_work_recommend_worng_api(self):
+        client = Client()
         csrftoken = client.get('/api/v1/token/').cookies['csrftoken'].value  # Get csrf token from cookie
         response = client.post('/api/v1/works/recommend/', HTTP_X_CSRFTOKEN=csrftoken)
         self.assertEqual(response.status_code, 405)
 
     def test_work_search(self):
         client = Client(enforce_csrf_checks=True)
-        response = client.get('/api/v1/works/search/?q=&tags=')
-        response = client.get('/api/v1/works/search/?q=Du&tags=')
-        response = client.get('/api/v1/works/search/?q=Du&tags=$Dummy')
+        response = client.get('/api/v1/works/search/?q=&tags=&requestWorks[]=[0, 1]&requestWorks[]=[0, 2]')
+        response = client.get('/api/v1/works/search/?q=Du&tags=&requestWorks[]=[0, 1]&requestWorks[]=[0, 2]')
+        response = client.get('/api/v1/works/search/?q=Du&tags=$Dummy&requestWorks[]=[0, 1]&requestWorks[]=[0, 2]')
         self.assertEqual(response.status_code, 200)
 
         response = client.get('/api/v1/token/')

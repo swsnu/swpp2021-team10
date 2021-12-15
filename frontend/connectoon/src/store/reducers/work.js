@@ -4,6 +4,7 @@ const initialState = {
   works: [
   ],
   mainWorkLists: [
+    { title: '', works: [] }, { title: '', works: [] },
   ],
   selectedWorks: [
   ],
@@ -12,23 +13,45 @@ const initialState = {
   ],
   selectedWork: null,
   noSuchSelectedWork: false,
-  recWorkLists: [
-    [],
+  recommWorks: [
+    [], [], '',
   ],
 };
 
 const reducer = (state = initialState, action) => {
   switch (action.type) {
     case actionTypes.GET_MAIN_WORKS:
-      return { ...state, mainWorkLists: action.mainWorkLists };
+      const newMainWorkLists = state.mainWorkLists.map((listDict, idx) => {
+        if (action.listStart[idx]) {
+          return { title: action.mainWorkLists[idx].title, works: JSON.parse(action.mainWorkLists[idx].works) };
+        } else {
+          return { title: action.mainWorkLists[idx].title, works: listDict.works.concat(JSON.parse(action.mainWorkLists[idx].works)) };
+        }
+      });
+      return { ...state, mainWorkLists: newMainWorkLists };
     case actionTypes.GET_WORK:
       return { ...state, selectedWork: action.selectedWork, noSuchSelectedWork: false };
     case actionTypes.WORK_NOT_EXISTING:
       return { ...state, selectedWork: null, noSuchSelectedWork: true };
     case actionTypes.GET_REC_WORKS:
-      return { ...state, recWorkLists: action.selectedWorks };
+      const newRecommWorks = state.recommWorks.slice(0, 2).map((listDict, idx) => {
+        if (action.listStart[idx]) {
+          return action.selectedWorks[idx];
+        } else {
+          return listDict.concat(action.selectedWorks[idx]);
+        }
+      });
+      newRecommWorks.push(action.selectedWorks[2]);
+      return { ...state, recommWorks: newRecommWorks };
     case actionTypes.GET_SEARCH_WORKS:
-      return { ...state, searchedWorks: action.selectedWorks };
+      const newSearchedWorks = state.searchedWorks.map((listDict, idx) => {
+        if (action.listStart[idx]) {
+          return action.selectedWorks[idx];
+        } else {
+          return listDict.concat(action.selectedWorks[idx]);
+        }
+      });
+      return { ...state, searchedWorks: newSearchedWorks };
     default:
       break;
   }
