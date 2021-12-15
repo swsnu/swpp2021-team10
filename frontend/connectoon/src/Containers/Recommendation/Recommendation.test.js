@@ -76,6 +76,27 @@ describe('<Recommendation />', () => {
     expect(wrapper.text()).toBe('Please Login!');
   });
 
+  it('should render nothing when recommendation lists are not enough', () => {
+    const stubInitialNoWorkState = {
+      recommWorks: [
+        [{ id: 1 }, { id: 2 }],
+      ],
+    };
+    const noWorkMockStore = getMockStore(stubInitialReviewState, stubInitialTagState, stubInitialUserState, stubInitialNoWorkState);
+    recommendation = (
+      <Provider store={noWorkMockStore}>
+        <ConnectedRouter history={history}>
+          <Switch>
+            <Route path="/" exact render={() => <Recommendation className="recommendation" />} />
+          </Switch>
+        </ConnectedRouter>
+      </Provider>
+    );
+    const component = mount(recommendation);
+    const wrapper = component.find('div.recommendation');
+    expect(wrapper.length).toBe(0);
+  });
+
   it('should render Recommendation', () => {
     const component = mount(recommendation);
     const wrapper = component.find('.recommendation');
@@ -107,6 +128,9 @@ describe('<Recommendation />', () => {
     wrapper.at(0).simulate('click');
     expect(spyHistoryPush).toHaveBeenCalledTimes(1);
     expect(spyHistoryPush).toHaveBeenCalledWith('/works/1');
+    wrapper.at(1).simulate('click');
+    expect(spyHistoryPush).toHaveBeenCalledTimes(2);
+    expect(spyHistoryPush).toHaveBeenLastCalledWith('/works/3');
   });
 
   it('should handle more click', () => {
@@ -119,5 +143,36 @@ describe('<Recommendation />', () => {
     expect(newRecommInstance.state.subjectRows[0]).toBe(3);
     expect(spyHistoryReplace).toHaveBeenCalledTimes(1);
     expect(spyHistoryReplace).toHaveBeenCalledWith('/recommendation', { subjectRows: [3, 1] });
+    wrapper.at(1).simulate('click');
+    expect(newRecommInstance.state.subjectRows[1]).toBe(3);
+    expect(spyHistoryReplace).toHaveBeenCalledTimes(2);
+    expect(spyHistoryReplace).toHaveBeenCalledWith('/recommendation', { subjectRows: [3, 3] });
+  });
+
+  it('should fetch more works when enough more clicks are given', () => {
+    const spyHistoryReplace = jest.spyOn(history, 'replace')
+      .mockImplementation((path, state) => { });
+    const stubWorks = Array.from({ length: 48 }).map((idx) => {
+      return { id: idx };
+    });
+    const stubInitialManyWorkState = {
+      recommWorks: [stubWorks, stubWorks],
+    };
+    const manyWorkMockStore = getMockStore(stubInitialReviewState, stubInitialTagState, stubInitialUserState, stubInitialManyWorkState);
+    recommendation = (
+      <Provider store={manyWorkMockStore}>
+        <ConnectedRouter history={history}>
+          <Switch>
+            <Route path="/" exact render={() => <Recommendation className="recommendation" />} />
+          </Switch>
+        </ConnectedRouter>
+      </Provider>
+    );
+    const component = mount(recommendation);
+    expect(spyGetRecWorks).toHaveBeenCalledTimes(1);
+    const wrapper = component.find('.spyMore');
+    wrapper.at(0).simulate('click');
+    wrapper.at(0).simulate('click');
+    expect(spyGetRecWorks).toHaveBeenCalledTimes(2);
   });
 });

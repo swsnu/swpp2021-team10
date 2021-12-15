@@ -27,7 +27,7 @@ class Recommendation extends Component {
     const { subjectRows, newRequestWorks, fetchMore } = stateUpdator(listId, this.state);
     this.setState({ subjectRows, requestWorks: newRequestWorks });
     if (fetchMore) {
-      this.props.onGetMainWorks(newRequestWorks);
+      this.props.onGetRecWorks(newRequestWorks);
     }
     const { history } = this.props;
     history.replace('/recommendation', { subjectRows });
