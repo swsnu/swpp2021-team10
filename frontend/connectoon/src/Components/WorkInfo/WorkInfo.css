@@ -51,6 +51,21 @@
   display: block;
   margin: 10px;
   text-align: left;
+
+  text-decoration: none;
+  background-color: white;
+  border: 1px solid black; 
+  width: 100px;
+  text-align: center;
+  color: black;
+  padding: 5px;
+  border-radius: 5px;
+}
+
+.work-link:hover {
+  padding: 4px;
+  border: 2px solid black;
+  font-weight: 600;
 }
 
 .work-info-tags {

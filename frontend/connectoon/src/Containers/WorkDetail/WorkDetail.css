@@ -30,3 +30,39 @@
   display: inline-block;
   margin: 10px 800px 10px 0px;
 }
+
+#detail-modal {
+  width: 400px;
+  height: 100px;
+  top: 50% !important;
+  left: 50% !important;
+  transform: translate(-50%, -50%) !important;
+}
+
+.detail-modal-button {
+  background-color: #eee;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  padding: 5px;
+  width: 80px;
+  height: 30px;
+  transition: all 0.4s ease;
+  border: none
+}
+
+.detail-modal-button:hover {
+  cursor: pointer;
+}
+
+.detail-modal-cancel {
+  margin: 5px 10px 5px 210px;
+}
+
+.detail-modal-confirm {
+  margin: 5px 10px 5px 10px;
+}
+
+.detail-modal-confirm:hover {
+  background-color: #e2eeff;
+  transition: all 0.4s ease;
+}

@@ -27,7 +27,9 @@ const WorkInfo = (props) => {
         <h4 className="work-artist">{artists.toString()}</h4>
         <h4 className="work-created-year">{year}</h4>
         <p className="work-description">{description}</p>
-        <a className="work-link" href={link} target="_blank" rel="noopener noreferrer">{link}</a>
+        <div className="work-link-wrapper">
+          <a className="work-link" href={link} target="_blank" rel="noopener noreferrer">Go to Work!</a>
+        </div>
         <div className="work-info-tags">
           {genreTags}
         </div>
