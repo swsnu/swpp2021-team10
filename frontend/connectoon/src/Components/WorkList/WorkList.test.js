@@ -16,20 +16,23 @@ jest.mock('../WorkObject/WorkObject', () => {
 describe('<WorkList />', () => {
   let component;
   let spyWorkClick;
+  let spyMoreClick;
   beforeEach(() => {
     const className = 'TEST-CLASSNAME';
     const subject = 'TEST_SUBJECT';
     const workList = [
-      { id: 1 }, { id: 2 },
+      { id: 1 }, { id: 2 }, { id: 3 }, { id: 4 }, { id: 5 },
     ];
-    const workNumInRow = 1;
     spyWorkClick = jest.fn((id) => { });
+    spyMoreClick = jest.fn(() => { });
     component = mount(<WorkList
       className={className}
       subject={subject}
       workList={workList}
-      workNumInRow={workNumInRow}
+      rows={1}
+      worksInRow={4}
       onClickWork={(id) => spyWorkClick(id)}
+      onClickMore={() => spyMoreClick()}
     />);
   });
 
@@ -42,15 +45,15 @@ describe('<WorkList />', () => {
     expect(wrapper.length).toBe(2);
   });
 
-  it('should handle click more', () => {
+  it('should handle more click', () => {
     const wrapper = component.find('.more-works-button');
     wrapper.simulate('click');
-    expect(component.state('totalDisplayRow')).toBe(3);
+    expect(spyMoreClick).toHaveBeenCalledTimes(1);
   });
 
   it('should handle work click', () => {
     const wrapper = component.find('.spyWork');
-    wrapper.simulate('click');
+    wrapper.at(0).simulate('click');
     expect(spyWorkClick).toHaveBeenCalledTimes(1);
     expect(spyWorkClick).toHaveBeenCalledWith(1);
   });

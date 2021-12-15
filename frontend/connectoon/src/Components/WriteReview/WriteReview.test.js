@@ -38,4 +38,17 @@ describe('<WriteReview />', () => {
     wrapper.simulate('click');
     expect(spyConfirmReview).toHaveBeenCalledTimes(1);
   });
+
+  it('should not allow more than one clicks on confirm', () => {
+    const spyConfirmReview = jest.fn(() => { });
+    const component = mount(<WriteReview className="write-review" loggedInUser={stubLoggedInUser} onClickReviewConfirm={spyConfirmReview} />);
+    let wrapper = component.find('.write-review-title-input');
+    wrapper.simulate('change', { target: { value: 'test_title1' } });
+    wrapper = component.find('.write-review-content-input');
+    wrapper.simulate('change', { target: { value: 'test_content1' } });
+    wrapper = component.find('.write-review-confirm-button');
+    wrapper.simulate('click');
+    wrapper.simulate('click');
+    expect(spyConfirmReview).toHaveBeenCalledTimes(1);
+  });
 });

@@ -47,7 +47,7 @@ class Register extends Component {
         toast('Email duplication has checked!');
       })
       .catch((e) => {
-        toast('There is duplicated email or submitted email has wrong pattern!');
+        toast.error('There is duplicated email or submitted email has wrong pattern!');
       });
   };
 
@@ -64,7 +64,7 @@ class Register extends Component {
         toast('Username duplication has checked!');
       })
       .catch((e) => {
-        toast('There is duplicated username!');
+        toast.error('There is duplicated username!');
       });
   };
 
@@ -95,9 +95,9 @@ class Register extends Component {
     if (!this.state.usernameDupCheck) usernameString += 'You should check username duplication!\n';
     if (!this.checkPasswordAccord()) passwordString += 'You should match password and password check with guide!\n';
 
-    if (emailString) toast(emailString);
-    if (usernameString) toast(usernameString);
-    if (passwordString) toast(passwordString);
+    if (emailString) toast.warn(emailString);
+    if (usernameString) toast.warn(usernameString);
+    if (passwordString) toast.warn(passwordString);
 
     if (emailString || usernameString || passwordString) {
       return;

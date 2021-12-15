@@ -53,14 +53,6 @@ class WorkDetail extends Component {
     this.props.history.push('/search/$' + tagName);
   }
 
-  onClickLikeReview(id) {
-    this.props.onPostLike(id);
-  }
-
-  onClickUnlikeReview(id) {
-    this.props.onPostUnlike(id);
-  }
-
   render() {
     const {
       selectedWork, noSuchSelectedWork, loggedInUser, reviews,
@@ -112,8 +104,8 @@ class WorkDetail extends Component {
           editable
           onClickSaveReview={(title, content, score) => this.onClickSaveReview(myReview[0].id, title, content, score)}
           onClickDeleteReview={() => this.onClickDeleteReview(myReview[0].id)}
-          onClickLikeReview={() => this.onClickLikeReview(myReview[0].id)}
-          onClickUnlikeReview={() => this.onClickUnlikeReview(myReview[0].id)}
+          onClickLikeReview={() => this.props.onPostLike(myReview[0].id)}
+          onClickUnlikeReview={() => this.props.onPostUnlike(myReview[0].id)}
           clickedLike={myReview[0].clickedLike && loggedInUser}
           isLoggedIn={true}
         />
@@ -125,8 +117,8 @@ class WorkDetail extends Component {
           key={review.id}
           className="detail-review"
           review={review}
-          onClickLikeReview={() => this.onClickLikeReview(review.id)}
-          onClickUnlikeReview={() => this.onClickUnlikeReview(review.id)}
+          onClickLikeReview={() => this.props.onPostLike(review.id)}
+          onClickUnlikeReview={() => this.props.onPostUnlike(review.id)}
           clickedLike={review.clickedLike}
           editable={false}
           isLoggedIn={!!loggedInUser}
@@ -142,8 +134,8 @@ class WorkDetail extends Component {
             key={review.id}
             className="detail-review"
             review={review}
-            onClickLikeReview={() => this.onClickLikeReview(review.id)}
-            onClickUnlikeReview={() => this.onClickUnlikeReview(review.id)}
+            onClickLikeReview={() => this.props.onPostLike(review.id)}
+            onClickUnlikeReview={() => this.props.onPostUnlike(review.id)}
             clickedLike={review.clickedLike && loggedInUser}
             editable={false}
             isLoggedIn={!!loggedInUser}
