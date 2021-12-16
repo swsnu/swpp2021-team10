@@ -10,6 +10,7 @@ import { getMockStore } from '../../test-utils/mocks';
 import store, { history } from '../../store/store';
 
 import * as actionCreatorReview from '../../store/actions/review';
+import * as actionCreatorUser from '../../store/actions/user';
 
 jest.mock('../../Components/WorkList/WorkList', () => {
   return jest.fn((props) => {
@@ -69,9 +70,13 @@ const mockStore = getMockStore(stubInitialReviewState, stubInitialTagState, stub
 describe('<MyPage />', () => {
   global.URL.createObjectURL = jest.fn();
   let myPage;
-  let spyToken;
+  let spyGetMyReviews;
+  let spyGetMyUser;
   beforeEach(() => {
-    spyToken = jest.spyOn(actionCreatorReview, 'getMyReviews')
+    spyGetMyReviews = jest.spyOn(actionCreatorReview, 'getMyReviews')
+      .mockImplementation(() => { return (dispatch) => {}; });
+
+    spyGetMyUser = jest.spyOn(actionCreatorUser, 'getMyUser')
       .mockImplementation(() => { return (dispatch) => {}; });
 
     myPage = (
