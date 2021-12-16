@@ -100,6 +100,9 @@ export const getUser = (id) => {
     return axios.get('/users/' + id)
       .then((res) => {
         dispatch(getUser_(res.data));
+      }).catch((e) => {
+        toast.error('No such User!');
+        dispatch(push('/main'));
       });
   };
 };
