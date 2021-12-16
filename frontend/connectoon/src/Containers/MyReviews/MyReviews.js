@@ -1,13 +1,18 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Redirect } from 'react-router';
+import Modal from 'react-modal';
+
 import * as actionCreators from '../../store/actions/index';
-
 import './MyReviews.css';
-
 import BoardReview from '../../Components/BoardReview/BoardReview';
 
 class MyReviews extends Component {
+  constructor(props) {
+    super(props);
+    this.state = { modalIsOpen: false, targetReviewId: null };
+  }
+
   componentDidMount() {
     this.props.onGetMyReviews();
     const { loggedInUser } = this.props;
@@ -28,8 +33,17 @@ class MyReviews extends Component {
       });
   }
 
-  onClickDeleteReview(id) {
-    this.props.onDeleteReview(id)
+  onOpenModal(id) {
+    this.setState({ modalIsOpen: true, targetReviewId: id });
+  }
+
+  onCancelModal() {
+    this.setState({ modalIsOpen: false, targetReviewId: null });
+  }
+
+  onClickDeleteReview() {
+    this.setState({ modalIsOpen: false });
+    this.props.onDeleteReview(this.state.targetReviewId)
       .then(() => {
         this.props.onGetMyReviews();
       });
@@ -37,10 +51,22 @@ class MyReviews extends Component {
 
   render() {
     const { myReviews, loggedInUser } = this.props;
+    const { modalIsOpen } = this.state;
 
     if (!loggedInUser) {
       return <Redirect to="/main" />;
     }
+
+    const modalElement = <Modal
+      id="myreview-modal"
+      isOpen={modalIsOpen}
+    >
+      <h4>Are you sure you want to delete?</h4>
+      <div id="myreview-modal-button-wrapper">
+        <button type="button" className="myreview-modal-button myreview-modal-cancel" onClick={() => this.onCancelModal()}>Cancel</button>
+        <button type="button" className="myreview-modal-button myreview-modal-confirm" onClick={() => this.onClickDeleteReview()}>Confirm</button>
+      </div>
+    </Modal>;
 
     const reviewLists = myReviews?.map((review) => {
       return (
@@ -51,7 +77,7 @@ class MyReviews extends Component {
           onClickReview={(workId) => this.onClickReview(workId)}
           isMyReview={loggedInUser && loggedInUser.id === review.author.id}
           onClickSaveReview={(title, content, score) => this.onClickSaveReview(review.id, title, content, score, review.work.id)}
-          onClickDeleteReview={() => this.onClickDeleteReview(review.id)}
+          onClickDeleteReview={() => this.onOpenModal(review.id)}
           onClickLikeReview={() => this.props.onPostLike(review.id)}
           onClickUnlikeReview={() => this.props.onPostUnlike(review.id)}
           clickedLike={review.clickedLike}
@@ -62,6 +88,7 @@ class MyReviews extends Component {
 
     return (
       <div className="myreview">
+        {modalElement}
         <h1 className="myreview-page-title">
           My Reviews
         </h1>

@@ -25,3 +25,38 @@
 .board-header.review {
 	flex:5;
 }
+
+#board-modal {
+  width: 400px;
+  height: 100px;
+  top: 50% !important;
+  left: 50% !important;
+  transform: translate(-50%, -50%) !important;
+}
+
+.board-modal-button {
+  background-color: #eee;
+  border-radius: 5px;
+  padding: 5px;
+  width: 80px;
+  height: 30px;
+  transition: all 0.4s ease;
+  border: none
+}
+
+.board-modal-button:hover {
+  cursor: pointer;
+}
+
+.board-modal-cancel {
+  margin: 5px 10px 5px 210px;
+}
+
+.board-modal-confirm {
+  margin: 5px 10px 5px 10px;
+}
+
+.board-modal-confirm:hover {
+  background-color: #e2eeff;
+  transition: all 0.4s ease;
+}

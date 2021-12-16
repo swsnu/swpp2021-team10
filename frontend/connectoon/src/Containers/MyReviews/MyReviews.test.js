@@ -142,9 +142,20 @@ describe('<MyReviews />', () => {
     expect(spyEditReview).toHaveBeenCalledTimes(1);
   });
 
-  it('should handle click delete', () => {
+  it('should handle modal and click delete', () => {
     const component = mount(myReviews);
-    const wrapper = component.find('.spy-delete-button');
+    let wrapper = component.find('.spy-delete-button');
+    wrapper.at(0).simulate('click');
+    const newMyReviewsInstance = component.find(MyReviews.WrappedComponent).instance();
+    expect(newMyReviewsInstance.state.modalIsOpen).toBeTruthy();
+    expect(newMyReviewsInstance.state.targetReviewId).toBe(1);
+    wrapper = component.find('.myreview-modal-cancel');
+    wrapper.simulate('click');
+    expect(newMyReviewsInstance.state.modalIsOpen).toBeFalsy();
+    expect(newMyReviewsInstance.state.targetReviewId).toBe(null);
+    wrapper = component.find('.spy-delete-button');
+    wrapper.at(0).simulate('click');
+    wrapper = component.find('.myreview-modal-confirm');
     wrapper.simulate('click');
     expect(spyDeleteReview).toHaveBeenCalledTimes(1);
   });
@@ -156,7 +167,7 @@ describe('<MyReviews />', () => {
     expect(spyLikeReview).toHaveBeenCalledTimes(1);
   });
 
-  it('should handle click like', () => {
+  it('should handle click unlike', () => {
     const component = mount(myReviews);
     const wrapper = component.find('.spy-unlike-button');
     wrapper.simulate('click');
