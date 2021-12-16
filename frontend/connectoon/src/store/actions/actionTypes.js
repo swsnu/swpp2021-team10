@@ -11,6 +11,7 @@ export const GET_USER = 'GET_USER';
 export const GET_MYUSER = 'GET_MYUSER';
 export const EDIT_MYUSER = 'EDIT_MYUSER';
 export const GET_MYREVIEWS = 'GET_MYREVIEWS';
+export const TOGGLE_TRANSFER = 'TOGGLE_TRANSFER';
 export const PUT_IMAGE = 'PUT_IMAGE';
 export const GET_MAIN_WORKS = 'GET_MAIN_WORKS';
 export const GET_WORK = 'GET_WORK';
