@@ -73,7 +73,7 @@ def user_register(request):
         'email': created_user.email,
         'username': created_user.username,
         'tags': tag_list,
-        'profile_picture': return_picture.replace('http', 'https')
+        'profile_picture': return_picture
     }
 
     return JsonResponse(response_dict, status=201)
@@ -165,7 +165,7 @@ def user_login(request):
                 'username': user.username,
                 'email': user.email,
                 'tags': return_tag_list,
-                'profile_picture': return_picture.replace('http', 'https')
+                'profile_picture': return_picture
             }
 
             return JsonResponse(response_dict, status=200)
@@ -215,7 +215,7 @@ def user_id(request, id):
         'username': found_user.username,
         'email': found_user.email,
         'tags': return_tag_list,
-        'profile_picture': return_picture.replace('http', 'https')
+        'profile_picture': return_picture
     }
 
     return JsonResponse(response_dict, status=200)
@@ -250,7 +250,7 @@ def user_me(request):
                 'username': request_user.username,
                 'email': request_user.email,
                 'tags': return_tag_list,
-                'profile_picture': return_picture.replace('http', 'https'),
+                'profile_picture': return_picture,
                 'want_transferred': request_user.want_transferred
             }
             return JsonResponse(response_dict, status=200)
@@ -326,7 +326,7 @@ def user_me(request):
                 'email': request_user.email,
                 'username': request_user.username,
                 'tags': tag_list,
-                'profile_picture': return_picture.replace('http', 'https'),
+                'profile_picture': return_picture,
                 'want_transferred': request_user.want_transferred
             }
 
