@@ -40,7 +40,7 @@ class Recommendation extends Component {
       </div>;
     }
     const { recWorkLists } = this.props;
-    if (recWorkLists.length < 2) {
+    if (recWorkLists.length < 3) {
       return null;
     }
     const { subjectRows, worksInRow } = this.state;
@@ -57,7 +57,7 @@ class Recommendation extends Component {
     const reviewList = <WorkList
       class="r-wl"
       className="review-based-work-list"
-      subject="Review-based recommendation"
+      subject={recWorkLists[2]}
       workList={recWorkLists[1]}
       rows={subjectRows[1]}
       worksInRow={worksInRow}
@@ -76,12 +76,12 @@ class Recommendation extends Component {
 
 Recommendation.defaultProps = {
   onGetRecWorks: func,
-  recWorkLists: PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.any)),
+  recWorkLists: PropTypes.arrayOf(PropTypes.any),
 };
 
 Recommendation.propTypes = {
   onGetRecWorks: func,
-  recWorkLists: PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.any)),
+  recWorkLists: PropTypes.arrayOf(PropTypes.any),
 };
 
 const mapStateToProps = (state) => {

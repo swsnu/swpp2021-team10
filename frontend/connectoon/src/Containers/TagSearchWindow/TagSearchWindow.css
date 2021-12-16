@@ -18,8 +18,9 @@
   height: 30px;
   width: 800px;
 
-  font-size: 20px;
+  font-size: 18px;
   border: none;
+  letter-spacing: 1px;
   padding-left: 6px;
   padding-top: 3px;
 

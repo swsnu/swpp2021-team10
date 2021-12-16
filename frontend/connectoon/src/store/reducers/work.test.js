@@ -18,7 +18,7 @@ describe('Work Reducer', () => {
       searchedWorks: [[], []],
       selectedWork: null,
       noSuchSelectedWork: false,
-      recommWorks: [[], []],
+      recommWorks: [[], [], ''],
       works: [],
     });
   });
@@ -77,29 +77,29 @@ describe('Work Reducer', () => {
 
   it('should get recommended works', () => {
     const stubInitialState = {
-      recommWorks: [[], []],
+      recommWorks: [[], [], ''],
     };
     const newState = reducer(stubInitialState, {
       type: actionTypes.GET_REC_WORKS,
       listStart: [true, true],
-      selectedWorks: [[stubWork], [stubWork]],
+      selectedWorks: [[stubWork], [stubWork], 'dummy'],
     });
     expect(newState).toEqual({
-      recommWorks: [[stubWork], [stubWork]],
+      recommWorks: [[stubWork], [stubWork], 'dummy'],
     });
   });
 
   it('should return concatenated recommended works', () => {
     const stubInitialState = {
-      recommWorks: [[stubWork], [stubWork]],
+      recommWorks: [[stubWork], [stubWork], ''],
     };
     const newState = reducer(stubInitialState, {
       type: actionTypes.GET_REC_WORKS,
       listStart: [false, true],
-      selectedWorks: [[stubWork, stubWork], [stubWork]],
+      selectedWorks: [[stubWork, stubWork], [stubWork], 'dummy'],
     });
     expect(newState).toEqual({
-      recommWorks: [[stubWork, stubWork, stubWork], [stubWork]],
+      recommWorks: [[stubWork, stubWork, stubWork], [stubWork], 'dummy'],
     });
   });
 

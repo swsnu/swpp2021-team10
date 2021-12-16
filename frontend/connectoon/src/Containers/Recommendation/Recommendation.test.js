@@ -31,6 +31,7 @@ const stubInitialWorkState = {
   recommWorks: [
     [{ id: 1 }, { id: 2 }],
     [{ id: 3 }, { id: 4 }],
+    '',
   ],
 };
 
@@ -105,7 +106,7 @@ describe('<Recommendation />', () => {
 
   it('should render Recommendation with empty workList', () => {
     const stubInitialWorkStateTest = {
-      recommWorks: [[], []],
+      recommWorks: [[], [], ''],
     };
     const mockStoreTest = getMockStore(stubInitialReviewState, stubInitialTagState, stubInitialUserState, stubInitialWorkStateTest);
     recommendation = (

@@ -118,7 +118,7 @@ class Search extends Component {
       <div className="search">
         <div className="search-title-artist" align="left">
           <label id="search-title-artist">Title/Artist</label>
-          <input type="text" id="search-title-artist-input" value={title} onChange={(e) => { this.onSearch(e.target.value, genre); }} />
+          <input type="text" id="search-title-artist-input" value={title} onChange={(e) => { this.onSearch(e.target.value, genre); }} placeholder="Type title or artist name you want" />
         </div>
         <TagSearchWindow className="search-genre-search-window" onAddTag={this.onAddTag} onDeleteTag={this.onDeleteTag} defaultTag={defaultTag} />
         {storedWorks[0].length !== 0 && titleList}

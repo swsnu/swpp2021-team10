@@ -17,6 +17,8 @@ class WorkTestCase(TestCase):
             email='dummy@user.com', password='1234', username='dummy1')
         author2 = user_class.objects.create_user(
             email='dummy2@user.com', password='1234', username='dummy2')
+        author3 = user_class.objects.create_user(
+            email='dummy3@user.com', password='1234', username='dummy3')
         Work.objects.create(
             title='DummyTitle', year=2019, description="HI", 
             link="https://www.naver.com/",completion=True, platform_id=1, review_num = 2, score_sum = 5.0, score_avg = 2.5
@@ -229,7 +231,18 @@ class WorkTestCase(TestCase):
                                content_type='application/json', HTTP_X_CSRFTOKEN=csrftoken)
         response = client.get('/api/v1/works/recommend/', {'requestWorks[]': ['[0, 1]', '[0, 2]']}, content_type='application/json')
         self.assertEqual(response.status_code, 200)
+    
+    def test_work_recommend_review_not_exist(self):
+        client = Client()
+        csrftoken = client.get('/api/v1/token/').cookies['csrftoken'].value  # Get csrf token from cookie
+        response = client.post('/api/v1/users/login/',
+                               json.dumps({'email': 'dummy3@user.com', 'password': '1234'}),
+                               content_type='application/json', HTTP_X_CSRFTOKEN=csrftoken)
+        response = client.get('/api/v1/works/recommend/', {'requestWorks[]': ['[0, 1]', '[0, 2]']}, content_type='application/json')
+        self.assertEqual(response.status_code, 200)
 
+    def test_work_recommend_worng_api(self):
+        client = Client()
         csrftoken = client.get('/api/v1/token/').cookies['csrftoken'].value  # Get csrf token from cookie
         response = client.post('/api/v1/works/recommend/', HTTP_X_CSRFTOKEN=csrftoken)
         self.assertEqual(response.status_code, 405)

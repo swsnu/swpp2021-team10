@@ -158,29 +158,39 @@ def work_recommend(request):  # TODO
             review_list.reverse()
             review_list = review_list[:5]
 
-            tag_dic = {}
-            for review in review_list:  
-                for tag in review.work.tags.all():
-                    try:
-                        tag_dic[tag.id] += 1
-                    except:
-                        tag_dic[tag.id] = 1
-            
-            sorted_tag_list = list(sorted(tag_dic.items(), key=operator.itemgetter(0), reverse=True))[:3]
-            tag_list = [Tag.objects.get(id=tag[0]) for tag in sorted_tag_list]
+            if len(review_list) == 0:
+                reviewed_title = "You have not reviewed any work yet. Please review and get recommendation!"
+                review_based_work = []
 
-            review_based_work_name_list = [work for work in Work.objects.filter(tags__in=tag_list).values()]
-            
-            request_range = json.loads(requestWorks[1])
-            max_idx = len(review_based_work_name_list)
-            review_based_work = list(map(lambda work: {'title': work['title'], 'thumbnail_picture': work['thumbnail_picture'],
-            'description': work['description'], 'year': work['year'], 'link': work['link'],
-            'completion': work['completion'], 'score_avg': work['score_avg'], 'review_num': work['review_num'],
-            'platform_id': work['platform_id'],
-            'artists': [artist.name for artist in Work.objects.get(title=work['title']).artists.all()],
-            'id': work['id']}, review_based_work_name_list[min(max_idx, request_range[0]):min(max_idx, request_range[1])]))
+            else:
+                tag_dic = {}
+                for review in review_list:  
+                    for tag in review.work.tags.all():
+                        try:
+                            tag_dic[tag.id] += 1
+                        except:
+                            tag_dic[tag.id] = 1
+                
+                sorted_tag_list = list(sorted(tag_dic.items(), key=operator.itemgetter(0), reverse=True))[:3]
+                tag_list = [Tag.objects.get(id=tag[0]) for tag in sorted_tag_list]
 
-            return JsonResponse([tag_based_work, review_based_work], status=200, safe=False)
+                for review in review_list:
+                    if tag_list[0] in review.work.tags.all():
+                        reviewed_title = "Recommendation based on \'" + review.work.title + "\' you reviewed recently."
+                        break
+
+                review_based_work_name_list = [work for work in Work.objects.filter(tags__in=tag_list).values()]
+                
+                request_range = json.loads(requestWorks[1])
+                max_idx = len(review_based_work_name_list)
+                review_based_work = list(map(lambda work: {'title': work['title'], 'thumbnail_picture': work['thumbnail_picture'],
+                'description': work['description'], 'year': work['year'], 'link': work['link'],
+                'completion': work['completion'], 'score_avg': work['score_avg'], 'review_num': work['review_num'],
+                'platform_id': work['platform_id'],
+                'artists': [artist.name for artist in Work.objects.get(title=work['title']).artists.all()],
+                'id': work['id']}, review_based_work_name_list[min(max_idx, request_range[0]):min(max_idx, request_range[1])]))
+
+            return JsonResponse([tag_based_work, review_based_work, reviewed_title], status=200, safe=False)
         else:
             return HttpResponse(status=401)
     else:
