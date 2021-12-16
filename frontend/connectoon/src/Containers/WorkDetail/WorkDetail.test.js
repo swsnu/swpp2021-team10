@@ -72,7 +72,7 @@ describe('<WorkDetail />', () => {
     spyEditReview = jest.spyOn(reviewActionCreator, 'editReview')
       .mockImplementation((id, reviewData) => { return (dispatch) => { return new Promise((resolve, reject) => resolve()); }; });
     spyDeleteReview = jest.spyOn(reviewActionCreator, 'deleteReview')
-      .mockImplementation((id) => { return (dispatch) => { return new Promise((resolve, reject) => resolve()); }; });
+      .mockImplementation(() => { return (dispatch) => { return new Promise((resolve, reject) => resolve()); }; });
     spyLikeReview = jest.spyOn(reviewActionCreator, 'postLike')
       .mockImplementation((id) => { return (dispatch) => { return new Promise((resolve, reject) => resolve()); }; });
     spyUnlikeReview = jest.spyOn(reviewActionCreator, 'postUnlike')
@@ -197,7 +197,7 @@ describe('<WorkDetail />', () => {
     // expect(spyGetWorkReviews).toHaveBeenCalledTimes(1);
   });
 
-  it('should handle click delete', () => {
+  it('should handle modal and click delete', () => {
     const stubInitialUserState = {
       loggedInUser: stubLoggedInUser,
     };
@@ -221,7 +221,18 @@ describe('<WorkDetail />', () => {
       </Provider>
     );
     const component = mount(workDetail);
-    const wrapper = component.find('.spy-delete-button');
+    let wrapper = component.find('.spy-delete-button');
+    wrapper.simulate('click');
+    const newWorkDetailInstance = component.find(WorkDetail.WrappedComponent).instance();
+    expect(newWorkDetailInstance.state.modalIsOpen).toBeTruthy();
+    expect(newWorkDetailInstance.state.targetReviewId).toBe(1);
+    wrapper = component.find('.detail-modal-cancel');
+    wrapper.simulate('click');
+    expect(newWorkDetailInstance.state.modalIsOpen).toBeFalsy();
+    expect(newWorkDetailInstance.state.targetReviewId).toBe(null);
+    wrapper = component.find('.spy-delete-button');
+    wrapper.simulate('click');
+    wrapper = component.find('.detail-modal-confirm');
     wrapper.simulate('click');
     expect(spyDeleteReview).toHaveBeenCalledTimes(1);
     // expect(spyGetWork).toHaveBeenCalledTimes(1);

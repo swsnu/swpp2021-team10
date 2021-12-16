@@ -25,6 +25,7 @@ import WorkDetail from './Containers/WorkDetail/WorkDetail';
 import Login from './Containers/Login/Login';
 import Register from './Containers/Register/Register';
 import AccountSettings from './Containers/AccountSettings/AccountSettings';
+import UserPage from './Containers/UserPage/UserPage';
 
 const persistor = persistStore(store);
 
@@ -50,6 +51,7 @@ function App() {
               <Route path="/works/:id" exact component={WorkDetail} />
               <Route path="/login" exact component={Login} />
               <Route path="/register" exact component={Register} />
+              <Route path="/users/:id" exact component={UserPage} />
               <Redirect from="/" to="/main" />
             </Switch>
           </div>

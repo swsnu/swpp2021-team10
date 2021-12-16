@@ -62,8 +62,8 @@ class MyPage extends Component {
     }
 
     const imageContainer = () => {
-      if (loggedInUser.profile_picture != null) return <img id="mypage-profile-img" width="250px" src={loggedInUser.profile_picture} />;
-      else return <img id="mypage-profile-img" width="250px" src="/images/no_image.png" />;
+      if (loggedInUser.profile_picture !== null && loggedInUser.profile_picture !== '') return <img id="mypage-profile-img" width="250px" src={loggedInUser.profile_picture} />;
+      else return <img id="mypage-profile-img" width="250px" src="/images/dummyAccountIcon.jpeg" />;
     };
 
     const genreTags = () => {
