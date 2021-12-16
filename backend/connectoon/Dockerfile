@@ -7,6 +7,6 @@ RUN pip install -r requirements.txt
 
 RUN pip install uwsgi
 CMD uwsgi \
-    --wsgi-file backend/connectoon/connectoon/wsgi.py \
+    --wsgi-file connectoon/wsgi.py \
     --http :8000
 
