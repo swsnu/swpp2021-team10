@@ -57,7 +57,7 @@ def user_register(request):
 
     if profile_picture:
         created_user.profile_picture = profile_picture
-        created_user.transferred_picture = profile_picture
+        created_user.transferred_picture = created_user.profile_picture
     created_user.save()
 
     user_tag = created_user.user_tag.all()
@@ -251,7 +251,7 @@ def user_me(request):
                 'email': request_user.email,
                 'tags': return_tag_list,
                 'profile_picture': return_picture,
-                'want_trasferred': request_user.want_transferred
+                'want_transferred': request_user.want_transferred
             }
             return JsonResponse(response_dict, status=200)
         else:
@@ -307,7 +307,7 @@ def user_me(request):
 
             if profile_picture:
                 request_user.profile_picture = profile_picture
-                request_user.transferred_picture = profile_picture
+                request_user.transferred_picture = request_user.profile_picture
 
             request_user.save()
 
