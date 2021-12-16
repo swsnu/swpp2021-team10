@@ -86,7 +86,7 @@ class TagSearchWindow extends Component {
       <div className={className}>
         <div className="search-genre-tag" align="left">
           <label id="search-genre-tag">Genre</label>
-          <input type="text" id="tag-search-input" value={genre} onChange={(e) => { this.setState({ genre: e.target.value }); }} />
+          <input type="text" id="tag-search-input" value={genre} onChange={(e) => { this.setState({ genre: e.target.value }); }} placeholder="Type genre you want" />
         </div>
         {selectedTags.length !== 0 && <div className="selected-tag">
           {clickedList}
