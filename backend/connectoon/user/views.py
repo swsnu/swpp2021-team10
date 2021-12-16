@@ -238,13 +238,20 @@ def user_me(request):
                 return_tag_list.append(
                     {'key': tag.id, 'name': tag.name, 'related': related_list, 'prior': tag.prior})
 
+            if request_user.want_transferred:
+                return_picture = request.build_absolute_uri(
+                    request_user.transferred_picture.url) if request_user.transferred_picture else ''
+            else:
+                return_picture = request.build_absolute_uri(
+                    request_user.profile_picture.url) if request_user.profile_picture else ''
+
             response_dict = {
                 'id': request_user.id,
                 'username': request_user.username,
                 'email': request_user.email,
                 'tags': return_tag_list,
-                'profile_picture': request.build_absolute_uri(
-                    request_user.profile_picture.url) if request_user.profile_picture else ''
+                'profile_picture': return_picture,
+                'want_trasferred': request_user.want_transferred
             }
             return JsonResponse(response_dict, status=200)
         else:
@@ -319,7 +326,8 @@ def user_me(request):
                 'email': request_user.email,
                 'username': request_user.username,
                 'tags': tag_list,
-                'profile_picture': return_picture
+                'profile_picture': return_picture,
+                'want_transferred': request_user.want_transferred
             }
 
             return JsonResponse(response_dict, status=200)
