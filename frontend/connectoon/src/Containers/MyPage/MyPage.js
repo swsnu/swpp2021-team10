@@ -54,7 +54,6 @@ class MyPage extends Component {
   }
 
   onClickToggle = () => {
-    console.log('Clicked!');
     this.props.onToggleTransfer();
   }
 
