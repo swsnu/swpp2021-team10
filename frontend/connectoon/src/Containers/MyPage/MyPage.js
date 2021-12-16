@@ -105,6 +105,14 @@ class MyPage extends Component {
         <div id="mypage-profile-image-holder">
           {imageContainer() }
         </div>
+        <div id="mypage-toggle-transfer">use transfer</div>
+        <div className="mypage-button-holder">
+          <div className="mypage-button mypage-r" id="mypage-button-3">
+            <input type="checkbox" className="mypage-checkbox" />
+            <div className="mypage-knobs" />
+            <div className="mypage-layer" />
+          </div>
+        </div>
         <div id="mypage-userdata-holder">
           <h3 id="mypage-username">{loggedInUser.username}</h3>
           <h4 id="mypage-email">{loggedInUser.email}</h4>
