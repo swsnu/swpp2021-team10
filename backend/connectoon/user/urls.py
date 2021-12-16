@@ -11,4 +11,5 @@ urlpatterns = [
     path('me/reviews/', views.user_me_review, name='user_me_review'),
     path('dup/email/', views.user_dup_email, name='user_dup_email'),
     path('dup/username/', views.user_dup_username, name='user_dup_username'),
+    path('me/toggle_transfer/', views.user_toggle_transferred, name='user_toggle_transferred'),
 ]
