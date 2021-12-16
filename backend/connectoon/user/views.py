@@ -185,8 +185,40 @@ def user_logout(request):
         return HttpResponseNotAllowed(['GET'])
 
 
-def user_id(request, id):  # TODO
-    return HttpResponse(status=501)
+@require_GET
+def user_id(request, id):
+    user_class = get_user_model()
+    try:
+        found_user = user_class.objects.get(id=id)
+    except user_class.DoesNotExist:
+        return HttpResponseBadRequest()
+
+    user_tags = found_user.user_tag.all()
+
+    return_tag_list = []
+    for user_tag in user_tags:
+        tag = user_tag.tag
+        related_list = []
+        temptag = [tag for tag in Tag.objects.get(name=tag.name).related.all().values()]
+        for tt in temptag:
+            related_list.append(tt['id'])
+        return_tag_list.append(
+            {'key': tag.id, 'name': tag.name, 'related': related_list, 'prior': tag.prior})
+
+    if found_user.want_transferred:
+        return_picture = request.build_absolute_uri(found_user.transferred_picture.url) if found_user.transferred_picture else ''
+    else:
+        return_picture = request.build_absolute_uri(found_user.profile_picture.url) if found_user.profile_picture else ''
+
+    response_dict = {
+        'id': found_user.id,
+        'username': found_user.username,
+        'email': found_user.email,
+        'tags': return_tag_list,
+        'profile_picture': return_picture
+    }
+
+    return JsonResponse(response_dict, status=200)
 
 
 def user_me(request):
