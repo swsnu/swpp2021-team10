@@ -4,27 +4,66 @@
 [![Coverage Status](https://coveralls.io/repos/github/swsnu/swpp2021-team10/badge.svg?branch=master)](https://coveralls.io/github/swsnu/swpp2021-team10?branch=master)
 
 # How to run  
-## Frontend  
-* `cd frontend/connectoon`  
-* `yarn install`  
-* `yarn start`  
+## Frontend
 
-## Backend  
-* `cd backend/connectoon`  
-* `pip install -r requirements.txt`  
-* `python manage.py makemigrations`  
-* `python manage.py migrate`  
-* `python manage.py runserver`  
+```docker
+cd frontend/connectoon
+yarn install
+yarn start
+```
+
+## Backend
+
+```docker
+cd backend/connectoon
+pip install -r requirements.txt
+python manage.py makemigrations
+python manage.py migrate
+python manage.py runserver
+```
 
 
 # How to test  
 ## Frontend  
 ### Unit Test
-* `cd frontend/connectoon`  
-* `yarn test --coverage --watchAll=false`  
+
+```docker
+cd frontend/connectoon
+yarn test --coverage --watchAll=false
+```
 
 ## Backend  
-### Unit Test  
-* `cd backend/connectoon`  
-* `coverage run --branch --source="." manage.py test`  
-* `coverage report`    
+### Unit Test
+
+```docker
+cd backend/connectoon
+coverage run --branch --source="." manage.py test
+coverage report
+```
+
+# How to Deploy
+
+## Frontend
+
+### Docker & nginx
+```docker
+docker build -t frontend .
+docker run -p 443:443 -v '/etc/letsencrypt:/etc/letsencrypt' --rm -d --name frontend_container frontend
+```
+
+## Backend
+
+### Docker & uwsgi
+
+```docker
+docker build -t backend .
+docker run -it -p 0.0.0.0:8000:8000 --name backend_container backend:latest /bin/bash
+uwsgi --wsgi-file connectoon/wsgi.py --http :8000
+docker exec -it backend_container /bin/bash # to get into running docker
+```
+
+
+### make DB
+
++ go into makeDB folder
++ run ./runserver, ./makeDB respectively
