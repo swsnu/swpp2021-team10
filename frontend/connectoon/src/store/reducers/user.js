@@ -25,6 +25,9 @@ const reducer = (state = initialState, action) => {
       return { ...state, loggedInUser: null };
     case actionTypes.GET_MYREVIEWS:
       return { ...state, myreviews: action.myreviews };
+    case actionTypes.TOGGLE_TRANSFER:
+      const newLoggedInUser = { ...state.loggedInUser, want_transferred: !state.loggedInUser.want_transferred };
+      return { ...state, loggedInUser: newLoggedInUser };
     default:
       break;
   }

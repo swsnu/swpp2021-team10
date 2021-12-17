@@ -139,9 +139,20 @@ describe('<Board />', () => {
     expect(spyEditReview).toHaveBeenCalledTimes(1);
   });
 
-  it('should handle click delete', () => {
+  it('should handle modal and click delete', () => {
     const component = mount(board);
-    const wrapper = component.find('.spy-delete-button').first();
+    let wrapper = component.find('.spy-delete-button').first();
+    wrapper.at(0).simulate('click');
+    const newBoardInstance = component.find(Board.WrappedComponent).instance();
+    expect(newBoardInstance.state.modalIsOpen).toBeTruthy();
+    expect(newBoardInstance.state.targetReviewId).toBe(1);
+    wrapper = component.find('.board-modal-cancel');
+    wrapper.simulate('click');
+    expect(newBoardInstance.state.modalIsOpen).toBeFalsy();
+    expect(newBoardInstance.state.targetReviewId).toBe(null);
+    wrapper = component.find('.spy-delete-button');
+    wrapper.at(0).simulate('click');
+    wrapper = component.find('.board-modal-confirm');
     wrapper.simulate('click');
     expect(spyDeleteReview).toHaveBeenCalledTimes(1);
   });

@@ -251,7 +251,7 @@ def work_image(request, id):  # TODO
 
         if request_user.profile_picture:
             new_image = make_profile.make_image(request_user.profile_picture.url, work.thumbnail_picture)
-            request_user.profile_picture.save('new_image.jpg', File(new_image), save=True)
+            request_user.transferred_picture.save('new_image.jpg', File(new_image), save=True)
             request_user.save()
 
         return HttpResponse(status=200)

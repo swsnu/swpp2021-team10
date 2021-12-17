@@ -20,6 +20,7 @@ export {
   editMyUser,
   dupCheckEmail,
   dupCheckUsername,
+  toggleTransfer,
 } from './user';
 export {
   getMainWorks,

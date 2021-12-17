@@ -1,12 +1,17 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import Modal from 'react-modal';
+
 import * as actionCreators from '../../store/actions/index';
-
 import './Board.css';
-
 import BoardReview from '../../Components/BoardReview/BoardReview';
 
 class Board extends Component {
+  constructor(props) {
+    super(props);
+    this.state = { modalIsOpen: false, targetReviewId: null };
+  }
+
   componentDidMount() {
     this.props.onGetBoardReviews();
   }
@@ -19,8 +24,17 @@ class Board extends Component {
     this.props.onEditReview(id, { title, content, score });
   }
 
-  onClickDeleteReview(id) {
-    this.props.onDeleteReview(id)
+  onOpenModal(id) {
+    this.setState({ modalIsOpen: true, targetReviewId: id });
+  }
+
+  onCancelModal() {
+    this.setState({ modalIsOpen: false, targetReviewId: null });
+  }
+
+  onClickDeleteReview() {
+    this.setState({ modalIsOpen: false });
+    this.props.onDeleteReview(this.state.targetReviewId)
       .then(() => {
         this.props.onGetBoardReviews();
       });
@@ -28,6 +42,18 @@ class Board extends Component {
 
   render() {
     const { boardReviews, loggedInUser } = this.props;
+    const { modalIsOpen } = this.state;
+
+    const modalElement = <Modal
+      id="board-modal"
+      isOpen={modalIsOpen}
+    >
+      <h4>Are you sure you want to delete?</h4>
+      <div id="board-modal-button-wrapper">
+        <button type="button" className="board-modal-button board-modal-cancel" onClick={() => this.onCancelModal()}>Cancel</button>
+        <button type="button" className="board-modal-button board-modal-confirm" onClick={() => this.onClickDeleteReview()}>Confirm</button>
+      </div>
+    </Modal>;
 
     const reviewLists = boardReviews?.map((review) => {
       return (
@@ -38,7 +64,7 @@ class Board extends Component {
           onClickReview={(workId) => this.onClickReview(workId)}
           isMyReview={loggedInUser && loggedInUser.id === review.author.id}
           onClickSaveReview={(title, content, score) => this.onClickSaveReview(review.id, title, content, score)}
-          onClickDeleteReview={() => this.onClickDeleteReview(review.id)}
+          onClickDeleteReview={() => this.onOpenModal(review.id)}
           onClickLikeReview={() => this.props.onPostLike(review.id)}
           onClickUnlikeReview={() => this.props.onPostUnlike(review.id)}
           clickedLike={review.clickedLike && loggedInUser}
@@ -49,6 +75,7 @@ class Board extends Component {
 
     return (
       <div className="board">
+        {modalElement}
         <h1 className="board-page-title">
           Review board
         </h1>

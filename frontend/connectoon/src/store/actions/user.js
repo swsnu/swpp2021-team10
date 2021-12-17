@@ -100,6 +100,9 @@ export const getUser = (id) => {
     return axios.get('/users/' + id)
       .then((res) => {
         dispatch(getUser_(res.data));
+      }).catch((e) => {
+        toast.error('No such User!');
+        dispatch(push('/main'));
       });
   };
 };
@@ -159,5 +162,20 @@ export const dupCheckEmail = (email) => {
 export const dupCheckUsername = (username) => {
   return () => {
     return axios.post('/users/dup/username/', username);
+  };
+};
+
+export const toggleTransfer_ = () => {
+  return {
+    type: actionTypes.TOGGLE_TRANSFER,
+  };
+};
+
+export const toggleTransfer = () => {
+  return (dispatch) => {
+    return axios.post('/users/me/toggle_transfer/')
+      .then((res) => {
+        dispatch(toggleTransfer_());
+      });
   };
 };

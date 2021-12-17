@@ -27,6 +27,7 @@ class MyPage extends Component {
 
   componentDidMount() {
     this.props.onGetMyReviews();
+    this.props.onGetMyUser();
   }
 
   onClickAccountSettings = () => {
@@ -52,6 +53,10 @@ class MyPage extends Component {
     history.replace('/mypage', { subjectRows });
   }
 
+  onClickToggle = () => {
+    this.props.onToggleTransfer();
+  }
+
   render() {
     const { loggedInUser, myReviews } = this.props;
     const { subjectRows, worksInRow } = this.state;
@@ -61,8 +66,8 @@ class MyPage extends Component {
     }
 
     const imageContainer = () => {
-      if (loggedInUser.profile_picture != null) return <img id="mypage-profile-img" width="250px" src={loggedInUser.profile_picture} />;
-      else return <img id="mypage-profile-img" width="250px" src="/images/no_image.png" />;
+      if (loggedInUser.profile_picture !== null && loggedInUser.profile_picture !== '') return <img id="mypage-profile-img" width="250px" src={loggedInUser.profile_picture} />;
+      else return <img id="mypage-profile-img" width="250px" src="/images/dummyAccountIcon.jpeg" />;
     };
 
     const genreTags = () => {
@@ -104,6 +109,14 @@ class MyPage extends Component {
         <div id="mypage-profile-image-holder">
           {imageContainer() }
         </div>
+        <div id="mypage-toggle-transfer">use transfer</div>
+        <div className="mypage-button-holder" onClick={() => this.onClickToggle()}>
+          <div className="mypage-button mypage-r" id="mypage-button-3">
+            <input type="checkbox" className="mypage-checkbox" checked={!loggedInUser.want_transferred} />
+            <div className="mypage-knobs" />
+            <div className="mypage-layer" />
+          </div>
+        </div>
         <div id="mypage-userdata-holder">
           <h3 id="mypage-username">{loggedInUser.username}</h3>
           <h4 id="mypage-email">{loggedInUser.email}</h4>
@@ -130,6 +143,8 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     onGetMyReviews: () => dispatch(actionCreators.getMyReviews()),
+    onGetMyUser: () => dispatch(actionCreators.getMyUser()),
+    onToggleTransfer: () => dispatch(actionCreators.toggleTransfer()),
   };
 };
 

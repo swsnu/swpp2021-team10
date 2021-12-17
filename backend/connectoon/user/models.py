@@ -17,6 +17,8 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     username = models.TextField(max_length=30, blank=False, unique=True)
     email = models.EmailField(_('email address'), unique=True)
     profile_picture = models.ImageField(upload_to='profile_picture/%Y/%m/%d', null=True)
+    transferred_picture = models.ImageField(upload_to='transferred_picture/%Y/%m/%d', null=True)
+    want_transferred = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
     date_joined = models.DateTimeField(default=timezone.now)

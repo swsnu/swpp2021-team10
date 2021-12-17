@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
+import Modal from 'react-modal';
 
 import WorkInfo from '../../Components/WorkInfo/WorkInfo';
 import './WorkDetail.css';
@@ -16,6 +17,8 @@ class WorkDetail extends Component {
 
     this.onClickReviewConfirm = this.onClickReviewConfirm.bind(this);
     this.onClickTag = this.onClickTag.bind(this);
+
+    this.state = { modalIsOpen: false, targetReviewId: null };
   }
 
   componentDidMount() {
@@ -32,8 +35,17 @@ class WorkDetail extends Component {
       });
   }
 
-  onClickDeleteReview(id) {
-    this.props.onDeleteReview(id)
+  onOpenModal(id) {
+    this.setState({ modalIsOpen: true, targetReviewId: id });
+  }
+
+  onCancelModal() {
+    this.setState({ modalIsOpen: false, targetReviewId: null });
+  }
+
+  onClickDeleteReview() {
+    this.setState({ modalIsOpen: false });
+    this.props.onDeleteReview(this.state.targetReviewId)
       .then(() => {
         this.props.onGetWork(this.props.match.params.id);
         this.props.onGetWorkReviews(this.props.match.params.id);
@@ -57,6 +69,7 @@ class WorkDetail extends Component {
     const {
       selectedWork, noSuchSelectedWork, loggedInUser, reviews,
     } = this.props;
+    const { modalIsOpen } = this.state;
 
     if (noSuchSelectedWork) {
       return (
@@ -69,6 +82,17 @@ class WorkDetail extends Component {
     if (!selectedWork) {
       return <div className="work-detail" />;
     }
+
+    const modalElement = <Modal
+      id="detail-modal"
+      isOpen={modalIsOpen}
+    >
+      <h4>Are you sure you want to delete?</h4>
+      <div id="detail-modal-button-wrapper">
+        <button type="button" className="detail-modal-button detail-modal-cancel" onClick={() => this.onCancelModal()}>Cancel</button>
+        <button type="button" className="detail-modal-button detail-modal-confirm" onClick={() => this.onClickDeleteReview()}>Confirm</button>
+      </div>
+    </Modal>;
 
     const workInfo = <WorkInfo
       key={selectedWork.title + String(selectedWork.id)}
@@ -103,7 +127,7 @@ class WorkDetail extends Component {
           review={myReview[0]}
           editable
           onClickSaveReview={(title, content, score) => this.onClickSaveReview(myReview[0].id, title, content, score)}
-          onClickDeleteReview={() => this.onClickDeleteReview(myReview[0].id)}
+          onClickDeleteReview={() => this.onOpenModal(myReview[0].id)}
           onClickLikeReview={() => this.props.onPostLike(myReview[0].id)}
           onClickUnlikeReview={() => this.props.onPostUnlike(myReview[0].id)}
           clickedLike={myReview[0].clickedLike && loggedInUser}
@@ -144,6 +168,7 @@ class WorkDetail extends Component {
 
     return (
       <div className="work-detail" login={loggedInUser}>
+        {modalElement}
         {workInfo}
         {myDetailReview}
         <div className="work-review-region">

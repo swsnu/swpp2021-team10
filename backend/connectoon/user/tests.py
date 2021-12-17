@@ -40,6 +40,8 @@ class UserTestCase(TestCase):
         tag1 = Tag.objects.create(name='tag1')
         tag2 = Tag.objects.create(name='tag2')
         tag3 = Tag.objects.create(name='tag3')
+        tag1.related.add(tag3)
+        tag1.save()
 
         user1 = user_class.objects.create_user(email='test1@snu.ac.kr', username='test1', password='qwe123')
 
@@ -223,8 +225,10 @@ class UserTestCase(TestCase):
     def test_user_id(self):
         client = Client()
         response = client.get('/api/v1/users/1/')
+        self.assertEqual(response.status_code, 200)
 
-        self.assertEqual(response.status_code, 501)
+        response = client.get('/api/v1/users/100/')
+        self.assertEqual(response.status_code, 400)
 
     def test_user_me_get(self):
         client = Client(enforce_csrf_checks=True)
@@ -365,6 +369,17 @@ class UserTestCase(TestCase):
                 self.assertEqual(review['clickedLike'], True)
             else:
                 self.assertEqual(review['clickedLike'], False)
+
+    def test_user_toggle_transferred(self):
+        user_class = get_user_model()
+        client = Client()
+        response = client.post('/api/v1/users/login/',
+                               json.dumps({'email': 'test1@snu.ac.kr', 'password': 'qwe123'}),
+                               content_type='application/json')
+
+        response = client.post('/api/v1/users/me/toggle_transfer/')
+        self.assertEqual(response.status_code, 204)
+
 
 
 
