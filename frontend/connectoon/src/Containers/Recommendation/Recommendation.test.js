@@ -153,11 +153,11 @@ describe('<Recommendation />', () => {
   it('should fetch more works when enough more clicks are given', () => {
     const spyHistoryReplace = jest.spyOn(history, 'replace')
       .mockImplementation((path, state) => { });
-    const stubWorks = Array.from({ length: 48 }).map((idx) => {
+    const stubWorks = Array.from({ length: 48 }, (v, i) => i).map((idx) => {
       return { id: idx };
     });
     const stubInitialManyWorkState = {
-      recommWorks: [stubWorks, stubWorks],
+      recommWorks: [stubWorks, stubWorks, ''],
     };
     const manyWorkMockStore = getMockStore(stubInitialReviewState, stubInitialTagState, stubInitialUserState, stubInitialManyWorkState);
     recommendation = (
